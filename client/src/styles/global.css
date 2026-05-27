@@ -1,84 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+
 :root {
-  /* Logo Palette */
-  --c-teal: #78C0A8;
-  --c-yellow: #FCE38A;
-  --c-orange: #F38181;
-  --c-blue: #95E1D3;
-  --c-text: #2D3436;
-  --c-bg: #F9F7F2; /* Creamy off-white */
-  --c-white: #FFFFFF;
-  
-  /* Design Tokens */
-  --border-width: 2px;
-  --radius: 12px;
-  --shadow-hard: 4px 4px 0px var(--c-text); /* The Block Look */
-  --shadow-hover: 2px 2px 0px var(--c-text);
-  --font-main: 'Nunito', sans-serif;
+  --c-primary:       #4F46E5;
+  --c-primary-dark:  #3730A3;
+  --c-primary-light: #EEF2FF;
+  --c-accent:        #0D9488;
+  --c-accent-light:  #CCFBF1;
+
+  --c-bg:            #F8FAFC;
+  --c-surface:       #FFFFFF;
+  --c-surface-2:     #F1F5F9;
+
+  --c-text:          #0F172A;
+  --c-text-muted:    #64748B;
+  --c-text-subtle:   #94A3B8;
+
+  --c-border:        #E2E8F0;
+  --c-border-focus:  #4F46E5;
+
+  --c-success:       #10B981;
+  --c-warning:       #F59E0B;
+  --c-error:         #EF4444;
+
+  --radius-sm:  6px;
+  --radius:     10px;
+  --radius-lg:  16px;
+  --radius-xl:  24px;
+
+  --shadow-xs:  0 1px 2px rgba(15,23,42,0.06);
+  --shadow-sm:  0 1px 3px rgba(15,23,42,0.08), 0 1px 2px rgba(15,23,42,0.04);
+  --shadow-md:  0 4px 6px -1px rgba(15,23,42,0.08), 0 2px 4px -1px rgba(15,23,42,0.04);
+  --shadow-lg:  0 10px 15px -3px rgba(15,23,42,0.08), 0 4px 6px -2px rgba(15,23,42,0.04);
+  --shadow-xl:  0 20px 25px -5px rgba(15,23,42,0.10), 0 10px 10px -5px rgba(15,23,42,0.04);
+
+  --font-main:    'Inter', system-ui, sans-serif;
+  --font-display: 'Plus Jakarta Sans', 'Inter', sans-serif;
+
+  --transition: all 0.18s ease;
 }
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
   font-family: var(--font-main);
   background-color: var(--c-bg);
   color: var(--c-text);
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Global Button Styles to match the Logo */
+/* ── Buttons ── */
 button {
   font-family: var(--font-main);
-  font-weight: 700;
-  border: var(--border-width) solid var(--c-text);
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1.5px solid transparent;
   border-radius: var(--radius);
   padding: 10px 20px;
   cursor: pointer;
-  transition: all 0.15s ease;
-  background-color: var(--c-white);
-  box-shadow: var(--shadow-hard);
-  transform: translate(-2px, -2px);
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  letter-spacing: 0.5px;
+  transition: var(--transition);
+  background-color: var(--c-primary);
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
-button:active {
-  box-shadow: 0px 0px 0px var(--c-text);
-  transform: translate(0px, 0px);
+button:hover:not(:disabled) {
+  background-color: var(--c-primary-dark);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--shadow-xs);
 }
 
 button:disabled {
-  background-color: #e0e0e0;
-  color: #888;
+  background-color: var(--c-surface-2);
+  color: var(--c-text-subtle);
   box-shadow: none;
-  transform: none;
   cursor: not-allowed;
 }
 
-/* Action Variants */
-.save-btn, .add-btn, .add-photo-btn { background-color: var(--c-teal); color: white; }
-.delete-btn, .cancel-btn { background-color: var(--c-orange); color: white; }
-.edit-btn { background-color: var(--c-yellow); color: var(--c-text); }
-.back-btn { background-color: var(--c-blue); color: var(--c-text); }
+/* Variants */
+.btn-secondary {
+  background-color: var(--c-surface);
+  color: var(--c-text);
+  border-color: var(--c-border);
+  box-shadow: var(--shadow-xs);
+}
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--c-surface-2);
+  border-color: #CBD5E1;
+}
 
-/* Inputs */
+.btn-ghost {
+  background: transparent;
+  color: var(--c-primary);
+  border: none;
+  box-shadow: none;
+}
+.btn-ghost:hover:not(:disabled) {
+  background: var(--c-primary-light);
+  box-shadow: none;
+  transform: none;
+}
+
+.btn-danger {
+  background-color: var(--c-error);
+  color: #fff;
+}
+.btn-danger:hover:not(:disabled) {
+  background-color: #DC2626;
+}
+
+.btn-success {
+  background-color: var(--c-success);
+  color: #fff;
+}
+
+.save-btn, .add-btn  { background-color: var(--c-accent); }
+.save-btn:hover, .add-btn:hover { background-color: #0F766E; }
+.delete-btn, .cancel-btn { background-color: var(--c-error); }
+.edit-btn  { background-color: var(--c-warning); color: var(--c-text); }
+.back-btn  { background-color: var(--c-surface); color: var(--c-text); border-color: var(--c-border); }
+
+/* ── Inputs ── */
 input, textarea, select {
   width: 100%;
-  padding: 12px;
-  border: var(--border-width) solid var(--c-text);
+  padding: 10px 14px;
+  border: 1.5px solid var(--c-border);
   border-radius: var(--radius);
   font-family: var(--font-main);
-  background-color: var(--c-white);
-  font-size: 1rem;
+  background-color: var(--c-surface);
+  font-size: 0.9375rem;
+  color: var(--c-text);
   outline: none;
-  transition: all 0.2s;
+  transition: var(--transition);
+  box-shadow: var(--shadow-xs);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--c-text-subtle);
 }
 
 input:focus, textarea:focus, select:focus {
-  box-shadow: var(--shadow-hard);
-  transform: translate(-2px, -2px);
-  border-color: var(--c-teal);
+  border-color: var(--c-border-focus);
+  box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
 }
+
+/* ── Card ── */
+.card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 1.5rem;
+}
+
+/* ── Typography helpers ── */
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--c-text);
+}
+
+.text-muted { color: var(--c-text-muted); }
+.text-subtle { color: var(--c-text-subtle); }

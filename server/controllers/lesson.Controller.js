@@ -1,9 +1,7 @@
-const pool = require('../config/db')
+import pool from '../config/db.js'
 
-const getLanguages   = async (req, res) => { /* TODO */ }
-const chooseLanguage = async (req, res) => { /* TODO */ }
-const getLevels      = async (req, res) => { /* TODO */ }
-const getLessonWords = async (req, res) => { /* TODO */ }
-const getLevelSummary = async (req, res) => { /* TODO */ }
-
-module.exports = { getLanguages, chooseLanguage, getLevels, getLessonWords, getLevelSummary }
+export const getLanguages   = async (req, res) => { /* TODO */ }
+export const chooseLanguage = async (req, res) => { /* TODO */ }
+export const getLevels      = async (req, res) => { /* TODO */ }
+export const getLessonWords = async (req, res) => { /* TODO */ }
+export const getLevelSummary = async (req, res) => { /* TODO */ }

@@ -1,8 +1,8 @@
 import { useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useUser } from '../contexts/UserContext'
-import { usersApi } from '../services/api'
-import '../styles/forms.css'
+import { useUser } from '../../context/UserContext'
+import { usersApi } from '../../services/api'
+import '../../styles/forms.css'
 
 function Login() {
   const formRef = useRef()
@@ -31,26 +31,43 @@ function Login() {
   return (
     <div className="login-page">
       <div className="container">
-        <h2>Login</h2>
-        <form ref={formRef} onSubmit={handleLogin}>
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            required
-          />
-          <button type="submit">Login</button>
-        </form>
+        <div className="auth-card">
+          <div className="brand">
+            <div className="brand-logo">F</div>
+            <span className="brand-name">Fluento</span>
+          </div>
 
-        <button className="secondary-btn" onClick={() => navigate('/register')}>
-          Don't have an account? Register
-        </button>
+          <h2>Welcome back</h2>
+          <p className="auth-subtitle">Sign in to continue learning</p>
+
+          <form ref={formRef} onSubmit={handleLogin}>
+            <div className="form-group">
+              <label htmlFor="username">Username</label>
+              <input
+                id="username"
+                type="text"
+                name="username"
+                placeholder="Enter your username"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+            <button type="submit">Sign in</button>
+          </form>
+
+          <button className="secondary-btn" onClick={() => navigate('/register')}>
+            Don't have an account? <span>Sign up</span>
+          </button>
+        </div>
       </div>
     </div>
   )

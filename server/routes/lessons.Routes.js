@@ -1,10 +1,11 @@
-const express = require('express')
-const router = express.Router()
-const { getLevels, getLessonWords, getLevelSummary } = require('../controllers/lessonController')
-const { authMiddleware } = require('../middleware/authMiddleware')
+import { Router } from 'express'
+import { getLevels, getLessonWords, getLevelSummary } from '../controllers/lesson.Controller.js'
+import { authMiddleware } from '../middleware/auth.Middleware.js'
 
-router.get('/levels/:languageId',       authMiddleware, getLevels)
-router.get('/:lessonId/words',          authMiddleware, getLessonWords)
-router.get('/level/:levelId/summary',   authMiddleware, getLevelSummary)
+const router = Router()
 
-module.exports = router
+router.get('/levels/:languageId',      authMiddleware, getLevels)
+router.get('/:lessonId/words',         authMiddleware, getLessonWords)
+router.get('/level/:levelId/summary',  authMiddleware, getLevelSummary)
+
+export default router

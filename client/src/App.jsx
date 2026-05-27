@@ -1,10 +1,10 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { AuthProvider } from './context/AuthContext'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { UserProvider } from './context/UserContext'
 import ProtectedRoute from './components/common/ProtectedRoute'
 import Navbar from './components/common/Navbar'
 
-import Login from './pages/Login'
-import Register from './pages/Register'
+import Login from './components/common/Login'
+import Register from './components/common/Register'
 import ChooseLanguage from './pages/ChooseLanguage'
 import Dashboard from './pages/Dashboard'
 import Lesson from './pages/Lesson'
@@ -15,10 +15,11 @@ import ManageLessons from './pages/admin/ManageLessons'
 
 function App() {
   return (
-    <AuthProvider>
+    <UserProvider>
       <BrowserRouter>
         <Navbar />
         <Routes>
+          <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/choose-language" element={<ProtectedRoute><ChooseLanguage /></ProtectedRoute>} />
@@ -30,7 +31,7 @@ function App() {
           <Route path="/admin/lessons" element={<ProtectedRoute adminOnly><ManageLessons /></ProtectedRoute>} />
         </Routes>
       </BrowserRouter>
-    </AuthProvider>
+    </UserProvider>
   )
 }
 

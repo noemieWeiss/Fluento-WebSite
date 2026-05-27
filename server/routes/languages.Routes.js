@@ -1,9 +1,10 @@
-const express = require('express')
-const router = express.Router()
-const { getLanguages, chooseLanguage } = require('../controllers/lessonController')
-const { authMiddleware } = require('../middleware/authMiddleware')
+import { Router } from 'express'
+import { getLanguages, chooseLanguage } from '../controllers/lesson.Controller.js'
+import { authMiddleware } from '../middleware/auth.Middleware.js'
 
-router.get('/',       getLanguages)
+const router = Router()
+
+router.get('/',        getLanguages)
 router.post('/choose', authMiddleware, chooseLanguage)
 
-module.exports = router
+export default router

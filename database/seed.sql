@@ -4,7 +4,10 @@ INSERT INTO users (name, email, role) VALUES
   ('Noemie Weiss',        'admin@fluento.com',   'admin'),
   ('Alice Cohen',  'alice@example.com',   'student'),
   ('Bob Levi',     'bob@example.com',     'student');
-
+INSERT INTO passwords (user_id, password_hash) VALUES
+  (1, '$2b$10$Vh8s9Z5j1K7Qe5X9f6uOe5z1N8v3y4a6b7c8d9e0f1g2h3i4j5k6l7m8n9o0p'), -- password: admin123
+  (2, '$2b$10$A1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6a7b8c9d0e'), -- password: alice123
+  (3, '$2b$10$Z9Y8X7W6V5U4T3S2R1Q0P9O8N7M6L5K4J3I2H1G0F9E8D7C6B5A4B3C2D1E0f'); -- password: bob123
 INSERT INTO languages (name, code, flag_emoji) VALUES
   ('English', 'en', '🇬🇧'),
   ('Spanish', 'es', '🇪🇸'),
