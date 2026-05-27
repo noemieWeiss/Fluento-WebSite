@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useCache } from '../contexts/CacheContext'
+import { useCache } from '../context/CacheContext'
 
 export default function usePersistentState(key, initialValue) {
   const { get, set } = useCache()

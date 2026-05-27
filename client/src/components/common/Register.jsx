@@ -1,8 +1,8 @@
 import { useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useUser } from '../contexts/UserContext'
-import { usersApi } from '../services/api'
-import '../styles/forms.css'
+import { useUser } from '../../context/UserContext'
+import { usersApi } from '../../services/api'
+import '../../styles/forms.css'
 
 function Register() {
   const formRef = useRef()
@@ -58,20 +58,45 @@ function Register() {
   }
 
   return (
-    <div className="login-page">
+    <div className="register-page">
       <div className="container">
-        <h2>Register</h2>
-        <form ref={formRef} onSubmit={handleRegister}>
-          <input type="text" name="username" placeholder="Username" required />
-          <input type="text" name="name" placeholder="Full Name" required />
-          <input type="email" name="email" placeholder="Email" required />
-          <input type="password" name="password" placeholder="Password" required />
-          <input type="password" name="confirmPassword" placeholder="Confirm Password" required />
-          <button type="submit">Register</button>
-        </form>
-        <button className="secondary-btn" onClick={() => navigate('/login')}>
-          Already have an account? Login
-        </button>
+        <div className="auth-card">
+          <div className="brand">
+            <div className="brand-logo">F</div>
+            <span className="brand-name">Fluento</span>
+          </div>
+
+          <h2>Create an account</h2>
+          <p className="auth-subtitle">Start your language learning journey</p>
+
+          <form ref={formRef} onSubmit={handleRegister}>
+            <div className="form-group">
+              <label htmlFor="username">Username</label>
+              <input id="username" type="text" name="username" placeholder="Choose a username" required />
+            </div>
+            <div className="form-group">
+              <label htmlFor="name">Full Name</label>
+              <input id="name" type="text" name="name" placeholder="Your full name" required />
+            </div>
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input id="email" type="email" name="email" placeholder="you@example.com" required />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input id="password" type="password" name="password" placeholder="Min 8 chars, 1 number, 1 uppercase" required />
+            </div>
+            <div className="form-group">
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <input id="confirmPassword" type="password" name="confirmPassword" placeholder="Repeat your password" required />
+            </div>
+            <button type="submit">Create account</button>
+          </form>
+
+          <button className="secondary-btn" onClick={() => navigate('/login')}>
+            Already have an account? <span>Sign in</span>
+          </button>
+        </div>
       </div>
     </div>
   )

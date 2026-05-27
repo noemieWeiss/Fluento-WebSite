@@ -1,48 +1,119 @@
+/* ── App Shell ── */
 .home-container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: var(--c-bg);
 }
 
+/* ── Top Nav ── */
 .home-header {
-  background-color: var(--c-white);
-  border-bottom: var(--border-width) solid var(--c-text);
-  padding: 1rem 2rem;
+  background: var(--c-surface);
+  border-bottom: 1px solid var(--c-border);
+  padding: 0 2rem;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: sticky;
   top: 0;
   z-index: 100;
+  box-shadow: var(--shadow-xs);
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.header-brand-logo {
+  width: 32px;
+  height: 32px;
+  background: var(--c-primary);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.header-brand-name {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: var(--c-text);
 }
 
 .home-nav {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
+/* ── Avatar / User menu ── */
 .user-avatar {
-  width: 45px;
-  height: 45px;
-  background-color: var(--c-yellow);
-  border: var(--border-width) solid var(--c-text);
+  width: 36px;
+  height: 36px;
+  background: var(--c-primary-light);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 800;
-  font-size: 1.2rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--c-primary);
   cursor: pointer;
-  box-shadow: 2px 2px 0 var(--c-text);
+  border: 1.5px solid var(--c-border);
+  transition: var(--transition);
+}
+.user-avatar:hover {
+  border-color: var(--c-primary);
+  background: var(--c-primary);
+  color: #fff;
 }
 
-/* Info Modal */
+/* ── Main content area ── */
+.home-content {
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+  flex: 1;
+}
+
+/* ── Welcome banner ── */
+.welcome-message {
+  background: linear-gradient(135deg, var(--c-primary) 0%, #7C3AED 100%);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 3rem;
+  color: #fff;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-md);
+}
+
+.welcome-message h2 {
+  font-family: var(--font-display);
+  font-size: 1.875rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-message p {
+  color: rgba(255,255,255,0.8);
+  font-size: 1rem;
+}
+
+/* ── Modal ── */
 .info-modal {
   position: fixed;
   inset: 0;
-  background: rgba(45, 52, 54, 0.8);
+  background: rgba(15,23,42,0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -51,24 +122,21 @@
 }
 
 .info-content {
-  background: var(--c-white);
+  background: var(--c-surface);
   padding: 2rem;
-  border: var(--border-width) solid var(--c-text);
-  border-radius: var(--radius);
-  box-shadow: 8px 8px 0 var(--c-text);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
   max-width: 500px;
   width: 90%;
 }
 
-.home-content {
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 2rem;
-  flex: 1;
+.info-content h3 {
+  font-size: 1.125rem;
+  margin-bottom: 1.25rem;
 }
 
-/* Change Password Modal */
+/* ── Change Password Modal ── */
 .change-pw-modal {
   max-width: 420px;
 }
@@ -76,35 +144,24 @@
 .pw-field {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   margin-bottom: 1rem;
 }
 
 .pw-field label {
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-size: 0.8125rem;
+  font-weight: 600;
   color: var(--c-text);
 }
 
-.pw-field input {
-  padding: 10px 12px;
-  font-size: 1rem;
-  border: 2px solid var(--c-text);
-  border-radius: 8px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.pw-field input:focus {
-  outline: none;
-  box-shadow: 3px 3px 0 var(--c-text);
-}
-
 .pw-error {
-  color: #cc0000;
-  font-size: 0.85rem;
-  font-weight: 600;
+  color: var(--c-error);
+  font-size: 0.8125rem;
+  font-weight: 500;
   margin: 0 0 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .pw-buttons {
@@ -115,52 +172,42 @@
 }
 
 .cancel-pw-btn {
-  background: #f1f1f1;
+  background: var(--c-surface);
   color: var(--c-text);
-  border: 2px solid var(--c-text);
-  padding: 8px 18px;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 700;
+  border: 1.5px solid var(--c-border);
+  padding: 9px 20px;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: var(--transition);
+  box-shadow: none;
+}
+.cancel-pw-btn:hover {
+  background: var(--c-surface-2);
+  transform: none;
+  box-shadow: none;
 }
 
 .save-pw-btn {
-  background: var(--c-teal);
-  color: white;
-  border: 2px solid var(--c-text);
-  padding: 8px 18px;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 3px 3px 0 var(--c-text);
-  transition: transform 0.1s, box-shadow 0.1s;
-}
-
-.save-pw-btn:hover:not(:disabled) {
-  transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0 var(--c-text);
-}
-
-.save-pw-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.welcome-message {
-  text-align: center;
-  margin-top: 4rem;
-  padding: 3rem;
-  background: var(--c-white);
-  border: var(--border-width) solid var(--c-text);
+  background: var(--c-primary);
+  color: #fff;
+  border: none;
+  padding: 9px 20px;
   border-radius: var(--radius);
-  box-shadow: var(--shadow-hard);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 1px 2px rgba(79,70,229,0.3);
 }
-
-.welcome-message h2 {
-  font-size: 3rem;
-  color: var(--c-teal);
-  text-shadow: 2px 2px 0 var(--c-text);
-  margin-bottom: 0.5rem;
+.save-pw-btn:hover:not(:disabled) {
+  background: var(--c-primary-dark);
+  box-shadow: 0 4px 10px rgba(79,70,229,0.35);
+  transform: translateY(-1px);
+}
+.save-pw-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
 }

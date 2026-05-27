@@ -1,6 +1,4 @@
-const pool = require('../config/db')
+import pool from '../config/db.js'
 
-const saveProgress = async (req, res) => { /* TODO */ }
-const getProgress  = async (req, res) => { /* TODO */ }
-
-module.exports = { saveProgress, getProgress }
+export const saveProgress = async (req, res) => { /* TODO */ }
+export const getProgress  = async (req, res) => { /* TODO */ }

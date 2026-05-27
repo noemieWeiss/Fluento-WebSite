@@ -1,16 +1,15 @@
-import { Navigate, useParams } from 'react-router-dom'
-import { useUser } from '../contexts/UserContext'
+import { Navigate } from 'react-router-dom'
+import { useUser } from '../../context/UserContext'
 
-function ProtectedRoute({ children }) {
-  const { userId } = useParams()
+function ProtectedRoute({ children, adminOnly = false }) {
   const { user } = useUser()
 
   if (!user) {
     return <Navigate to="/login" replace />
   }
 
-  if (user.id.toString() !== userId) {
-    return <Navigate to="/login" replace />
+  if (adminOnly && user.role !== 'admin') {
+    return <Navigate to="/dashboard" replace />
   }
 
   return children
