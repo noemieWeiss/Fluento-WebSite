@@ -69,3 +69,5 @@ INSERT INTO user_progress (user_id, lesson_id, score, completed, completed_at) V
   (2, 1, 90, TRUE,  NOW()),
   (2, 2, 75, TRUE,  NOW()),
   (2, 3, 0,  FALSE, NULL);
+
+  
