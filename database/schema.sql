@@ -5,14 +5,13 @@ CREATE TABLE users (
   id           INT AUTO_INCREMENT PRIMARY KEY,
   name         VARCHAR(100) NOT NULL,
   email        VARCHAR(150) NOT NULL UNIQUE,
-  password_hash VARCHAR(255) NOT NULL,
   role         ENUM('student', 'admin') DEFAULT 'student',
   created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE languages (
   id         INT AUTO_INCREMENT PRIMARY KEY,
-  name       VARCHAR(100) NOT NULL,
+  name       VARCHAR(45) NOT NULL,
   code       VARCHAR(10)  NOT NULL,
   flag_emoji VARCHAR(10)
 );
