@@ -5,11 +5,6 @@ INSERT INTO users (name, email, role) VALUES
   ('Alice Cohen',  'alice@example.com',   'student'),
   ('Bob Levi',     'bob@example.com',     'student');
 
-INSERT INTO user_credentials (user_id, password_hash) VALUES
-  (1, '$2b$10$Xv1YkXpBpNbZw0QzRlT3aOeW5UvG9CfHmKdN2sJrP8oL4iA6yVx7u'),
-  (2, '$2b$10$Xv1YkXpBpNbZw0QzRlT3aOeW5UvG9CfHmKdN2sJrP8oL4iA6yVx7u'),
-  (3, '$2b$10$Xv1YkXpBpNbZw0QzRlT3aOeW5UvG9CfHmKdN2sJrP8oL4iA6yVx7u');
-
 INSERT INTO languages (name, code, flag_emoji) VALUES
   ('English', 'en', '🇬🇧'),
   ('Spanish', 'es', '🇪🇸'),
