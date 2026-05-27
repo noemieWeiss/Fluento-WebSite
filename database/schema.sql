@@ -1,22 +1,41 @@
 CREATE DATABASE IF NOT EXISTS fluento;
 USE fluento;
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
   id           INT AUTO_INCREMENT PRIMARY KEY,
   name         VARCHAR(100) NOT NULL,
-  email        VARCHAR(150) NOT NULL UNIQUE,
-  role         ENUM('student', 'admin') DEFAULT 'student',
+  email        VARCHAR(150) NOT NULL UNIQUE ,
   created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE languages (
+CREATE TABLE IF NOT EXISTS roles (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS roles_to_users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  role_id INT NOT NULL,
+  user_id INT NOT NULL,
+  FOREIGN KEY (role_id) REFERENCES roles(id),
+  FOREIGN KEY (user_id) REFERENCES users(id)
+); 
+
+CREATE TABLE IF NOT EXISTS passwords (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS languages (
   id         INT AUTO_INCREMENT PRIMARY KEY,
   name       VARCHAR(45) NOT NULL,
   code       VARCHAR(10)  NOT NULL,
   flag_emoji VARCHAR(10)
 );
 
-CREATE TABLE levels (
+CREATE TABLE IF NOT EXISTS levels (
   id           INT AUTO_INCREMENT PRIMARY KEY,
   language_id  INT NOT NULL,
   level_number INT NOT NULL,
@@ -24,7 +43,7 @@ CREATE TABLE levels (
   FOREIGN KEY (language_id) REFERENCES languages(id)
 );
 
-CREATE TABLE lessons (
+CREATE TABLE IF NOT EXISTS lessons (
   id            INT AUTO_INCREMENT PRIMARY KEY,
   level_id      INT NOT NULL,
   lesson_number INT NOT NULL,
@@ -32,7 +51,7 @@ CREATE TABLE lessons (
   FOREIGN KEY (level_id) REFERENCES levels(id)
 );
 
-CREATE TABLE words (
+CREATE TABLE IF NOT EXISTS words (
   id               INT AUTO_INCREMENT PRIMARY KEY,
   lesson_id        INT NOT NULL,
   word             VARCHAR(100) NOT NULL,
@@ -43,7 +62,7 @@ CREATE TABLE words (
   FOREIGN KEY (lesson_id) REFERENCES lessons(id)
 );
 
-CREATE TABLE user_languages (
+CREATE TABLE IF NOT EXISTS user_languages (
   id          INT AUTO_INCREMENT PRIMARY KEY,
   user_id     INT NOT NULL,
   language_id INT NOT NULL,
@@ -52,7 +71,7 @@ CREATE TABLE user_languages (
   FOREIGN KEY (language_id) REFERENCES languages(id)
 );
 
-CREATE TABLE user_progress (
+CREATE TABLE IF NOT EXISTS user_progress (
   id           INT AUTO_INCREMENT PRIMARY KEY,
   user_id      INT NOT NULL,
   lesson_id    INT NOT NULL,
