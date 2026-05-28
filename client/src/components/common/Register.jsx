@@ -12,7 +12,6 @@ function Register() {
   const handleRegister = async (e) => {
     e.preventDefault()
     const formData = new FormData(formRef.current)
-    const username = formData.get('username')
     const name = formData.get('name')
     const email = formData.get('email')
     const password = formData.get('password')
@@ -36,16 +35,16 @@ function Register() {
     }
 
     try {
-      const result = await usersApi.create({ username, name, email, password })
-      if (result?.message === 'Username already exists') {
-        alert('Username already taken')
+      const result = await usersApi.create({ name, email, password })
+      if (result?.message === 'Email already exists') {
+        alert('An account already exists with this email address.')
         return
       }
       if (!result?.id) {
         alert(result?.message || 'Registration failed')
         return
       }
-      const fullUser = await usersApi.login(username, password)
+      const fullUser = await usersApi.login(email, password)
       if (!fullUser) {
         navigate('/login')
         return
@@ -71,12 +70,8 @@ function Register() {
 
           <form ref={formRef} onSubmit={handleRegister}>
             <div className="form-group">
-              <label htmlFor="username">Username</label>
-              <input id="username" type="text" name="username" placeholder="Choose a username" required />
-            </div>
-            <div className="form-group">
-              <label htmlFor="name">Full Name</label>
-              <input id="name" type="text" name="name" placeholder="Your full name" required />
+              <label htmlFor="name">Username</label>
+              <input id="name" type="text" name="name" placeholder="Choose a username" required />
             </div>
             <div className="form-group">
               <label htmlFor="email">Email</label>

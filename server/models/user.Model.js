@@ -1,32 +1,32 @@
 import pool from '../config/db.js';
 
-export const findUserByUsername = async (username) => {
-  const [rows] = await pool.query('SELECT * FROM users WHERE username = ?', [username]);
+export const findUserByEmail = async (email) => {
+  const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
   return rows[0];
 };
 
 export const getAllUsers = async () => {
-  const [rows] = await pool.query('SELECT id, username, name, email FROM users');
+  const [rows] = await pool.query('SELECT id, name, email FROM users');
   return rows;
 };
 
 export const getUserById = async (id) => {
-  const [rows] = await pool.query('SELECT id, username, name, email FROM users WHERE id = ?', [id]);
+  const [rows] = await pool.query('SELECT id, name, email FROM users WHERE id = ?', [id]);
   return rows[0];
 };
 
-export const createUserWithPassword = async ({ username, name, email, password }) => {
+export const createUserWithPassword = async ({ name, email, password }) => {
   const conn = await pool.getConnection();
   try {
     await conn.beginTransaction();
     const [result] = await conn.query(
-      'INSERT INTO users (username, name, email) VALUES (?, ?, ?)',
-      [username, name, email]
+      'INSERT INTO users ( name, email) VALUES ( ?, ?)',
+      [name, email]
     );
     const userId = result.insertId;
-    await conn.query('INSERT INTO passwords (userId, password) VALUES (?, ?)', [userId, password]);
+    await conn.query('INSERT INTO passwords (user_id, password_hash) VALUES (?, ?)', [userId, password]);
     await conn.commit();
-    return { id: userId, username, name, email };
+    return { id: userId, name, email };
   } catch (err) {
     await conn.rollback();
     throw err;

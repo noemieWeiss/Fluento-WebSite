@@ -12,19 +12,19 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault()
     const formData = new FormData(formRef.current)
-    const username = formData.get('username')
+    const email = formData.get('email')
     const password = formData.get('password')
 
     try {
-      const user = await usersApi.login(username, password)
+      const user = await usersApi.login(email, password)
       if (user) {
         login(user)
         navigate(`/users/${user.id}/home`)
       } else {
-        alert('Username or password incorrect')
+        alert('email or password incorrect')
       }
     } catch (error) {
-      alert('Username or password incorrect')
+      alert('email or password incorrect')
     }
   }
 
@@ -42,12 +42,12 @@ function Login() {
 
           <form ref={formRef} onSubmit={handleLogin}>
             <div className="form-group">
-              <label htmlFor="username">Username</label>
+              <label htmlFor="email">Email</label>
               <input
-                id="username"
+                id="email"
                 type="text"
-                name="username"
-                placeholder="Enter your username"
+                name="email"
+                placeholder="Enter your email"
                 required
               />
             </div>
