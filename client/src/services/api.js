@@ -1,4 +1,5 @@
-const API_BASE = 'http://localhost:3000'
+
+const API_BASE = 'http://localhost:5000/api'
 
 const getToken = () => {
   try {
@@ -29,26 +30,25 @@ const handleResponse = async (res) => {
 }
 
 export const usersApi = {
-  
+
   getAll: () =>
     fetch(`${API_BASE}/users`, { headers: authHeader() })
       .then(handleResponse).then(r => r.json()),
 
-  login: async (username, password) => {
+  login: async (email, password) => {
     const res = await fetch(`${API_BASE}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
+      body: JSON.stringify({ email, password })
     })
     if (!res.ok) return null
     return res.json()
   },
-
   create: (user) =>
     fetch(`${API_BASE}/users`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: user.username, name: user.name, email: user.email, password: user.password })
+      body: JSON.stringify({ name: user.name, email: user.email, password: user.password })
     }).then(r => r.json()),
 
 

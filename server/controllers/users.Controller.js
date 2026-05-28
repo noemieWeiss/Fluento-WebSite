@@ -33,7 +33,7 @@ export const createUser = async (req, res, next) => {
     res.status(201).json(user);
   } catch (err) {
     if (err.code === 'ER_DUP_ENTRY') {
-      return res.status(409).json({ message: 'Username already exists' });
+      return res.status(409).json({ message: 'Email already exists' });
     }
     next(err);
   }
