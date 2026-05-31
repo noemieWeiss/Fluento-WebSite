@@ -1,5 +1,5 @@
 import pool from '../config/db.js';
-
+import { createUserPassword } from './password.Model.js';
 export const findUserByEmail = async (email) => {
   const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
   return rows[0];
@@ -16,21 +16,11 @@ export const getUserById = async (id) => {
 };
 
 export const createUserWithPassword = async ({ name, email, password }) => {
-  const conn = await pool.getConnection();
-  try {
-    await conn.beginTransaction();
-    const [result] = await conn.query(
-      'INSERT INTO users ( name, email) VALUES ( ?, ?)',
-      [name, email]
-    );
-    const userId = result.insertId;
-    await conn.query('INSERT INTO passwords (user_id, password_hash) VALUES (?, ?)', [userId, password]);
-    await conn.commit();
-    return { id: userId, name, email };
-  } catch (err) {
-    await conn.rollback();
-    throw err;
-  } finally {
-    conn.release();
-  }
+  const [result] = await pool.query(
+    'INSERT INTO users ( name, email) VALUES ( ?, ?)',
+    [name, email]
+  );
+  const userId = result.insertId;
+  await createUserPassword(userId, password);
+  return { id: userId, name, email };
 };

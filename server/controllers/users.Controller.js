@@ -1,5 +1,5 @@
 import { getAllUsers, getUserById, createUserWithPassword } from '../models/user.Model.js';
-import { getPasswordByUserId, updatePassword } from '../models/password.Model.js';
+import { getPasswordByUserId, updatePassword, verifyPassword } from '../models/password.Model.js';
 import { blockUser as blockUserModel, isAlreadyBlocked } from '../models/block.Model.js';
 
 export const getUsers = async (req, res, next) => {
@@ -56,7 +56,10 @@ export const changePassword = async (req, res, next) => {
       return res.status(400).json({ message: 'New password must contain at least one uppercase letter' });
     }
     const storedPassword = await getPasswordByUserId(userId);
-    if (!storedPassword || storedPassword !== currentPassword) {
+    if (!storedPassword)
+      return res.status(400).json({ message: 'Current password is incorrect' });
+    const matches = await verifyPassword(currentPassword, storedPassword);
+    if (!matches) {
       return res.status(400).json({ message: 'Current password is incorrect' });
     }
     await updatePassword(userId, newPassword);
@@ -75,7 +78,11 @@ export const blockUser = async (req, res, next) => {
     }
 
     const storedPassword = await getPasswordByUserId(blockerId);
-    if (!storedPassword || storedPassword !== password) {
+    if (!storedPassword) {
+      return res.status(400).json({ message: 'Wrong password' });
+    }
+    const matches = await verifyPassword(password, storedPassword);
+    if (!matches) {
       return res.status(400).json({ message: 'Wrong password' });
     }
 
