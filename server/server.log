@@ -1,0 +1,66 @@
+Server running on port 5000
+user is  {
+  id: 1,
+  name: 'Noemie Weiss',
+  email: 'admin@fluento.com',
+  role: 'admin',
+  status: 'active'
+}
+user is  {
+  id: 2,
+  name: 'Alice Cohen',
+  email: 'alice@fluento.com',
+  role: 'student',
+  status: 'active'
+}
+user is  {
+  id: 2,
+  name: 'Alice Cohen',
+  email: 'alice@fluento.com',
+  role: 'student',
+  status: 'active'
+}
+user is  {
+  id: 2,
+  name: 'Alice Cohen',
+  email: 'alice@fluento.com',
+  role: 'student',
+  status: 'active'
+}
+user is  {
+  id: 2,
+  name: 'Alice Cohen',
+  email: 'alice@fluento.com',
+  role: 'student',
+  status: 'active'
+}
+user is  {
+  id: 2,
+  name: 'Alice Cohen',
+  email: 'alice@fluento.com',
+  role: 'student',
+  status: 'active'
+}
+user is  undefined
+user is  undefined
+user is  {
+  id: 3,
+  name: 'Bob Levi',
+  email: 'bob@fluento.com',
+  role: 'student',
+  status: 'active'
+}
+user is  {
+  id: 3,
+  name: 'Bob Levi',
+  email: 'bob@fluento.com',
+  role: 'student',
+  status: 'active'
+}
+user is  {
+  id: 3,
+  name: 'Bob Levi',
+  email: 'bob@fluento.com',
+  role: 'student',
+  status: 'active'
+}

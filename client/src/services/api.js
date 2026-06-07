@@ -29,6 +29,49 @@ const handleResponse = async (res) => {
   return res
 }
 
+export const adminApi = {
+  getStats: () =>
+    fetch(`${API_BASE}/admin/stats`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json()),
+
+  getUsers: () =>
+    fetch(`${API_BASE}/admin/users`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json()),
+
+  updateUser: (id, data) =>
+    fetch(`${API_BASE}/admin/users/${id}`, {
+      method: 'PUT', headers: jsonHeaders(), body: JSON.stringify(data)
+    }).then(handleResponse).then(r => r.json()),
+
+  deleteUser: (id) =>
+    fetch(`${API_BASE}/admin/users/${id}`, {
+      method: 'DELETE', headers: authHeader()
+    }).then(handleResponse).then(r => r.json()),
+
+  getLevels: () =>
+    fetch(`${API_BASE}/admin/levels`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json()),
+
+  getLessons: () =>
+    fetch(`${API_BASE}/admin/lessons`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json()),
+
+  createLesson: (data) =>
+    fetch(`${API_BASE}/admin/lessons`, {
+      method: 'POST', headers: jsonHeaders(), body: JSON.stringify(data)
+    }).then(handleResponse).then(r => r.json()),
+
+  updateLesson: (id, data) =>
+    fetch(`${API_BASE}/admin/lessons/${id}`, {
+      method: 'PUT', headers: jsonHeaders(), body: JSON.stringify(data)
+    }).then(handleResponse).then(r => r.json()),
+
+  deleteLesson: (id) =>
+    fetch(`${API_BASE}/admin/lessons/${id}`, {
+      method: 'DELETE', headers: authHeader()
+    }).then(handleResponse).then(r => r.json()),
+}
+
 export const usersApi = {
 
   getAll: () =>
