@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useUser } from '../../context/UserContext'
+import logo from '../../assets/logo.svg'
 
-const API_BASE = 'http://localhost:5000/api'
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
 const getToken = () => { try { return JSON.parse(localStorage.getItem('authUser'))?.token } catch { return null } }
 
 export default function AdminSidebar() {
@@ -44,7 +45,7 @@ export default function AdminSidebar() {
   return (
     <aside className="admin-sidebar">
       <div className="admin-sidebar-logo">
-        <span>Fluento</span>
+        <img src={logo} alt="Fluento" className="sidebar-logo-img" />
         <span className="logo-badge">ADMIN</span>
       </div>
 

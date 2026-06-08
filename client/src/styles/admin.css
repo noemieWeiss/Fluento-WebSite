@@ -38,6 +38,11 @@
   background-clip: text;
 }
 
+.sidebar-logo-img {
+  height: 28px;
+  width: auto;
+}
+
 .admin-sidebar-logo .logo-badge {
   font-size: 10px;
   font-weight: 600;
@@ -533,6 +538,46 @@
   color: #64748b;
   font-size: 11px;
   margin-bottom: 4px;
+}
+
+/* ─── Loading text ─── */
+.loading-text { color: #475569; }
+
+/* ─── Admin card table variant ─── */
+.admin-card--table { padding: 0; overflow: hidden; }
+
+/* ─── Page header row variant ─── */
+.admin-page-header--row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.btn-header-action { margin-top: 4px; }
+
+/* ─── Platform Health card ─── */
+.health-card { display: flex; flex-direction: column; gap: 16px; }
+
+.health-bar-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.health-bar-label { font-size: 13px; color: #94a3b8; }
+.health-bar-value  { font-size: 13px; font-weight: 700; }
+
+.health-bar-bg {
+  height: 8px;
+  background: #1e2535;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.health-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.8s ease;
 }
 
 /* ─── Responsive ─── */

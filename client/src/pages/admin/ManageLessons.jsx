@@ -64,12 +64,12 @@ export default function ManageLessons() {
     <div className="admin-layout">
       <AdminSidebar />
       <main className="admin-main">
-        <div className="admin-page-header" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+        <div className="admin-page-header admin-page-header--row">
           <div>
             <h1>Lesson Management</h1>
             <p>Create and manage the learning curriculum</p>
           </div>
-          <button className="btn-primary" style={{ marginTop: 4 }} onClick={() => setShowCreate(true)}>+ New Lesson</button>
+          <button className="btn-primary btn-header-action" onClick={() => setShowCreate(true)}>+ New Lesson</button>
         </div>
 
         {toast && <Toast msg={toast.msg} type={toast.type} onClose={clear} />}

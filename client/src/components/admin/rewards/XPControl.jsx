@@ -34,34 +34,37 @@ export default function XPControl({ students, leaderboard, setLeaderboard, xpFor
         <div className="reward-form">
           <div className="field-group">
             <label>Student</label>
-            <select className="admin-input admin-select" value={xpForm.user_id} onChange={e => setXpForm(f => ({ ...f, user_id: e.target.value }))}>
+            <select className="admin-input admin-select" value={xpForm.user_id} 
+              onChange={e => setXpForm(f => ({ ...f, user_id: e.target.value }))}>
               <option value="">Select student...</option>
               {students.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
             </select>
           </div>
           <div className="field-group">
             <label>Amount (negative to deduct)</label>
-            <input className="admin-input" type="number" placeholder="e.g. 50 or -30" value={xpForm.amount} onChange={e => setXpForm(f => ({ ...f, amount: e.target.value }))} />
+            <input className="admin-input" type="number" placeholder="e.g. 50 or -30" 
+              value={xpForm.amount} onChange={e => setXpForm(f => ({ ...f, amount: e.target.value }))} />
           </div>
           <div className="field-group">
             <label>Reason</label>
-            <input className="admin-input" placeholder="e.g. Weekend bonus, Cheating penalty..." value={xpForm.reason} onChange={e => setXpForm(f => ({ ...f, reason: e.target.value }))} />
+            <input className="admin-input" placeholder="e.g. Weekend bonus, Cheating penalty..." 
+              value={xpForm.reason} onChange={e => setXpForm(f => ({ ...f, reason: e.target.value }))} />
           </div>
           <div className="reward-quick-btns">
             {QUICK.map(({ l, a, r }) => (
               <button key={l} className="quick-btn" onClick={() => setXpForm(f => ({ ...f, amount: a, reason: r }))}>{l}</button>
             ))}
           </div>
-          <button className="btn-primary" style={{ width: '100%', marginTop: 8 }} onClick={handleGiveXP}>Send XP</button>
+          <button className="btn-primary btn-full btn-xp-send" onClick={handleGiveXP}>Send XP</button>
         </div>
       </div>
 
       <div className="admin-card">
         <div className="admin-card-header"><h2>Streak Management</h2></div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div className="streak-list">
           {leaderboard.slice(0, 8).map(s => (
             <div key={s.id} className="streak-row">
-              <div className="user-avatar-sm" style={{ width: 32, height: 32, fontSize: 12 }}>{s.name[0]}</div>
+              <div className="user-avatar-sm user-avatar-sm--xs">{s.name[0]}</div>
               <span className="streak-name">{s.name}</span>
               <span className="streak-val">🔥 {s.streak} days</span>
               <button className="action-btn ban" title="Reset streak" onClick={() => handleResetStreak(s.id, s.name)}>↺</button>

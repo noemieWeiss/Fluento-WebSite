@@ -37,10 +37,10 @@ export default function QuizzesTab({ quizzes, setQuizzes, notify }) {
             <label>Question</label>
             <textarea className="admin-input admin-textarea" rows={2} placeholder="What is the Spanish word for 'cat'?" value={form.question} onChange={e => setForm(f => ({ ...f, question: e.target.value }))} />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+          <div className="quiz-options-grid">
             {['a', 'b', 'c', 'd'].map(opt => (
               <div key={opt} className="field-group">
-                <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <label className="quiz-option-label">
                   <input type="radio" name="correct" value={opt} checked={form.correct === opt} onChange={() => setForm(f => ({ ...f, correct: opt }))} />
                   Option {opt.toUpperCase()} {form.correct === opt && '✓ Correct'}
                 </label>
@@ -52,7 +52,7 @@ export default function QuizzesTab({ quizzes, setQuizzes, notify }) {
             <label>XP Reward for correct answer</label>
             <input className="admin-input" type="number" min={5} max={200} value={form.xp_reward} onChange={e => setForm(f => ({ ...f, xp_reward: Number(e.target.value) }))} />
           </div>
-          <button className="btn-primary" style={{ width: '100%' }} onClick={handleCreate}>🎯 Launch Surprise Quiz</button>
+          <button className="btn-primary btn-full" onClick={handleCreate}>🎯 Launch Surprise Quiz</button>
         </div>
       </div>
 
@@ -61,7 +61,7 @@ export default function QuizzesTab({ quizzes, setQuizzes, notify }) {
           <h2>Active Quizzes</h2>
           <span className="card-badge">{quizzes.filter(q => q.active).length} live</span>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div className="quizzes-list">
           {quizzes.length === 0 && <div className="empty-state"><div className="empty-icon">🎯</div><div>No quizzes yet</div></div>}
           {quizzes.map(q => (
             <div key={q.id} className={`quiz-item ${q.active ? 'active' : 'inactive'}`}>
@@ -75,7 +75,7 @@ export default function QuizzesTab({ quizzes, setQuizzes, notify }) {
                 <span>📊 {q.total_answers} answers</span>
                 <span>✅ {q.correct_answers} correct</span>
               </div>
-              <button className={q.active ? 'btn-ghost' : 'btn-primary'} style={{ fontSize: 12, padding: '6px 14px', marginTop: 6 }} onClick={() => handleToggle(q.id)}>
+              <button className={`${q.active ? 'btn-ghost' : 'btn-primary'} btn-quiz-toggle`} onClick={() => handleToggle(q.id)}>
                 {q.active ? '⏸ Pause' : '▶ Resume'}
               </button>
             </div>

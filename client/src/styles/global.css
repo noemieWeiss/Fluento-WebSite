@@ -175,3 +175,17 @@ h1, h2, h3, h4, h5 {
 
 .text-muted { color: var(--c-text-muted); }
 .text-subtle { color: var(--c-text-subtle); }
+
+/* ─── Navbar ─── */
+.navbar {
+  display: flex;
+  align-items: center;
+  padding: 14px 28px;
+  background: var(--c-surface);
+  border-bottom: 1px solid var(--c-border);
+  box-shadow: var(--shadow-xs);
+}
+
+.navbar-logo { display: inline-flex; align-items: center; text-decoration: none; }
+
+.navbar-logo-img { height: 32px; width: auto; }

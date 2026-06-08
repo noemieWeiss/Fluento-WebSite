@@ -27,5 +27,14 @@ app.use('/api/progress',  progressRoutes)
 app.use('/api/admin',     adminRoutes)
 app.use('/api/rewards',   rewardsRoutes)
 
+// Serve React build in production
+if (process.env.NODE_ENV === 'production') {
+  const clientBuild = path.join(__dirname, '../client/dist')
+  app.use(express.static(clientBuild))
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(clientBuild, 'index.html'))
+  })
+}
+
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
