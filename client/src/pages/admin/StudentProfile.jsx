@@ -44,7 +44,7 @@ export default function StudentProfile() {
     <div className="admin-layout">
       <AdminSidebar />
       <main className="admin-main">
-        <button className="btn-ghost" style={{ marginBottom: 20, display: 'inline-flex', alignItems: 'center', gap: 6 }} onClick={() => navigate('/admin/users')}>
+        <button className="btn-ghost btn-back" onClick={() => navigate('/admin/users')}>
           ← Back to Users
         </button>
 
@@ -53,7 +53,7 @@ export default function StudentProfile() {
           <div className="profile-hero-info">
             <h1>{user.name}</h1>
             <p>{user.email}</p>
-            <div style={{ display: 'flex', gap: 8, marginTop: 8, flexWrap: 'wrap' }}>
+            <div className="profile-badges-row">
               <span className={`status-badge ${user.status}`}>{user.status === 'suspended' ? '🚫 Suspended' : '✅ Active'}</span>
               {badges.map(b => <span key={b.id} className="badge-chip small">{b.emoji} {b.name}</span>)}
             </div>
@@ -73,14 +73,14 @@ export default function StudentProfile() {
           </div>
         </div>
 
-        <div className="reward-tabs" style={{ marginTop: 24 }}>
+        <div className="reward-tabs profile-tabs">
           {TABS.map(([key, label]) => (
             <button key={key} className={`reward-tab ${tab === key ? 'active' : ''}`} onClick={() => setTab(key)}>{label}</button>
           ))}
         </div>
 
         {tab === 'progress' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginTop: 16 }}>
+          <div className="profile-tab-content">
             {progress.length === 0
               ? <div className="admin-card"><div className="empty-state"><div className="empty-icon">📚</div><div>No lessons attempted yet</div></div></div>
               : Object.values(grouped).map(group => (
@@ -95,11 +95,11 @@ export default function StudentProfile() {
                       <span className="progress-lesson-name">{p.lesson}</span>
                       <div className="progress-bar-wrap">
                         <div className="progress-bar-bg">
-                          <div className="progress-bar-fill" style={{ width: `${p.score}%`, background: p.score >= 80 ? '#10b981' : p.score >= 50 ? '#f59e0b' : '#ef4444' }} />
+                          <div className={`progress-bar-fill score-${p.score >= 80 ? 'high' : p.score >= 50 ? 'mid' : 'low'}`} style={{ width: `${p.score}%` }} />
                         </div>
                         <span className="progress-score">{p.score}%</span>
                       </div>
-                      <span className={`status-badge ${p.completed ? 'active' : 'suspended'}`} style={{ fontSize: 11, padding: '2px 8px' }}>{p.completed ? '✓' : '—'}</span>
+                      <span className={`status-badge status-badge--sm ${p.completed ? 'active' : 'suspended'}`}>{p.completed ? '✓' : '—'}</span>
                     </div>
                   ))}
                 </div>
@@ -109,7 +109,7 @@ export default function StudentProfile() {
         )}
 
         {tab === 'xp' && (
-          <div className="admin-card" style={{ marginTop: 16 }}>
+          <div className="admin-card tab-card">
             <div className="admin-card-header"><h2>XP Transaction History</h2></div>
             {xpHistory.length === 0
               ? <div className="empty-state"><div className="empty-icon">💎</div><div>No XP transactions yet</div></div>
@@ -126,7 +126,7 @@ export default function StudentProfile() {
         )}
 
         {tab === 'warnings' && (
-          <div className="admin-card" style={{ marginTop: 16 }}>
+          <div className="admin-card tab-card">
             <div className="admin-card-header"><h2>Warnings Received</h2></div>
             {warnings.length === 0
               ? <div className="empty-state"><div className="empty-icon">✅</div><div>No warnings</div></div>
