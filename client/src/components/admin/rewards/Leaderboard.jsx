@@ -1,8 +1,9 @@
+
 const medal = (i) => i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i + 1}`
 
 export default function Leaderboard({ leaderboard }) {
   return (
-    <div className="admin-card" style={{ padding: 0, overflow: 'hidden' }}>
+    <div className="admin-card admin-card--table">
       <table className="users-table">
         <thead>
           <tr>
@@ -18,7 +19,7 @@ export default function Leaderboard({ leaderboard }) {
         <tbody>
           {leaderboard.map((s, i) => (
             <tr key={s.id}>
-              <td><span style={{ fontSize: i < 3 ? 22 : 14, fontWeight: 700 }}>{medal(i)}</span></td>
+              <td><span className={`medal-cell ${i < 3 ? 'medal-top' : 'medal-other'}`}>{medal(i)}</span></td>
               <td>
                 <div className="user-cell">
                   <div className="user-avatar-sm">{s.name[0]}</div>
@@ -29,8 +30,8 @@ export default function Leaderboard({ leaderboard }) {
                 </div>
               </td>
               <td><span className="xp-value">{s.xp} XP</span></td>
-              <td><span style={{ color: '#f59e0b', fontWeight: 600 }}>🔥 {s.streak}</span></td>
-              <td><span style={{ color: '#a78bfa' }}>🏅 {s.badge_count}</span></td>
+              <td><span className="streak-cell">🔥 {s.streak}</span></td>
+              <td><span className="badge-count-cell">🏅 {s.badge_count}</span></td>
               <td>{s.lessons_completed}</td>
               <td><span className="lang-pill">{s.languages || '—'}</span></td>
             </tr>

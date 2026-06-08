@@ -46,7 +46,7 @@ export default function WarningsTab({ students, warnings, setWarnings, notify })
             <label>Message</label>
             <textarea className="admin-input admin-textarea" rows={4} placeholder="Write your warning message..." value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} />
           </div>
-          <button className="btn-danger" style={{ width: '100%', padding: '10px', fontSize: 14 }} onClick={handleWarn}>
+          <button className="btn-danger btn-full" onClick={handleWarn}>
             ⚠️ Send Warning
           </button>
         </div>
@@ -57,7 +57,7 @@ export default function WarningsTab({ students, warnings, setWarnings, notify })
           <h2>Recent Warnings</h2>
           <span className="card-badge">{warnings.length} total</span>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, maxHeight: 400, overflowY: 'auto' }}>
+        <div className="warnings-list">
           {warnings.length === 0 && <div className="empty-state"><div className="empty-icon">✅</div><div>No warnings sent yet</div></div>}
           {warnings.map((w, i) => (
             <div key={i} className="warning-item">

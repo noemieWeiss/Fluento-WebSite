@@ -50,7 +50,7 @@ export default function AdminDashboard() {
         {error && <div className="admin-error">{error}</div>}
 
         {loading ? (
-          <div className="admin-loading"><div className="spinner" /><span style={{ color: '#475569' }}>Loading stats...</span></div>
+          <div className="admin-loading"><div className="spinner" /><span className="loading-text">Loading stats...</span></div>
         ) : (
           <>
             <div className="kpi-grid">
@@ -103,7 +103,7 @@ export default function AdminDashboard() {
                 </ResponsiveContainer>
               </div>
 
-              <div className="admin-card" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <div className="admin-card health-card">
                 <div className="admin-card-header"><h2>Platform Health</h2></div>
                 {[
                   { label: 'Engagement',          value: stats?.kpi?.activeToday > 0 ? Math.min(100, Math.round((stats.kpi.activeToday / stats.kpi.totalUsers) * 100)) : 0, color: '#6366f1' },
@@ -111,12 +111,12 @@ export default function AdminDashboard() {
                   { label: 'Activity This Week',   value: stats?.weeklyActivity?.reduce((s, d) => s + d.completions, 0) > 0 ? Math.min(100, stats.weeklyActivity.reduce((s, d) => s + d.completions, 0) * 5) : 0, color: '#f59e0b' },
                 ].map(({ label, value, color }) => (
                   <div key={label}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                      <span style={{ fontSize: 13, color: '#94a3b8' }}>{label}</span>
-                      <span style={{ fontSize: 13, fontWeight: 700, color }}>{value}%</span>
+                    <div className="health-bar-header">
+                      <span className="health-bar-label">{label}</span>
+                      <span className="health-bar-value" style={{ color }}>{value}%</span>
                     </div>
-                    <div style={{ height: 8, background: '#1e2535', borderRadius: 4, overflow: 'hidden' }}>
-                      <div style={{ height: '100%', width: `${value}%`, background: color, borderRadius: 4, transition: 'width 0.8s ease' }} />
+                    <div className="health-bar-bg">
+                      <div className="health-bar-fill" style={{ width: `${value}%`, background: color }} />
                     </div>
                   </div>
                 ))}

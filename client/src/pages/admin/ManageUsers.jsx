@@ -74,7 +74,7 @@ export default function ManageUsers() {
           </div>
         </div>
 
-        <div className="admin-card" style={{ padding: 0, overflow: 'hidden' }}>
+        <div className="admin-card admin-card--table">
           {loading ? (
             <div className="admin-loading"><div className="spinner" /></div>
           ) : (

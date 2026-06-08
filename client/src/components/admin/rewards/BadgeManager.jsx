@@ -44,26 +44,30 @@ export default function BadgeManager({ students, badges, setBadges, notify }) {
       <div className="admin-card">
         <div className="admin-card-header">
           <h2>Award Badge</h2>
-          <button className="btn-primary" style={{ fontSize: 12, padding: '6px 14px' }} onClick={() => setShowNewBadge(v => !v)}>
+          <button className="btn-primary btn-sm"
+            onClick={() => setShowNewBadge(v => !v)}>
             + New Badge
           </button>
         </div>
 
         {showNewBadge && (
           <div className="new-badge-form">
-            <div style={{ display: 'flex', gap: 10 }}>
-              <div className="field-group" style={{ flex: 1 }}>
+            <div className="badge-name-row">
+              <div className="field-group badge-emoji-field">
                 <label>Emoji</label>
-                <input className="admin-input" placeholder="🏅" value={newBadge.emoji} onChange={e => setNewBadge(f => ({ ...f, emoji: e.target.value }))} />
+                <input className="admin-input" placeholder="🏅" value={newBadge.emoji}
+                  onChange={e => setNewBadge(f => ({ ...f, emoji: e.target.value }))} />
               </div>
-              <div className="field-group" style={{ flex: 3 }}>
+              <div className="field-group badge-name-field">
                 <label>Name</label>
-                <input className="admin-input" placeholder="Badge name" value={newBadge.name} onChange={e => setNewBadge(f => ({ ...f, name: e.target.value }))} />
+                <input className="admin-input" placeholder="Badge name" value={newBadge.name}
+                  onChange={e => setNewBadge(f => ({ ...f, name: e.target.value }))} />
               </div>
             </div>
             <div className="field-group">
               <label>Description</label>
-              <input className="admin-input" placeholder="What did they do to earn it?" value={newBadge.description} onChange={e => setNewBadge(f => ({ ...f, description: e.target.value }))} />
+              <input className="admin-input" placeholder="What did they do to earn it?" 
+                value={newBadge.description} onChange={e => setNewBadge(f => ({ ...f, description: e.target.value }))} />
             </div>
             <button className="btn-primary" onClick={handleCreateBadge}>Create Badge</button>
           </div>
@@ -78,22 +82,24 @@ export default function BadgeManager({ students, badges, setBadges, notify }) {
           ))}
         </div>
 
-        <div style={{ borderTop: '1px solid #1e2535', marginTop: 16, paddingTop: 16 }}>
+        <div className="badge-award-section">
           <div className="field-group">
             <label>Student</label>
-            <select className="admin-input admin-select" value={badgeForm.user_id} onChange={e => loadUserBadges(e.target.value)}>
+            <select className="admin-input admin-select" value={badgeForm.user_id} 
+              onChange={e => loadUserBadges(e.target.value)}>
               <option value="">Select student...</option>
               {students.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
             </select>
           </div>
           <div className="field-group">
             <label>Badge</label>
-            <select className="admin-input admin-select" value={badgeForm.badge_id} onChange={e => setBadgeForm(f => ({ ...f, badge_id: e.target.value }))}>
+            <select className="admin-input admin-select" value={badgeForm.badge_id} 
+              onChange={e => setBadgeForm(f => ({ ...f, badge_id: e.target.value }))}>
               <option value="">Select badge...</option>
               {badges.map(b => <option key={b.id} value={b.id}>{b.emoji} {b.name}</option>)}
             </select>
           </div>
-          <button className="btn-primary" style={{ width: '100%' }} onClick={handleGiveBadge}>Award Badge</button>
+          <button className="btn-primary btn-full" onClick={handleGiveBadge}>Award Badge</button>
         </div>
       </div>
 
@@ -106,11 +112,11 @@ export default function BadgeManager({ students, badges, setBadges, notify }) {
             {students.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
           </select>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 12 }}>
+        <div className="revoke-list">
           {revokeUser && userBadges.length === 0 && <div className="empty-state"><div>No badges yet</div></div>}
           {userBadges.map(b => (
             <div key={b.id} className="streak-row">
-              <span style={{ fontSize: 20 }}>{b.emoji}</span>
+              <span className="revoke-badge-emoji">{b.emoji}</span>
               <span className="streak-name">{b.name}</span>
               <button className="action-btn delete" onClick={() => handleRevoke(b.id, b.name)}>🗑</button>
             </div>

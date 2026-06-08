@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { UserProvider } from './context/UserContext'
 import ProtectedRoute from './components/common/ProtectedRoute'
 import Navbar from './components/common/Navbar'
@@ -16,12 +16,13 @@ import Rewards from './pages/admin/Rewards'
 import Communications from './pages/admin/Communications'
 import StudentProfile from './pages/admin/StudentProfile'
 
-function App() {
+function AppRoutes() {
+  const { pathname } = useLocation()
+  const isAdmin = pathname.startsWith('/admin')
   return (
-    <UserProvider>
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
+    <>
+      {!isAdmin && <Navbar />}
+      <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -36,6 +37,15 @@ function App() {
           <Route path="/admin/communications" element={<ProtectedRoute adminOnly><Communications /></ProtectedRoute>} />
           <Route path="/admin/students/:userId" element={<ProtectedRoute adminOnly><StudentProfile /></ProtectedRoute>} />
         </Routes>
+    </>
+  )
+}
+
+function App() {
+  return (
+    <UserProvider>
+      <BrowserRouter>
+        <AppRoutes />
       </BrowserRouter>
     </UserProvider>
   )
