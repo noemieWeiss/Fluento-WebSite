@@ -38,6 +38,11 @@
   background-clip: text;
 }
 
+.sidebar-logo-img {
+  height: 28px;
+  width: auto;
+}
+
 .admin-sidebar-logo .logo-badge {
   font-size: 10px;
   font-weight: 600;

@@ -1,5 +1,6 @@
-const BASE = 'http://localhost:5000/api/rewards'
-const ADMIN = 'http://localhost:5000/api/admin'
+const API = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+const BASE = `${API}/rewards`
+const ADMIN = `${API}/admin`
 
 const tok  = () => { try { return JSON.parse(localStorage.getItem('authUser'))?.token } catch { return null } }
 const auth = () => ({ Authorization: `Bearer ${tok()}` })
