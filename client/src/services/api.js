@@ -70,6 +70,59 @@ export const adminApi = {
     fetch(`${API_BASE}/admin/lessons/${id}`, {
       method: 'DELETE', headers: authHeader()
     }).then(handleResponse).then(r => r.json()),
+
+  getLanguages: () =>
+    fetch(`${API_BASE}/admin/languages`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json()),
+
+  createLanguage: (data) =>
+    fetch(`${API_BASE}/admin/languages`, {
+      method: 'POST', headers: jsonHeaders(), body: JSON.stringify(data)
+    }).then(handleResponse).then(r => r.json()),
+
+  updateLanguage: (id, data) =>
+    fetch(`${API_BASE}/admin/languages/${id}`, {
+      method: 'PUT', headers: jsonHeaders(), body: JSON.stringify(data)
+    }).then(handleResponse).then(r => r.json()),
+
+  deleteLanguage: (id) =>
+    fetch(`${API_BASE}/admin/languages/${id}`, {
+      method: 'DELETE', headers: authHeader()
+    }).then(handleResponse).then(r => r.json()),
+
+  createLevel: (data) =>
+    fetch(`${API_BASE}/admin/levels`, {
+      method: 'POST', headers: jsonHeaders(), body: JSON.stringify(data)
+    }).then(handleResponse).then(r => r.json()),
+
+  updateLevel: (id, data) =>
+    fetch(`${API_BASE}/admin/levels/${id}`, {
+      method: 'PUT', headers: jsonHeaders(), body: JSON.stringify(data)
+    }).then(handleResponse).then(r => r.json()),
+
+  deleteLevel: (id) =>
+    fetch(`${API_BASE}/admin/levels/${id}`, {
+      method: 'DELETE', headers: authHeader()
+    }).then(handleResponse).then(r => r.json()),
+
+  getWords: (lessonId) =>
+    fetch(`${API_BASE}/admin/lessons/${lessonId}/words`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json()),
+
+  createWord: (lessonId, data) =>
+    fetch(`${API_BASE}/admin/lessons/${lessonId}/words`, {
+      method: 'POST', headers: jsonHeaders(), body: JSON.stringify(data)
+    }).then(handleResponse).then(r => r.json()),
+
+  updateWord: (lessonId, wordId, data) =>
+    fetch(`${API_BASE}/admin/lessons/${lessonId}/words/${wordId}`, {
+      method: 'PUT', headers: jsonHeaders(), body: JSON.stringify(data)
+    }).then(handleResponse).then(r => r.json()),
+
+  deleteWord: (lessonId, wordId) =>
+    fetch(`${API_BASE}/admin/lessons/${lessonId}/words/${wordId}`, {
+      method: 'DELETE', headers: authHeader()
+    }).then(handleResponse).then(r => r.json()),
 }
 
 export const studentApi = {

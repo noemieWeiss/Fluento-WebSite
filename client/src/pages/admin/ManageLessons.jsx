@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { adminApi } from '../../services/api'
 import AdminSidebar from '../../components/admin/AdminSidebar'
 import LessonModal from '../../components/admin/modals/LessonModal'
@@ -9,6 +10,7 @@ import '../../styles/admin-users.css'
 import '../../styles/admin-lessons.css'
 
 export default function ManageLessons() {
+  const navigate                        = useNavigate()
   const [lessons, setLessons]           = useState([])
   const [levels, setLevels]             = useState([])
   const [loading, setLoading]           = useState(true)
@@ -109,6 +111,7 @@ export default function ManageLessons() {
                     <div className="lesson-card-number">#{lesson.lesson_number}</div>
                     <div className="lesson-card-title">{lesson.title}</div>
                     <div className="lesson-card-actions">
+                      <button className="action-btn words" title="Manage words" onClick={() => navigate(`/admin/lessons/${lesson.id}/words`)}>📝</button>
                       <button className="action-btn edit" onClick={() => setEditLesson(lesson)}>✏️</button>
                       <button className="action-btn delete" onClick={() => setConfirmDelete(lesson)}>🗑</button>
                     </div>

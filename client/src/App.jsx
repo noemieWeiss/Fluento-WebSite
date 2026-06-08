@@ -12,6 +12,9 @@ import LevelSummary from './pages/LevelSummary'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import ManageUsers from './pages/admin/ManageUsers'
 import ManageLessons from './pages/admin/ManageLessons'
+import ManageLanguages from './pages/admin/ManageLanguages'
+import ManageWords from './pages/admin/ManageWords'
+import CreateLesson from './pages/admin/CreateLesson'
 import Rewards from './pages/admin/Rewards'
 import Communications from './pages/admin/Communications'
 import StudentProfile from './pages/admin/StudentProfile'
@@ -36,6 +39,9 @@ function AppRoutes() {
           <Route path="/admin" element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>} />
           <Route path="/admin/users" element={<ProtectedRoute adminOnly><ManageUsers /></ProtectedRoute>} />
           <Route path="/admin/lessons" element={<ProtectedRoute adminOnly><ManageLessons /></ProtectedRoute>} />
+          <Route path="/admin/lessons/new" element={<ProtectedRoute adminOnly><CreateLesson /></ProtectedRoute>} />
+          <Route path="/admin/lessons/:lessonId/words" element={<ProtectedRoute adminOnly><ManageWords /></ProtectedRoute>} />
+          <Route path="/admin/languages" element={<ProtectedRoute adminOnly><ManageLanguages /></ProtectedRoute>} />
           <Route path="/admin/rewards" element={<ProtectedRoute adminOnly><Rewards /></ProtectedRoute>} />
           <Route path="/admin/communications" element={<ProtectedRoute adminOnly><Communications /></ProtectedRoute>} />
           <Route path="/admin/students/:userId" element={<ProtectedRoute adminOnly><StudentProfile /></ProtectedRoute>} />

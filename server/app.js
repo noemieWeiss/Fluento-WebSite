@@ -12,12 +12,18 @@ import progressRoutes from './routes/progress.Routes.js'
 import adminRoutes    from './routes/admin.Routes.js'
 import studentRoutes  from './routes/student.Routes.js'
 import rewardsRoutes  from './routes/rewards.Routes.js'
+import { logger }       from './middleware/logger.js'
+import { errorHandler } from './middleware/error.Handler.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const app = express()
-app.use(cors())
+app.use(cors({
+  origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
+  credentials: true,
+}))
 app.use(express.json())
+app.use(logger)
 app.use('/public', express.static(path.join(__dirname, 'public')))
 
 app.use('/api/auth',      authRoutes)
@@ -29,7 +35,6 @@ app.use('/api/admin',     adminRoutes)
 app.use('/api/student',   studentRoutes)
 app.use('/api/rewards',   rewardsRoutes)
 
-// Serve React build in production
 if (process.env.NODE_ENV === 'production') {
   const clientBuild = path.join(__dirname, '../client/dist')
   app.use(express.static(clientBuild))
@@ -37,6 +42,8 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(clientBuild, 'index.html'))
   })
 }
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))

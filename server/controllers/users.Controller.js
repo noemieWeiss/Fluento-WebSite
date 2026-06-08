@@ -43,6 +43,10 @@ export const changePassword = async (req, res, next) => {
   try {
     const { currentPassword, newPassword } = req.body;
     const userId = req.params.id;
+
+    if (String(req.user.id) !== String(userId)) {
+      return res.status(403).json({ message: 'Forbidden' })
+    }
     if (!currentPassword || !newPassword) {
       return res.status(400).json({ message: 'currentPassword and newPassword are required' });
     }
