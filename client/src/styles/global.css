@@ -180,6 +180,7 @@ h1, h2, h3, h4, h5 {
 .navbar {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 14px 28px;
   background: var(--c-surface);
   border-bottom: 1px solid var(--c-border);
@@ -187,5 +188,90 @@ h1, h2, h3, h4, h5 {
 }
 
 .navbar-logo { display: inline-flex; align-items: center; text-decoration: none; }
-
 .navbar-logo-img { height: 32px; width: auto; }
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar-user {
+  font-size: 0.875rem;
+  color: var(--c-text-muted);
+  font-weight: 500;
+}
+
+.navbar-btn {
+  padding: 7px 16px;
+  font-size: 0.8125rem;
+}
+
+/* ─── Change Password Modal ─── */
+.info-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.info-content.change-pw-modal {
+  background: var(--c-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  padding: 2rem;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.info-content.change-pw-modal h3 {
+  font-size: 1.25rem;
+  color: var(--c-text);
+}
+
+.pw-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pw-field label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--c-text);
+}
+
+.pw-error {
+  font-size: 0.8125rem;
+  color: var(--c-error);
+  font-weight: 500;
+}
+
+.pw-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 0.25rem;
+}
+
+.cancel-pw-btn {
+  background: var(--c-surface);
+  color: var(--c-text);
+  border-color: var(--c-border);
+}
+.cancel-pw-btn:hover:not(:disabled) {
+  background: var(--c-surface-2);
+  box-shadow: var(--shadow-xs);
+  transform: none;
+}
+
+.save-pw-btn {
+  background: var(--c-primary);
+  color: #fff;
+}

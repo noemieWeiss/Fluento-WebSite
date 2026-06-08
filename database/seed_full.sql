@@ -1,7 +1,9 @@
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
 USE fluento;
 
--- ─── Clean slate (order matters for FK) ───────────────────────────────────────
 DELETE FROM quiz_answers;
+DELETE FROM student_profiles;
 DELETE FROM surprise_quizzes;
 DELETE FROM warnings;
 DELETE FROM user_badges;
@@ -15,7 +17,9 @@ DELETE FROM lessons;
 DELETE FROM levels;
 DELETE FROM languages;
 DELETE FROM passwords;
+DELETE FROM roles_to_users;
 DELETE FROM users;
+DELETE FROM roles;
 
 ALTER TABLE users             AUTO_INCREMENT = 1;
 ALTER TABLE passwords         AUTO_INCREMENT = 1;
@@ -31,8 +35,15 @@ ALTER TABLE user_badges       AUTO_INCREMENT = 1;
 ALTER TABLE warnings          AUTO_INCREMENT = 1;
 ALTER TABLE surprise_quizzes  AUTO_INCREMENT = 1;
 ALTER TABLE quiz_answers      AUTO_INCREMENT = 1;
+ALTER TABLE student_profiles  AUTO_INCREMENT = 1;
+ALTER TABLE roles             AUTO_INCREMENT = 1;
+ALTER TABLE roles_to_users    AUTO_INCREMENT = 1;
 
--- ─── Languages (6 total) ──────────────────────────────────────────────────────
+
+INSERT INTO roles (name) VALUES
+  ('admin'),   -- 1
+  ('student'); -- 2
+
 INSERT INTO languages (name, code, flag_emoji) VALUES
   ('English', 'en', '🇬🇧'),   -- 1
   ('Spanish', 'es', '🇪🇸'),   -- 2
@@ -41,7 +52,6 @@ INSERT INTO languages (name, code, flag_emoji) VALUES
   ('Italian', 'it', '🇮🇹'),   -- 5
   ('Japanese','ja', '🇯🇵');   -- 6
 
--- ─── Levels ───────────────────────────────────────────────────────────────────
 -- English
 INSERT INTO levels (language_id, level_number, title) VALUES
   (1, 1, 'Beginner'),      -- 1
@@ -73,7 +83,6 @@ INSERT INTO levels (language_id, level_number, title) VALUES
 INSERT INTO levels (language_id, level_number, title) VALUES
   (6, 1, 'Beginner');      -- 13
 
--- ─── Lessons ──────────────────────────────────────────────────────────────────
 -- English Beginner (level 1)
 INSERT INTO lessons (level_id, lesson_number, title) VALUES
   (1, 1, 'Colors'),         -- 1
@@ -134,7 +143,6 @@ INSERT INTO lessons (level_id, lesson_number, title) VALUES
   (13, 2, 'Greetings'),     -- 32
   (13, 3, 'Numbers');       -- 33
 
--- ─── Words (sample for lessons 1-5) ──────────────────────────────────────────
 INSERT INTO words (lesson_id, word, translation, example_sentence) VALUES
   (1,'Red','אדום','The apple is red.'),
   (1,'Blue','כחול','The sky is blue.'),
@@ -160,27 +168,50 @@ INSERT INTO words (lesson_id, word, translation, example_sentence) VALUES
   (5,'Coffee','קפה','I love coffee.'),
   (5,'Apple','תפוח','An apple a day.');
 
--- ─── Users (admin + 16 students) ─────────────────────────────────────────────
-INSERT INTO users (name, email, role, status, xp, streak) VALUES
-  ('Noemie Weiss',    'admin@fluento.com',    'admin',   'active',    0,   0),  -- 1
-  ('Alice Cohen',     'alice@fluento.com',    'student', 'active',  420,   7),  -- 2
-  ('Bob Levi',        'bob@fluento.com',      'student', 'active',  180,   3),  -- 3
-  ('Dana Mizrahi',    'dana@fluento.com',     'student', 'active',  310,   5),  -- 4
-  ('Eli Shapiro',     'eli@fluento.com',      'student', 'active',   60,   1),  -- 5
-  ('Fatima Hassan',   'fatima@fluento.com',   'student', 'active',  550,  10),  -- 6
-  ('Gabriel Silva',   'gabriel@fluento.com',  'student', 'active',  200,   4),  -- 7
-  ('Hannah Berg',     'hannah@fluento.com',   'student', 'active',  390,   6),  -- 8
-  ('Ivan Petrov',     'ivan@fluento.com',     'student', 'active',  240,   4),  -- 9
-  ('Julia Martin',    'julia@fluento.com',    'student', 'active',  160,   2),  -- 10
-  ('Kobi Peretz',     'kobi@fluento.com',     'student', 'suspended', 50,  0),  -- 11
-  ('Lena Müller',     'lena@fluento.com',     'student', 'active',  430,   8),  -- 12
-  ('Marco Rossi',     'marco@fluento.com',    'student', 'active',  270,   4),  -- 13
-  ('Nina Tanaka',     'nina@fluento.com',     'student', 'active',  340,   6),  -- 14
-  ('Omar Khalil',     'omar@fluento.com',     'student', 'active',  480,   9),  -- 15
-  ('Priya Patel',     'priya@fluento.com',    'student', 'active',  620,  12),  -- 16
-  ('Rafael Torres',   'rafael@fluento.com',   'student', 'active',  230,   3);  -- 17
+INSERT INTO users (name, email, status) VALUES
+  ('Noemie Weiss',    'admin@fluento.com',    'active'),   -- 1
+  ('Alice Cohen',     'alice@fluento.com',    'active'),   -- 2
+  ('Bob Levi',        'bob@fluento.com',      'active'),   -- 3
+  ('Dana Mizrahi',    'dana@fluento.com',     'active'),   -- 4
+  ('Eli Shapiro',     'eli@fluento.com',      'active'),   -- 5
+  ('Fatima Hassan',   'fatima@fluento.com',   'active'),   -- 6
+  ('Gabriel Silva',   'gabriel@fluento.com',  'active'),   -- 7
+  ('Hannah Berg',     'hannah@fluento.com',   'active'),   -- 8
+  ('Ivan Petrov',     'ivan@fluento.com',     'active'),   -- 9
+  ('Julia Martin',    'julia@fluento.com',    'active'),   -- 10
+  ('Kobi Peretz',     'kobi@fluento.com',     'suspended'),-- 11
+  ('Lena Müller',     'lena@fluento.com',     'active'),   -- 12
+  ('Marco Rossi',     'marco@fluento.com',    'active'),   -- 13
+  ('Nina Tanaka',     'nina@fluento.com',     'active'),   -- 14
+  ('Omar Khalil',     'omar@fluento.com',     'active'),   -- 15
+  ('Priya Patel',     'priya@fluento.com',    'active'),   -- 16
+  ('Rafael Torres',   'rafael@fluento.com',   'active');   -- 17
 
--- ─── Passwords (all: Student1! — real bcrypt hash) ────────────────────────────
+INSERT INTO student_profiles (user_id, xp, streak) VALUES
+  (2,  420,  7),
+  (3,  180,  3),
+  (4,  310,  5),
+  (5,   60,  1),
+  (6,  550, 10),
+  (7,  200,  4),
+  (8,  390,  6),
+  (9,  240,  4),
+  (10, 160,  2),
+  (11,  50,  0),
+  (12, 430,  8),
+  (13, 270,  4),
+  (14, 340,  6),
+  (15, 480,  9),
+  (16, 620, 12),
+  (17, 230,  3);
+
+INSERT INTO roles_to_users (user_id, role_id) VALUES
+  (1,  1),  -- Noemie = admin
+  (2,  2),  -- Alice = student
+  (3,  2),  (4,  2),  (5,  2),  (6,  2),  (7,  2),
+  (8,  2),  (9,  2),  (10, 2),  (11, 2),  (12, 2),
+  (13, 2),  (14, 2),  (15, 2),  (16, 2),  (17, 2);
+
 INSERT INTO passwords (user_id, password_hash) VALUES
   (1,  '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'), -- admin123 placeholder
   (2,  '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'), -- password
@@ -200,7 +231,6 @@ INSERT INTO passwords (user_id, password_hash) VALUES
   (16, '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'), -- password
   (17, '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'); -- password
 
--- ─── User Languages ───────────────────────────────────────────────────────────
 INSERT INTO user_languages (user_id, language_id) VALUES
   (2,  1), (2,  3),        -- Alice: English + French
   (3,  2),                 -- Bob: Spanish
@@ -219,7 +249,6 @@ INSERT INTO user_languages (user_id, language_id) VALUES
   (16, 1), (16, 5),        -- Priya: English + Italian
   (17, 2);                 -- Rafael: Spanish
 
--- ─── User Progress (varied scores, spread across past 7 days) ────────────────
 INSERT INTO user_progress (user_id, lesson_id, score, completed, completed_at) VALUES
   -- Alice (English advanced + French starter)
   (2, 1,  95, TRUE,  NOW() - INTERVAL 6 DAY),
@@ -331,3 +360,14 @@ INSERT INTO user_progress (user_id, lesson_id, score, completed, completed_at) V
   (17, 14, 76, TRUE,  NOW() - INTERVAL 3 DAY),
   (17, 15, 70, TRUE,  NOW() - INTERVAL 1 DAY),
   (17, 16, 65, TRUE,  NOW());
+  
+   INSERT IGNORE INTO route_permissions (prefix, role) VALUES
+  ('/api/admin',   'admin'),
+  ('/api/rewards', 'admin'),
+  ('/api/users',   'admin'),
+  ('/api/users',   'student'),
+  ('/api/lessons', 'student'),
+  ('/api/languages','student'),
+  ('/api/languages','admin'),
+  ('/api/progress','student');
+

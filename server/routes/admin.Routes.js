@@ -1,20 +1,41 @@
 import { Router } from 'express'
-import { getStats, getUsers, updateUser, deleteUser, getLessons, createLesson, updateLesson, getLevels, deleteLesson } from '../controllers/admin.Controller.js'
+import {
+  getStats,
+  getUsers, updateUserHandler, deleteUserHandler,
+  getLanguagesHandler, createLanguageHandler, updateLanguageHandler, deleteLanguageHandler,
+  getLevelsHandler, createLevelHandler, updateLevelHandler, deleteLevelHandler,
+  getLessonsHandler, createLessonHandler, updateLessonHandler, deleteLessonHandler,
+  getWordsHandler, createWordHandler, updateWordHandler, deleteWordHandler,
+} from '../controllers/admin.Controller.js'
 import { authMiddleware } from '../middleware/auth.Middleware.js'
-import { adminMiddleware } from '../middleware/admin.Middleware.js'
 
 const router = Router()
-
-router.use(authMiddleware, adminMiddleware)
+router.use(authMiddleware)
 
 router.get('/stats',        getStats)
+
 router.get('/users',        getUsers)
-router.put('/users/:id',    updateUser)
-router.delete('/users/:id', deleteUser)
-router.get('/levels',          getLevels)
-router.get('/lessons',         getLessons)
-router.post('/lessons',        createLesson)
-router.put('/lessons/:id',     updateLesson)
-router.delete('/lessons/:id',  deleteLesson)
+router.put('/users/:id',    updateUserHandler)
+router.delete('/users/:id', deleteUserHandler)
+
+router.get('/languages',         getLanguagesHandler)
+router.post('/languages',        createLanguageHandler)
+router.put('/languages/:id',     updateLanguageHandler)
+router.delete('/languages/:id',  deleteLanguageHandler)
+
+router.get('/levels',          getLevelsHandler)
+router.post('/levels',         createLevelHandler)
+router.put('/levels/:id',      updateLevelHandler)
+router.delete('/levels/:id',   deleteLevelHandler)
+
+router.get('/lessons',         getLessonsHandler)
+router.post('/lessons',        createLessonHandler)
+router.put('/lessons/:id',     updateLessonHandler)
+router.delete('/lessons/:id',  deleteLessonHandler)
+
+router.get('/lessons/:lessonId/words',            getWordsHandler)
+router.post('/lessons/:lessonId/words',           createWordHandler)
+router.put('/lessons/:lessonId/words/:wordId',    updateWordHandler)
+router.delete('/lessons/:lessonId/words/:wordId', deleteWordHandler)
 
 export default router
