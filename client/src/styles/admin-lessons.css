@@ -1,0 +1,98 @@
+/* ─── Lesson Groups ─── */
+.lesson-group {
+  margin-bottom: 28px;
+}
+
+.lesson-group-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+
+.group-flag { font-size: 20px; }
+
+.group-language {
+  font-size: 15px;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.group-separator { color: #334155; font-size: 16px; }
+
+.group-level {
+  font-size: 14px;
+  color: #a78bfa;
+  font-weight: 500;
+}
+
+.group-count {
+  margin-left: auto;
+  font-size: 12px;
+  color: #475569;
+  background: #161b27;
+  border: 1px solid #1e2535;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+/* ─── Lesson Cards Grid ─── */
+.lesson-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.lesson-card {
+  background: #161b27;
+  border: 1px solid #1e2535;
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.2s, transform 0.15s;
+  position: relative;
+}
+
+.lesson-card:hover {
+  border-color: #6366f1;
+  transform: translateY(-2px);
+}
+
+.lesson-card-number {
+  font-size: 11px;
+  font-weight: 700;
+  color: #6366f1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.lesson-card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #e2e8f0;
+  flex: 1;
+}
+
+.lesson-card-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+/* ─── Select ─── */
+.admin-select {
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+.admin-select option {
+  background: #161b27;
+  color: #e2e8f0;
+}

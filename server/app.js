@@ -10,6 +10,7 @@ import languageRoutes from './routes/languages.Routes.js'
 import lessonRoutes   from './routes/lessons.Routes.js'
 import progressRoutes from './routes/progress.Routes.js'
 import adminRoutes    from './routes/admin.Routes.js'
+import rewardsRoutes  from './routes/rewards.Routes.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -24,6 +25,7 @@ app.use('/api/languages', languageRoutes)
 app.use('/api/lessons',   lessonRoutes)
 app.use('/api/progress',  progressRoutes)
 app.use('/api/admin',     adminRoutes)
+app.use('/api/rewards',   rewardsRoutes)
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))

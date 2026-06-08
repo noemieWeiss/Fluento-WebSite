@@ -1,0 +1,316 @@
+/* ─── Tabs ─── */
+.reward-tabs {
+  display: flex;
+  gap: 6px;
+  background: #161b27;
+  border: 1px solid #1e2535;
+  border-radius: 12px;
+  padding: 5px;
+  margin-bottom: 24px;
+  width: fit-content;
+}
+
+.reward-tab {
+  padding: 9px 20px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reward-tab:hover { color: #e2e8f0; }
+.reward-tab.active { background: #6366f1; color: #fff; }
+
+/* ─── Grid ─── */
+.reward-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 900px) { .reward-grid { grid-template-columns: 1fr; } }
+
+/* ─── Form ─── */
+.reward-form { display: flex; flex-direction: column; gap: 2px; }
+
+.admin-textarea {
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+/* ─── Quick buttons ─── */
+.reward-quick-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 4px 0;
+}
+
+.quick-btn {
+  background: #1e2535;
+  border: 1px solid #2d3748;
+  color: #94a3b8;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.quick-btn:hover { background: #6366f1; color: #fff; border-color: #6366f1; }
+
+/* ─── Streak row ─── */
+.streak-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 4px;
+  border-bottom: 1px solid #131825;
+}
+
+.streak-name { flex: 1; font-size: 13px; color: #e2e8f0; font-weight: 500; }
+.streak-val  { font-size: 13px; color: #f59e0b; font-weight: 600; min-width: 70px; }
+
+/* ─── Badge grid ─── */
+.badge-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.badge-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(99,102,241,0.12);
+  border: 1px solid rgba(99,102,241,0.2);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 13px;
+  cursor: default;
+}
+
+.badge-chip.small { padding: 3px 8px; font-size: 11px; }
+.badge-emoji { font-size: 16px; }
+.badge-name  { color: #a78bfa; font-weight: 500; }
+
+/* ─── New badge form ─── */
+.new-badge-form {
+  background: #0f1117;
+  border: 1px solid #1e2535;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ─── Warning items ─── */
+.warning-item {
+  background: rgba(239,68,68,0.06);
+  border: 1px solid rgba(239,68,68,0.15);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.warning-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.warning-student { font-size: 13px; font-weight: 600; color: #fca5a5; }
+.warning-date    { font-size: 11px; color: #475569; }
+.warning-message { font-size: 13px; color: #94a3b8; line-height: 1.4; }
+.warning-status  { font-size: 11px; margin-top: 6px; }
+.warning-status.seen   { color: #34d399; }
+.warning-status.unseen { color: #f59e0b; }
+
+/* ─── Template buttons ─── */
+.template-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.template-btn {
+  background: #1e2535;
+  border: 1px solid #2d3748;
+  color: #64748b;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.template-btn:hover { background: rgba(239,68,68,0.1); color: #fca5a5; border-color: rgba(239,68,68,0.3); }
+
+/* ─── Quiz items ─── */
+.quiz-item {
+  background: #0f1117;
+  border: 1px solid #1e2535;
+  border-radius: 12px;
+  padding: 14px 16px;
+  transition: border-color 0.2s;
+}
+
+.quiz-item.active  { border-color: rgba(16,185,129,0.3); }
+.quiz-item.inactive { opacity: 0.6; }
+
+.quiz-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.quiz-title    { font-size: 14px; font-weight: 600; color: #e2e8f0; }
+.quiz-question { font-size: 12px; color: #64748b; margin-bottom: 8px; line-height: 1.4; }
+
+.quiz-meta {
+  display: flex;
+  gap: 14px;
+  font-size: 12px;
+  color: #475569;
+}
+
+/* ─── Student Profile ─── */
+.profile-hero {
+  background: linear-gradient(135deg, #161b27, #1a2235);
+  border: 1px solid #1e2535;
+  border-radius: 20px;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 8px;
+}
+
+.profile-avatar-lg {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #6366f1, #a78bfa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 800;
+  color: white;
+  flex-shrink: 0;
+}
+
+.profile-hero-info { flex: 1; }
+.profile-hero-info h1 { font-size: 22px; font-weight: 700; color: #f1f5f9; margin: 0 0 4px; }
+.profile-hero-info p  { font-size: 13px; color: #475569; margin: 0; }
+
+.profile-kpis {
+  display: flex;
+  gap: 20px;
+}
+
+.profile-kpi {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: #0f1117;
+  border-radius: 12px;
+  padding: 12px 16px;
+  min-width: 70px;
+}
+
+.profile-kpi span:last-child { font-size: 11px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.profile-kpi-val {
+  font-size: 20px;
+  font-weight: 800;
+  color: #f1f5f9;
+}
+
+.profile-kpi-val.purple { color: #a78bfa; }
+.profile-kpi-val.green  { color: #34d399; }
+.profile-kpi-val.orange { color: #f59e0b; }
+
+/* ─── Progress rows ─── */
+.progress-lesson-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #131825;
+}
+
+.progress-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.progress-dot.done    { background: #10b981; }
+.progress-dot.pending { background: #334155; border: 2px solid #475569; }
+
+.progress-lesson-name {
+  font-size: 13px;
+  color: #e2e8f0;
+  font-weight: 500;
+  min-width: 120px;
+}
+
+.progress-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.progress-bar-bg {
+  flex: 1;
+  height: 6px;
+  background: #1e2535;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.progress-score {
+  font-size: 12px;
+  font-weight: 600;
+  color: #94a3b8;
+  min-width: 32px;
+  text-align: right;
+}
+
+/* ─── XP History ─── */
+.xp-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid #131825;
+  font-size: 13px;
+}
+
+.xp-amount     { font-weight: 800; min-width: 70px; }
+.xp-amount.pos { color: #34d399; }
+.xp-amount.neg { color: #f87171; }
+.xp-reason     { flex: 1; color: #94a3b8; }
+.xp-by         { color: #475569; font-size: 11px; }
+.xp-date       { color: #475569; font-size: 11px; min-width: 80px; text-align: right; }

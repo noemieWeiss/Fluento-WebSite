@@ -9,6 +9,6 @@ export const loginUser = async (email, password) => {
   const stored = await getPasswordByUserId(user.id);
   const matches = await verifyPassword(password, stored);
   if (!matches) return null;
-  const { id, name } = user;
-  return { id, name, email };
+  const { id, name, role } = user;
+  return { id, name, email, role };
 };

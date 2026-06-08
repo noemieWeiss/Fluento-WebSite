@@ -19,7 +19,7 @@ function Login() {
       const user = await usersApi.login(email, password)
       if (user) {
         login(user)
-        navigate(`/dashboard`)
+        navigate(user.role === 'admin' ? '/admin' : '/dashboard')
       } else {
         alert('email or password incorrect')
       }
