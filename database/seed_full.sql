@@ -1,8 +1,15 @@
 USE fluento;
 
 -- ─── Clean slate (order matters for FK) ───────────────────────────────────────
+DELETE FROM quiz_answers;
+DELETE FROM surprise_quizzes;
+DELETE FROM warnings;
+DELETE FROM user_badges;
+DELETE FROM badges;
+DELETE FROM xp_transactions;
 DELETE FROM user_progress;
 DELETE FROM user_languages;
+DELETE FROM blocks;
 DELETE FROM words;
 DELETE FROM lessons;
 DELETE FROM levels;
@@ -10,14 +17,20 @@ DELETE FROM languages;
 DELETE FROM passwords;
 DELETE FROM users;
 
-ALTER TABLE users          AUTO_INCREMENT = 1;
-ALTER TABLE passwords      AUTO_INCREMENT = 1;
-ALTER TABLE languages      AUTO_INCREMENT = 1;
-ALTER TABLE levels         AUTO_INCREMENT = 1;
-ALTER TABLE lessons        AUTO_INCREMENT = 1;
-ALTER TABLE words          AUTO_INCREMENT = 1;
-ALTER TABLE user_languages AUTO_INCREMENT = 1;
-ALTER TABLE user_progress  AUTO_INCREMENT = 1;
+ALTER TABLE users             AUTO_INCREMENT = 1;
+ALTER TABLE passwords         AUTO_INCREMENT = 1;
+ALTER TABLE languages         AUTO_INCREMENT = 1;
+ALTER TABLE levels            AUTO_INCREMENT = 1;
+ALTER TABLE lessons           AUTO_INCREMENT = 1;
+ALTER TABLE words             AUTO_INCREMENT = 1;
+ALTER TABLE user_languages    AUTO_INCREMENT = 1;
+ALTER TABLE user_progress     AUTO_INCREMENT = 1;
+ALTER TABLE xp_transactions   AUTO_INCREMENT = 1;
+ALTER TABLE badges            AUTO_INCREMENT = 1;
+ALTER TABLE user_badges       AUTO_INCREMENT = 1;
+ALTER TABLE warnings          AUTO_INCREMENT = 1;
+ALTER TABLE surprise_quizzes  AUTO_INCREMENT = 1;
+ALTER TABLE quiz_answers      AUTO_INCREMENT = 1;
 
 -- ─── Languages (6 total) ──────────────────────────────────────────────────────
 INSERT INTO languages (name, code, flag_emoji) VALUES
@@ -147,25 +160,25 @@ INSERT INTO words (lesson_id, word, translation, example_sentence) VALUES
   (5,'Coffee','קפה','I love coffee.'),
   (5,'Apple','תפוח','An apple a day.');
 
--- ─── Users (admin + 15 students) ─────────────────────────────────────────────
-INSERT INTO users (name, email, role, status) VALUES
-  ('Noemie Weiss',    'admin@fluento.com',    'admin',   'active'),   -- 1
-  ('Alice Cohen',     'alice@fluento.com',    'student', 'active'),   -- 2
-  ('Bob Levi',        'bob@fluento.com',      'student', 'active'),   -- 3
-  ('Dana Mizrahi',    'dana@fluento.com',     'student', 'active'),   -- 4
-  ('Eli Shapiro',     'eli@fluento.com',      'student', 'active'),   -- 5
-  ('Fatima Hassan',   'fatima@fluento.com',   'student', 'active'),   -- 6
-  ('Gabriel Silva',   'gabriel@fluento.com',  'student', 'active'),   -- 7
-  ('Hannah Berg',     'hannah@fluento.com',   'student', 'active'),   -- 8
-  ('Ivan Petrov',     'ivan@fluento.com',     'student', 'active'),   -- 9
-  ('Julia Martin',    'julia@fluento.com',    'student', 'active'),   -- 10
-  ('Kobi Peretz',     'kobi@fluento.com',     'student', 'suspended'),-- 11
-  ('Lena Müller',     'lena@fluento.com',     'student', 'active'),   -- 12
-  ('Marco Rossi',     'marco@fluento.com',    'student', 'active'),   -- 13
-  ('Nina Tanaka',     'nina@fluento.com',     'student', 'active'),   -- 14
-  ('Omar Khalil',     'omar@fluento.com',     'student', 'active'),   -- 15
-  ('Priya Patel',     'priya@fluento.com',    'student', 'active'),   -- 16
-  ('Rafael Torres',   'rafael@fluento.com',   'student', 'active');   -- 17
+-- ─── Users (admin + 16 students) ─────────────────────────────────────────────
+INSERT INTO users (name, email, role, status, xp, streak) VALUES
+  ('Noemie Weiss',    'admin@fluento.com',    'admin',   'active',    0,   0),  -- 1
+  ('Alice Cohen',     'alice@fluento.com',    'student', 'active',  420,   7),  -- 2
+  ('Bob Levi',        'bob@fluento.com',      'student', 'active',  180,   3),  -- 3
+  ('Dana Mizrahi',    'dana@fluento.com',     'student', 'active',  310,   5),  -- 4
+  ('Eli Shapiro',     'eli@fluento.com',      'student', 'active',   60,   1),  -- 5
+  ('Fatima Hassan',   'fatima@fluento.com',   'student', 'active',  550,  10),  -- 6
+  ('Gabriel Silva',   'gabriel@fluento.com',  'student', 'active',  200,   4),  -- 7
+  ('Hannah Berg',     'hannah@fluento.com',   'student', 'active',  390,   6),  -- 8
+  ('Ivan Petrov',     'ivan@fluento.com',     'student', 'active',  240,   4),  -- 9
+  ('Julia Martin',    'julia@fluento.com',    'student', 'active',  160,   2),  -- 10
+  ('Kobi Peretz',     'kobi@fluento.com',     'student', 'suspended', 50,  0),  -- 11
+  ('Lena Müller',     'lena@fluento.com',     'student', 'active',  430,   8),  -- 12
+  ('Marco Rossi',     'marco@fluento.com',    'student', 'active',  270,   4),  -- 13
+  ('Nina Tanaka',     'nina@fluento.com',     'student', 'active',  340,   6),  -- 14
+  ('Omar Khalil',     'omar@fluento.com',     'student', 'active',  480,   9),  -- 15
+  ('Priya Patel',     'priya@fluento.com',    'student', 'active',  620,  12),  -- 16
+  ('Rafael Torres',   'rafael@fluento.com',   'student', 'active',  230,   3);  -- 17
 
 -- ─── Passwords (all: Student1! — real bcrypt hash) ────────────────────────────
 INSERT INTO passwords (user_id, password_hash) VALUES
