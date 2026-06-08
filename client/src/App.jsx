@@ -15,13 +15,15 @@ import ManageLessons from './pages/admin/ManageLessons'
 import Rewards from './pages/admin/Rewards'
 import Communications from './pages/admin/Communications'
 import StudentProfile from './pages/admin/StudentProfile'
+import StudentDashboard from './pages/student/StudentDashboard'
 
 function AppRoutes() {
   const { pathname } = useLocation()
   const isAdmin = pathname.startsWith('/admin')
+  const isStudent = pathname.startsWith('/student')
   return (
     <>
-      {!isAdmin && <Navbar />}
+      {!isAdmin && !isStudent && <Navbar />}
       <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />
@@ -30,6 +32,7 @@ function AppRoutes() {
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/lesson/:lessonId" element={<ProtectedRoute><Lesson /></ProtectedRoute>} />
           <Route path="/level-summary/:levelId" element={<ProtectedRoute><LevelSummary /></ProtectedRoute>} />
+          <Route path="/student" element={<ProtectedRoute><StudentDashboard /></ProtectedRoute>} />
           <Route path="/admin" element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>} />
           <Route path="/admin/users" element={<ProtectedRoute adminOnly><ManageUsers /></ProtectedRoute>} />
           <Route path="/admin/lessons" element={<ProtectedRoute adminOnly><ManageLessons /></ProtectedRoute>} />

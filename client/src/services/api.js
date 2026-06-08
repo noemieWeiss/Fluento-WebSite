@@ -72,6 +72,20 @@ export const adminApi = {
     }).then(handleResponse).then(r => r.json()),
 }
 
+export const studentApi = {
+  getStats: () =>
+    fetch(`${API_BASE}/student/stats`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json()),
+
+  getProgress: () =>
+    fetch(`${API_BASE}/student/progress`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json()),
+
+  getLessons: () =>
+    fetch(`${API_BASE}/student/lessons`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json()),
+}
+
 export const usersApi = {
 
   getAll: () =>
