@@ -131,32 +131,29 @@ export default function AdminDashboard() {
               {!stats?.hardestLessons?.length ? (
                 <div className="empty-state"><div className="empty-icon">📋</div><div>No lesson data yet</div></div>
               ) : (
-                <table className="hardest-table">
-                  <thead>
-                    <tr><th>#</th><th>Lesson</th><th>Failures</th><th>Avg Score</th></tr>
-                  </thead>
-                  <tbody>
-                    {stats.hardestLessons.map((lesson, i) => {
-                      const failRate = lesson.attempts > 0 ? Math.round((lesson.failures / lesson.attempts) * 100) : 0
-                      return (
-                        <tr key={lesson.id}>
-                          <td><div className={`rank-badge rank-${i + 1}`}>{i + 1}</div></td>
-                          <td>
-                            <div className="lesson-title">{lesson.lesson}</div>
-                            <div className="lesson-meta">{lesson.language} · {lesson.level}</div>
-                          </td>
-                          <td>
-                            <div className="failure-bar-wrap">
-                              <div className="failure-bar-bg"><div className="failure-bar-fill" style={{ width: `${failRate}%` }} /></div>
-                              <span className="failure-count">{lesson.failures}</span>
-                            </div>
-                          </td>
-                          <td><span className={`score-badge ${lesson.avgScore < 50 ? 'low' : ''}`}>{lesson.avgScore ?? 0}</span></td>
-                        </tr>
-                      )
-                    })}
-                  </tbody>
-                </table>
+                <div className="hardest-list">
+                  {stats.hardestLessons.map((lesson, i) => {
+                    const failRate = lesson.attempts > 0 ? Math.round((lesson.failures / lesson.attempts) * 100) : 0
+                    return (
+                      <div key={lesson.id} className="hardest-row">
+                        <div className={`rank-badge rank-${i + 1}`}>{i + 1}</div>
+                        <div className="hardest-info">
+                          <div className="lesson-title">{lesson.lesson}</div>
+                          <div className="lesson-meta">{lesson.language} · {lesson.level}</div>
+                        </div>
+                        <div className="hardest-bar-col">
+                          <div className="failure-bar-bg">
+                            <div className="failure-bar-fill" style={{ width: `${failRate}%` }} />
+                          </div>
+                          <span className="failure-count">{lesson.failures} fails</span>
+                        </div>
+                        <span className={`score-badge ${lesson.avgScore < 50 ? 'low' : ''}`}>
+                          {lesson.avgScore ?? 0}
+                        </span>
+                      </div>
+                    )
+                  })}
+                </div>
               )}
             </div>
           </>

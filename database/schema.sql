@@ -1,20 +1,38 @@
-CREATE DATABASE IF NOT EXISTS fluento;
+CREATE DATABASE IF NOT EXISTS fluento
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
 USE fluento;
 
--- ─── Users ────────────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS roles (
+  id   INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(50) NOT NULL UNIQUE
+);
+
 CREATE TABLE IF NOT EXISTS users (
+  id         INT AUTO_INCREMENT PRIMARY KEY,
+  name       VARCHAR(100) NOT NULL,
+  email      VARCHAR(150) NOT NULL UNIQUE,
+  status     VARCHAR(20) DEFAULT 'active',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS student_profiles (
   id          INT AUTO_INCREMENT PRIMARY KEY,
-  name        VARCHAR(100) NOT NULL,
-  email       VARCHAR(150) NOT NULL UNIQUE,
-  role        ENUM('admin', 'student') DEFAULT 'student',
-  status      ENUM('active', 'suspended') DEFAULT 'active',
+  user_id     INT NOT NULL UNIQUE,
   xp          INT DEFAULT 0,
   streak      INT DEFAULT 0,
   last_active TIMESTAMP NULL,
-  created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- ─── Passwords ────────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS roles_to_users (
+  id      INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  role_id INT NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS passwords (
   id            INT AUTO_INCREMENT PRIMARY KEY,
   user_id       INT NOT NULL,
@@ -22,45 +40,41 @@ CREATE TABLE IF NOT EXISTS passwords (
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- ─── Languages ────────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS languages (
   id         INT AUTO_INCREMENT PRIMARY KEY,
   name       VARCHAR(45) NOT NULL,
   code       VARCHAR(10) NOT NULL,
   flag_emoji VARCHAR(10)
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ─── Levels ───────────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS levels (
   id           INT AUTO_INCREMENT PRIMARY KEY,
   language_id  INT NOT NULL,
   level_number INT NOT NULL,
   title        VARCHAR(100),
   FOREIGN KEY (language_id) REFERENCES languages(id) ON DELETE CASCADE
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ─── Lessons ──────────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS lessons (
   id            INT AUTO_INCREMENT PRIMARY KEY,
   level_id      INT NOT NULL,
   lesson_number INT NOT NULL,
   title         VARCHAR(100),
   FOREIGN KEY (level_id) REFERENCES levels(id) ON DELETE CASCADE
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ─── Words ────────────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS words (
   id               INT AUTO_INCREMENT PRIMARY KEY,
   lesson_id        INT NOT NULL,
   word             VARCHAR(100) NOT NULL,
   translation      VARCHAR(100) NOT NULL,
+  ui_language      VARCHAR(10) NOT NULL DEFAULT 'en',
   image_url        VARCHAR(255),
   audio_url        VARCHAR(255),
   example_sentence TEXT,
   FOREIGN KEY (lesson_id) REFERENCES lessons(id) ON DELETE CASCADE
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ─── User Languages ───────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS user_languages (
   id          INT AUTO_INCREMENT PRIMARY KEY,
   user_id     INT NOT NULL,
@@ -70,7 +84,6 @@ CREATE TABLE IF NOT EXISTS user_languages (
   FOREIGN KEY (language_id) REFERENCES languages(id) ON DELETE CASCADE
 );
 
--- ─── User Progress ────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS user_progress (
   id           INT AUTO_INCREMENT PRIMARY KEY,
   user_id      INT NOT NULL,
@@ -82,7 +95,6 @@ CREATE TABLE IF NOT EXISTS user_progress (
   FOREIGN KEY (lesson_id) REFERENCES lessons(id) ON DELETE CASCADE
 );
 
--- ─── XP Transactions ──────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS xp_transactions (
   id         INT AUTO_INCREMENT PRIMARY KEY,
   user_id    INT NOT NULL,
@@ -93,8 +105,6 @@ CREATE TABLE IF NOT EXISTS xp_transactions (
   FOREIGN KEY (user_id)  REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (given_by) REFERENCES users(id) ON DELETE CASCADE
 );
-
--- ─── Badges ───────────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS badges (
   id          INT AUTO_INCREMENT PRIMARY KEY,
   name        VARCHAR(100) NOT NULL,
@@ -103,9 +113,8 @@ CREATE TABLE IF NOT EXISTS badges (
   created_by  INT NOT NULL,
   created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ─── User Badges ──────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS user_badges (
   id       INT AUTO_INCREMENT PRIMARY KEY,
   user_id  INT NOT NULL,
@@ -117,7 +126,6 @@ CREATE TABLE IF NOT EXISTS user_badges (
   FOREIGN KEY (given_by) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- ─── Warnings ─────────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS warnings (
   id         INT AUTO_INCREMENT PRIMARY KEY,
   user_id    INT NOT NULL,
@@ -127,9 +135,8 @@ CREATE TABLE IF NOT EXISTS warnings (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id)  REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (given_by) REFERENCES users(id) ON DELETE CASCADE
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ─── Surprise Quizzes ─────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS surprise_quizzes (
   id         INT AUTO_INCREMENT PRIMARY KEY,
   title      VARCHAR(150) NOT NULL,
@@ -138,27 +145,24 @@ CREATE TABLE IF NOT EXISTS surprise_quizzes (
   option_b   VARCHAR(200) NOT NULL,
   option_c   VARCHAR(200) NOT NULL,
   option_d   VARCHAR(200) NOT NULL,
-  correct    ENUM('a','b','c','d') NOT NULL,
+  correct    VARCHAR(1) NOT NULL,
   xp_reward  INT DEFAULT 20,
   active     BOOLEAN DEFAULT TRUE,
   created_by INT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE
-);
-
--- ─── Quiz Answers ─────────────────────────────────────────────────────────────
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 CREATE TABLE IF NOT EXISTS quiz_answers (
   id         INT AUTO_INCREMENT PRIMARY KEY,
   quiz_id    INT NOT NULL,
   user_id    INT NOT NULL,
-  answer     ENUM('a','b','c','d') NOT NULL,
+  answer     VARCHAR(1) NOT NULL,
   correct    BOOLEAN NOT NULL,
   answered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (quiz_id) REFERENCES surprise_quizzes(id) ON DELETE CASCADE,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- ─── Blocks ───────────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS blocks (
   id         INT AUTO_INCREMENT PRIMARY KEY,
   blocker_id INT NOT NULL,
@@ -167,3 +171,11 @@ CREATE TABLE IF NOT EXISTS blocks (
   FOREIGN KEY (blocker_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (blocked_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS route_permissions (
+  id         INT AUTO_INCREMENT PRIMARY KEY,
+  prefix     VARCHAR(100) NOT NULL,
+  role       VARCHAR(50)  NOT NULL,
+  UNIQUE KEY uq_prefix_role (prefix, role)
+);
+
