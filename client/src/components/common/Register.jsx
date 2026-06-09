@@ -50,7 +50,7 @@ function Register() {
         return
       }
       login(fullUser)
-      navigate(`/users/${fullUser.id}/home`)
+      navigate(`/dashboard`)
     } catch (error) {
       alert('Server error - please try again')
     }

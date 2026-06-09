@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import StudentSidebar from '../../components/student/StudentSidebar'
 import { studentApi } from '../../services/api'
@@ -31,6 +32,7 @@ export default function StudentDashboard() {
   const [stats, setStats]   = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError]   = useState(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     studentApi.getStats()
@@ -110,7 +112,12 @@ export default function StudentDashboard() {
                 ) : (
                   <div className="recommended-lessons">
                     {stats.upcomingLessons.map(lesson => (
-                      <div key={lesson.id} className="lesson-item">
+                      <div
+                        key={lesson.id}
+                        className="lesson-item"
+                        onClick={() => navigate(`/lesson/${lesson.id}`)}
+                        style={{ cursor: 'pointer' }}
+                      >
                         <div className="lesson-flag">{lesson.flag_emoji}</div>
                         <div className="lesson-details">
                           <div className="lesson-title">{lesson.title}</div>

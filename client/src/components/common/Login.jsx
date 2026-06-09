@@ -19,7 +19,13 @@ function Login() {
       const user = await usersApi.login(email, password)
       if (user) {
         login(user)
-        navigate(user.role === 'admin' ? '/admin' : '/dashboard')
+        if (user.role === 'admin') {
+          navigate('/admin')
+        } else if (user.isNewStudent) {
+          navigate('/choose-language')
+        } else {
+          navigate('/student')
+        }
       } else {
         alert('email or password incorrect')
       }
