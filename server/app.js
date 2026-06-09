@@ -10,6 +10,7 @@ import languageRoutes from './routes/languages.Routes.js'
 import lessonRoutes   from './routes/lessons.Routes.js'
 import progressRoutes from './routes/progress.Routes.js'
 import adminRoutes    from './routes/admin.Routes.js'
+import studentRoutes  from './routes/student.Routes.js'
 import rewardsRoutes  from './routes/rewards.Routes.js'
 import { logger }       from './middleware/logger.js'
 import { errorHandler } from './middleware/error.Handler.js'
@@ -31,6 +32,7 @@ app.use('/api/languages', languageRoutes)
 app.use('/api/lessons',   lessonRoutes)
 app.use('/api/progress',  progressRoutes)
 app.use('/api/admin',     adminRoutes)
+app.use('/api/student',   studentRoutes)
 app.use('/api/rewards',   rewardsRoutes)
 
 if (process.env.NODE_ENV === 'production') {

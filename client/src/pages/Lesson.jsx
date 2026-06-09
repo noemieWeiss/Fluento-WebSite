@@ -8,7 +8,7 @@ import LessonSummary from '../components/quiz/LessonSummary';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
 const Lesson = () => {
-  const { id } = useParams(); 
+  const { lessonId } = useParams();
   const navigate = useNavigate();
 
   const [questions, setQuestions] = useState([]);
@@ -23,9 +23,10 @@ const Lesson = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/lessons/${id}/questions`, {
+        const token = JSON.parse(localStorage.getItem('authUser'))?.token;
+        const response = await fetch(`http://localhost:5000/api/lessons/${lessonId}/words`, {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}` 
+            'Authorization': `Bearer ${token}` 
           }
         });
         const data = await response.json();
@@ -38,7 +39,7 @@ const Lesson = () => {
     };
 
     fetchQuestions();
-  }, [id]);
+  }, [lessonId]);
 
   const handleCheckAnswer = () => {
     if (!selectedOption) return;
@@ -70,7 +71,7 @@ const Lesson = () => {
   if (questions.length === 0) return <div>לא נמצאו שאלות לשיעור זה.</div>;
 
   if (lessonCompleted) {
-    return <LessonSummary score={score} total={questions.length} lessonId={id} />;
+    return <LessonSummary score={score} total={questions.length} lessonId={lessonId} />;
   }
 
   const currentQuestion = questions[currentIndex];
