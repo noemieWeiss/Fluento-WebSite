@@ -38,9 +38,10 @@ export default function ManageWords() {
   useEffect(() => {
     Promise.all([adminApi.getWords(lessonId), adminApi.getLessons()])
       .then(([ws, lessons]) => {
-        setWords(ws)
+        setWords(Array.isArray(ws) ? ws : [])
         setLesson(lessons.find(l => l.id === Number(lessonId)) || null)
       })
+      .catch(() => setWords([]))
       .finally(() => setLoading(false))
   }, [lessonId])
 

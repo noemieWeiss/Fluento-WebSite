@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { UserProvider } from './context/UserContext'
 import ProtectedRoute from './components/common/ProtectedRoute'
+import SystemBanner from './components/common/SystemBanner'
 
 import Login from './components/common/Login'
 import Register from './components/common/Register'
@@ -17,6 +18,9 @@ import CreateLesson from './pages/admin/CreateLesson'
 import Rewards from './pages/admin/Rewards'
 import Communications from './pages/admin/Communications'
 import StudentProfile from './pages/admin/StudentProfile'
+import AuditLogs from './pages/admin/AuditLogs'
+import SystemBroadcast from './pages/admin/SystemBroadcast'
+import AutomationRules from './pages/admin/AutomationRules'
 import StudentDashboard from './pages/student/StudentDashboard'
 import StudentLessons from './pages/student/StudentLessons'
 
@@ -26,7 +30,7 @@ function AppRoutes() {
   const isStudent = pathname.startsWith('/student')
   return (
     <>
-      {!isAdmin && !isStudent }
+      {!isAdmin && <SystemBanner />}
       <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />
@@ -46,6 +50,9 @@ function AppRoutes() {
           <Route path="/admin/rewards" element={<ProtectedRoute adminOnly><Rewards /></ProtectedRoute>} />
           <Route path="/admin/communications" element={<ProtectedRoute adminOnly><Communications /></ProtectedRoute>} />
           <Route path="/admin/students/:userId" element={<ProtectedRoute adminOnly><StudentProfile /></ProtectedRoute>} />
+          <Route path="/admin/audit-logs" element={<ProtectedRoute adminOnly><AuditLogs /></ProtectedRoute>} />
+          <Route path="/admin/broadcasts" element={<ProtectedRoute adminOnly><SystemBroadcast /></ProtectedRoute>} />
+          <Route path="/admin/automations" element={<ProtectedRoute adminOnly><AutomationRules /></ProtectedRoute>} />
         </Routes>
     </>
   )

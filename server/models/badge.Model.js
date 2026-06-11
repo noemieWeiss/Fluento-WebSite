@@ -33,10 +33,29 @@ export const findUserBadge = async (userId, badgeId) => {
 }
 
 export const awardBadge = async (userId, badgeId, adminId) => {
-  await pool.query(
-    'INSERT INTO user_badges (user_id, badge_id, given_by) VALUES (?,?,?)',
-    [userId, badgeId, adminId]
-  )
+  const conn = await pool.getConnection()
+  try {
+    await conn.beginTransaction()
+    const [[existing]] = await conn.query(
+      'SELECT id FROM user_badges WHERE user_id=? AND badge_id=? FOR UPDATE',
+      [userId, badgeId]
+    )
+    if (existing) {
+      await conn.rollback()
+      return { alreadyHas: true }
+    }
+    await conn.query(
+      'INSERT INTO user_badges (user_id, badge_id, given_by) VALUES (?,?,?)',
+      [userId, badgeId, adminId]
+    )
+    await conn.commit()
+    return { alreadyHas: false }
+  } catch (err) {
+    await conn.rollback()
+    throw err
+  } finally {
+    conn.release()
+  }
 }
 
 export const removeBadge = async (userId, badgeId) => {
