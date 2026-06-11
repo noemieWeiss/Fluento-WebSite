@@ -1,13 +1,23 @@
 import pool from '../config/db.js'
 
 export const addXP = async (userId, amount, reason, adminId) => {
-  await pool.query('UPDATE student_profiles SET xp = xp + ? WHERE user_id = ?', [amount, userId])
-  await pool.query(
-    'INSERT INTO xp_transactions (user_id, amount, reason, given_by) VALUES (?,?,?,?)',
-    [userId, amount, reason, adminId]
-  )
-  const [[profile]] = await pool.query('SELECT xp FROM student_profiles WHERE user_id = ?', [userId])
-  return profile.xp
+  const conn = await pool.getConnection()
+  try {
+    await conn.beginTransaction()
+    await conn.query('UPDATE student_profiles SET xp = xp + ? WHERE user_id = ?', [amount, userId])
+    await conn.query(
+      'INSERT INTO xp_transactions (user_id, amount, reason, given_by) VALUES (?,?,?,?)',
+      [userId, amount, reason, adminId]
+    )
+    await conn.commit()
+    const [[profile]] = await conn.query('SELECT xp FROM student_profiles WHERE user_id = ?', [userId])
+    return profile.xp
+  } catch (err) {
+    await conn.rollback()
+    throw err
+  } finally {
+    conn.release()
+  }
 }
 
 export const getXPHistoryByUser = async (userId) => {

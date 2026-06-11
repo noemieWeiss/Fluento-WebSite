@@ -29,7 +29,18 @@ export const updateLesson = async (id, { title, lesson_number }) => {
 }
 
 export const deleteLesson = async (id) => {
-  await pool.query('DELETE FROM user_progress WHERE lesson_id = ?', [id])
-  await pool.query('DELETE FROM words WHERE lesson_id = ?', [id])
-  await pool.query('DELETE FROM lessons WHERE id = ?', [id])
+  const conn = await pool.getConnection()
+  try {
+    await conn.beginTransaction()
+    await conn.query('DELETE FROM user_progress WHERE lesson_id = ?', [id])
+    await conn.query('DELETE FROM user_class_progress WHERE lesson_id = ?', [id])
+    await conn.query('DELETE FROM words WHERE lesson_id = ?', [id])
+    await conn.query('DELETE FROM lessons WHERE id = ?', [id])
+    await conn.commit()
+  } catch (err) {
+    await conn.rollback()
+    throw err
+  } finally {
+    conn.release()
+  }
 }
