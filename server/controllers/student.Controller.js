@@ -7,6 +7,7 @@ import {
   countUserLanguages,
   getUserLanguagesDebug
 } from '../models/student.Model.js'
+import { getWarningsByUser, markWarningAsSeen, getUnseenWarningsCount } from '../models/warning.Model.js'
 
 export const getStats = async (req, res) => {
   try {
@@ -74,5 +75,26 @@ export const getLessons = async (req, res) => {
   } catch (err) {
     console.error('Error in getLessons:', err)
     res.status(500).json({ message: 'Server error', error: err.message })
+  }
+}
+
+export const getWarnings = async (req, res) => {
+  try {
+    const warnings = await getWarningsByUser(req.user.id)
+    const unseenCount = await getUnseenWarningsCount(req.user.id)
+    res.json({ warnings, unseenCount })
+  } catch (err) {
+    console.error('Error in getWarnings:', err)
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
+export const markWarningSeen = async (req, res) => {
+  try {
+    await markWarningAsSeen(req.params.id, req.user.id)
+    res.json({ message: 'Warning marked as seen' })
+  } catch (err) {
+    console.error('Error marking warning as seen:', err)
+    res.status(500).json({ message: 'Server error' })
   }
 }

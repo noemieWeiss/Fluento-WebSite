@@ -11,7 +11,7 @@ export const getWordsByLesson = async (lessonId) => {
 export const getClassesByLesson = async (lessonId, userId) => {
   // Get the lesson's language to ensure we only return words from that language
   const [[lessonInfo]] = await pool.query(`
-    SELECT lang.id as language_id, lang.name as language_name
+    SELECT lang.id as language_id, lang.name as language_name, l.title as lesson_title
     FROM lessons l
     JOIN levels lv ON lv.id = l.level_id
     JOIN languages lang ON lang.id = lv.language_id
@@ -19,14 +19,25 @@ export const getClassesByLesson = async (lessonId, userId) => {
   `, [lessonId])
   
   if (!lessonInfo) {
+    console.error(`No lesson found with id ${lessonId}`)
     return []
   }
   
-  // Get words for this specific lesson only
-  const [rows] = await pool.query(
-    'SELECT id, word, translation, ui_language, example_sentence, image_url, audio_url, class_order FROM words WHERE lesson_id = ? ORDER BY class_order, id',
-    [lessonId]
-  )
+  console.log(`Loading lesson: ${lessonInfo.lesson_title}, Language: ${lessonInfo.language_name} (ID: ${lessonInfo.language_id})`)
+  
+  // Get words for this specific lesson with strict language validation
+  const [rows] = await pool.query(`
+    SELECT w.id, w.word, w.translation, w.ui_language, w.example_sentence, w.image_url, w.audio_url, w.class_order,
+           lang.name as word_language, lang.id as word_language_id
+    FROM words w
+    JOIN lessons l ON l.id = w.lesson_id
+    JOIN levels lv ON lv.id = l.level_id
+    JOIN languages lang ON lang.id = lv.language_id
+    WHERE w.lesson_id = ? AND lang.id = ?
+    ORDER BY w.class_order, w.id
+  `, [lessonId, lessonInfo.language_id])
+  
+  console.log(`Found ${rows.length} words for lesson ${lessonId}`)
   
   // Group words into classes (2 words per class)
   const classes = []
@@ -41,9 +52,19 @@ export const getClassesByLesson = async (lessonId, userId) => {
   })
   
   Object.keys(groupedByClass).sort((a, b) => a - b).forEach(classNum => {
+    const classWords = groupedByClass[classNum].map(w => ({
+      id: w.id,
+      word: w.word,
+      translation: w.translation,
+      ui_language: w.ui_language,
+      example_sentence: w.example_sentence,
+      image_url: w.image_url,
+      audio_url: w.audio_url,
+      class_order: w.class_order
+    }))
     classes.push({
       classNumber: parseInt(classNum),
-      words: groupedByClass[classNum],
+      words: classWords,
       languageId: lessonInfo.language_id,
       languageName: lessonInfo.language_name
     })

@@ -25,11 +25,19 @@ const LessonPage = () => {
     try {
       const token = JSON.parse(localStorage.getItem('authUser'))?.token
       
+      console.log('Loading lesson:', lessonId)
+      
       // Load classes
       const classesRes = await fetch(`${API_BASE}/lessons/${lessonId}/classes`, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
       const classesData = await classesRes.json()
+      
+      console.log('Loaded classes:', classesData.length, 'classes')
+      if (classesData.length > 0) {
+        console.log('First class language:', classesData[0].languageName)
+        console.log('First class words:', classesData[0].words.length)
+      }
       
       // Load progress
       const progressRes = await fetch(`${API_BASE}/progress/lessons/${lessonId}`, {
@@ -288,16 +296,28 @@ const QuizPhase = ({ words, answers, onAnswer, onNext }) => {
   const currentWord = words[currentQuizIndex]
   const allAnswered = words.every(w => answers[w.id] !== undefined)
 
-  // Generate options (correct + 3 wrong)
+  // Generate options (correct + 3 wrong from same class)
   const generateOptions = () => {
     const options = [currentWord.translation]
     const otherWords = words.filter(w => w.id !== currentWord.id)
-    while (options.length < Math.min(4, words.length)) {
-      const randomWord = otherWords[Math.floor(Math.random() * otherWords.length)]
-      if (!options.includes(randomWord.translation)) {
-        options.push(randomWord.translation)
+    
+    // Shuffle other words to get random wrong answers
+    const shuffled = [...otherWords].sort(() => Math.random() - 0.5)
+    
+    // Add up to 3 unique wrong answers
+    for (const word of shuffled) {
+      if (options.length >= 4) break
+      if (!options.includes(word.translation)) {
+        options.push(word.translation)
       }
     }
+    
+    // If we don't have enough options, fill with placeholder text
+    // This shouldn't happen in a properly configured lesson
+    while (options.length < 4) {
+      options.push(`Option ${options.length}`)
+    }
+    
     return options.sort(() => Math.random() - 0.5)
   }
 

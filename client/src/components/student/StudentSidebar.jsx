@@ -59,6 +59,9 @@ export default function StudentSidebar() {
         <NavLink to="/choose-language" className={({ isActive }) => isActive ? 'active' : ''}>
           <span className="nav-icon">🌍</span> Languages
         </NavLink>
+        <NavLink to="/student/warnings" className={({ isActive }) => isActive ? 'active' : ''}>
+          <span className="nav-icon">⚠️</span> Warnings
+        </NavLink>
       </nav>
 
       <div className="sidebar-profile-wrap" ref={menuRef}>
