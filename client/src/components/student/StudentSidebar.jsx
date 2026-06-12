@@ -56,6 +56,9 @@ export default function StudentSidebar() {
         <NavLink to="/student/lessons" className={({ isActive }) => isActive ? 'active' : ''}>
           <span className="nav-icon">📚</span> My Lessons
         </NavLink>
+        <NavLink to="/student/quizzes" className={({ isActive }) => isActive ? 'active' : ''}>
+          <span className="nav-icon">🎯</span> Surprise Quizzes
+        </NavLink>
         <NavLink to="/choose-language" className={({ isActive }) => isActive ? 'active' : ''}>
           <span className="nav-icon">🌍</span> Languages
         </NavLink>

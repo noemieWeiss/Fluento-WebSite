@@ -1,5 +1,6 @@
 const API = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
 const BASE = `${API}/rewards`
+const STUDENT = `${API}/student`
 const ADMIN = `${API}/admin`
 
 const tok  = () => { try { return JSON.parse(localStorage.getItem('authUser'))?.token } catch { return null } }
@@ -31,6 +32,8 @@ export const rewardsApi = {
   getQuizzes:  ()               => get(`${BASE}/quizzes`),
   createQuiz:  (body)           => post(`${BASE}/quizzes`, body),
   toggleQuiz:  (id)             => put(`${BASE}/quizzes/${id}/toggle`),
+  getActiveQuizzes: ()          => get(`${STUDENT}/quizzes`),
+  submitQuizAnswer: (body)      => post(`${STUDENT}/quizzes/answer`, body),
 
   // Leaderboard & profiles
   getLeaderboard:    ()         => get(`${BASE}/leaderboard`),

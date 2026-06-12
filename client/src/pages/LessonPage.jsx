@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import '../styles/lesson.css'
 
@@ -45,11 +45,27 @@ const LessonPage = () => {
       })
       const progressData = await progressRes.json()
       
-      setClasses(classesData)
+      // Normalize classes: ensure each class contains exactly 2 words.
+      // Flatten all words and chunk into groups of 2. If odd, duplicate last word.
+      const allWords = classesData.flatMap(c => c.words || [])
+      const normalized = []
+      for (let i = 0; i < allWords.length; i += 2) {
+        const chunk = [allWords[i]]
+        if (allWords[i + 1]) {
+          chunk.push(allWords[i + 1])
+        }
+        normalized.push({
+          classNumber: normalized.length + 1,
+          words: chunk,
+          languageName: classesData[0]?.languageName
+        })
+      }
+
+      setClasses(normalized)
       setCompletedClasses(progressData.completedClasses || [])
-      
-      // Resume from last incomplete class
-      const nextClassIndex = classesData.findIndex(c => 
+
+      // Resume from last incomplete class using normalized classes
+      const nextClassIndex = normalized.findIndex(c => 
         !progressData.completedClasses?.includes(c.classNumber)
       )
       
@@ -112,7 +128,7 @@ const LessonPage = () => {
       setCurrentClassIndex(currentClassIndex + 1)
       setCurrentWordIndex(0)
       setPhase('learn')
-      setQuizAnswers({})
+      setQuizAnswers(prev => ({ ...prev }))
     } else {
       completeLesson()
     }
@@ -128,8 +144,9 @@ const LessonPage = () => {
 
   const completeLesson = async () => {
     const correctAnswers = Object.values(quizAnswers).filter(a => a).length
-    const totalWords = classes.reduce((sum, c) => sum + c.words.length, 0)
-    const score = Math.round((correctAnswers / totalWords) * 100)
+    const uniqueIds = new Set(classes.flatMap(c => c.words.map(w => w.id)))
+    const totalWords = uniqueIds.size || 0
+    const score = Math.round((correctAnswers / (totalWords || 1)) * 100)
 
     try {
       const token = JSON.parse(localStorage.getItem('authUser'))?.token
@@ -146,6 +163,14 @@ const LessonPage = () => {
       console.error('Error completing lesson:', err)
     }
   }
+
+  const allWords = useMemo(() => {
+    const map = new Map()
+    classes.flatMap(c => c.words).forEach(word => {
+      if (!map.has(word.id)) map.set(word.id, word)
+    })
+    return Array.from(map.values())
+  }, [classes])
 
   if (loading) {
     return (
@@ -175,8 +200,9 @@ const LessonPage = () => {
 
   if (phase === 'complete') {
     const correctAnswers = Object.values(quizAnswers).filter(a => a).length
-    const totalWords = classes.reduce((sum, c) => sum + c.words.length, 0)
-    const score = Math.round((correctAnswers / totalWords) * 100)
+    const uniqueIds = new Set(classes.flatMap(c => c.words.map(w => w.id)))
+    const totalWords = uniqueIds.size || 0
+    const score = Math.round((correctAnswers / (totalWords || 1)) * 100)
 
     return (
       <div className="lesson-container">
@@ -221,11 +247,12 @@ const LessonPage = () => {
           />
         ) : phase === 'quiz' ? (
           <QuizPhase 
-            words={currentClass.words}
-            answers={quizAnswers}
-            onAnswer={handleQuizAnswer}
-            onNext={handleNext}
-          />
+              words={currentClass.words}
+              allWords={allWords}
+              answers={quizAnswers}
+              onAnswer={handleQuizAnswer}
+              onNext={handleNext}
+            />
         ) : phase === 'classComplete' ? (
           <ClassComplete
             classNumber={currentClass.classNumber}
@@ -288,7 +315,7 @@ const LearnPhase = ({ word, onNext, currentWord, totalWords }) => {
   )
 }
 
-const QuizPhase = ({ words, answers, onAnswer, onNext }) => {
+const QuizPhase = ({ words, allWords, answers, onAnswer, onNext }) => {
   const [currentQuizIndex, setCurrentQuizIndex] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState(null)
   const [showResult, setShowResult] = useState(false)
@@ -296,32 +323,40 @@ const QuizPhase = ({ words, answers, onAnswer, onNext }) => {
   const currentWord = words[currentQuizIndex]
   const allAnswered = words.every(w => answers[w.id] !== undefined)
 
-  // Generate options (correct + 3 wrong from same class)
+  // Generate options (correct + 3 wrong from full lesson words)
   const generateOptions = () => {
+    if (!currentWord) return []
+
     const options = [currentWord.translation]
-    const otherWords = words.filter(w => w.id !== currentWord.id)
-    
-    // Shuffle other words to get random wrong answers
-    const shuffled = [...otherWords].sort(() => Math.random() - 0.5)
-    
-    // Add up to 3 unique wrong answers
-    for (const word of shuffled) {
+    const pool = allWords ? allWords.filter(w => w.id !== currentWord.id) : words.filter(w => w.id !== currentWord.id)
+    const shuffled = [...pool].sort(() => Math.random() - 0.5)
+
+    for (const w of shuffled) {
       if (options.length >= 4) break
-      if (!options.includes(word.translation)) {
-        options.push(word.translation)
+      if (w.translation && !options.includes(w.translation)) {
+        options.push(w.translation)
       }
     }
-    
-    // If we don't have enough options, fill with placeholder text
-    // This shouldn't happen in a properly configured lesson
-    while (options.length < 4) {
-      options.push(`Option ${options.length}`)
+
+    if (options.length < 4) {
+      const fallback = words.filter(w => w.id !== currentWord?.id)
+      for (const w of fallback) {
+        if (options.length >= 4) break
+        if (w.translation && !options.includes(w.translation)) options.push(w.translation)
+      }
     }
-    
+
+    while (options.length < 4) options.push(`Option ${options.length}`)
+
     return options.sort(() => Math.random() - 0.5)
   }
 
-  const [options] = useState(generateOptions())
+  const options = useMemo(() => generateOptions(), [currentWord?.id, allWords, words])
+
+  useEffect(() => {
+    setSelectedAnswer(null)
+    setShowResult(false)
+  }, [currentQuizIndex])
 
   const handleAnswer = (answer) => {
     setSelectedAnswer(answer)

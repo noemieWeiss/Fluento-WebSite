@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import { getStats, getProgress, getLessons, getWarnings, markWarningSeen } from '../controllers/student.Controller.js'
+import { getActiveQuizzesHandler, submitQuizAnswerHandler } from '../controllers/rewards.Controller.js'
 import { authMiddleware } from '../middleware/auth.Middleware.js'
 import { studentMiddleware } from '../middleware/student.Middleware.js'
 import { getUserLanguages } from '../models/userLanguages.Model.js'
@@ -13,6 +14,8 @@ router.get('/progress',  getProgress)
 router.get('/lessons',   getLessons)
 router.get('/warnings',  getWarnings)
 router.put('/warnings/:id/seen', markWarningSeen)
+router.get('/quizzes',   getActiveQuizzesHandler)
+router.post('/quizzes/answer', submitQuizAnswerHandler)
 router.get('/languages', async (req, res) => {
   try {
     const languages = await getUserLanguages(req.user.id)

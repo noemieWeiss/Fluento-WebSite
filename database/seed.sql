@@ -216,6 +216,13 @@ INSERT INTO words (lesson_id, class_order, word, translation, example_sentence) 
 (@lesson_id, 3, 'Como está?', 'How are you?', 'Como está hoje? (How are you today?)'),
 (@lesson_id, 3, 'Bem', 'Good/Well', 'Estou bem, obrigado. (I''m well, thank you.)');
 
+-- Populate language_id for all seeded words based on their lesson language
+UPDATE words w
+JOIN lessons l ON l.id = w.lesson_id
+JOIN levels lv ON lv.id = l.level_id
+SET w.language_id = lv.language_id
+WHERE w.language_id IS NULL;
+
 -- =====================================================
 -- SUMMARY
 -- =====================================================

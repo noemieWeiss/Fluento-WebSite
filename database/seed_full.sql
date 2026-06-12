@@ -168,6 +168,13 @@ INSERT INTO words (lesson_id, word, translation, example_sentence) VALUES
   (5,'Coffee','קפה','I love coffee.'),
   (5,'Apple','תפוח','An apple a day.');
 
+-- Populate language_id for all seeded words based on their lesson language
+UPDATE words w
+JOIN lessons l ON l.id = w.lesson_id
+JOIN levels lv ON lv.id = l.level_id
+SET w.language_id = lv.language_id
+WHERE w.language_id IS NULL;
+
 INSERT INTO users (name, email, status) VALUES
   ('Noemie Weiss',    'admin@fluento.com',    'active'),   -- 1
   ('Alice Cohen',     'alice@fluento.com',    'active'),   -- 2

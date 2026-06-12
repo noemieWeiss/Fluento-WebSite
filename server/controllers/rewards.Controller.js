@@ -1,7 +1,7 @@
 import { addXP, getXPHistoryByUser, resetUserStreak } from '../models/xp.Model.js'
 import { getAllBadges, createBadge, getBadgesByUser, findUserBadge, awardBadge, removeBadge } from '../models/badge.Model.js'
 import { createWarning, getAllWarnings, getWarningsByUser } from '../models/warning.Model.js'
-import { getAllQuizzes, createQuiz, findQuizById, setQuizActive } from '../models/quiz.Model.js'
+import { getAllQuizzes, createQuiz, findQuizById, setQuizActive, getActiveQuizzes, submitQuizAnswer } from '../models/quiz.Model.js'
 import { getStudentById, getProgressByUser, getLeaderboard } from '../models/studentProfile.Model.js'
 
 // ─── XP ───────────────────────────────────────────────────────────────────────
@@ -105,6 +105,29 @@ export const toggleQuiz = async (req, res) => {
     if (!quiz) return res.status(404).json({ message: 'Quiz not found' })
     await setQuizActive(req.params.id, !quiz.active)
     res.json({ active: !quiz.active })
+  } catch (err) { console.error(err); res.status(500).json({ message: 'Server error' }) }
+}
+
+export const getActiveQuizzesHandler = async (req, res) => {
+  try {
+    res.json(await getActiveQuizzes())
+  } catch (err) { console.error(err); res.status(500).json({ message: 'Server error' }) }
+}
+
+export const submitQuizAnswerHandler = async (req, res) => {
+  try {
+    const { quizId, answer } = req.body
+    const userId = req.user.id
+    
+    if (!quizId || !answer) return res.status(400).json({ message: 'Quiz ID and answer required' })
+    
+    const result = await submitQuizAnswer(quizId, userId, answer)
+    
+    if (result.correct && result.xp > 0) {
+      await addXP(userId, result.xp, 'Surprise Quiz', result.given_by)
+    }
+    
+    res.json(result)
   } catch (err) { console.error(err); res.status(500).json({ message: 'Server error' }) }
 }
 
