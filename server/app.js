@@ -4,16 +4,19 @@ import 'dotenv/config'
 import { fileURLToPath } from 'url'
 import path from 'path'
 
-import authRoutes     from './routes/auth.Routes.js'
-import userRoutes     from './routes/users.Routes.js'
-import languageRoutes from './routes/languages.Routes.js'
-import lessonRoutes   from './routes/lessons.Routes.js'
-import progressRoutes from './routes/progress.Routes.js'
-import adminRoutes    from './routes/admin.Routes.js'
-import studentRoutes  from './routes/student.Routes.js'
-import rewardsRoutes  from './routes/rewards.Routes.js'
+import authRoutes       from './routes/auth.Routes.js'
+import userRoutes       from './routes/users.Routes.js'
+import languageRoutes   from './routes/languages.Routes.js'
+import lessonRoutes     from './routes/lessons.Routes.js'
+import progressRoutes   from './routes/progress.Routes.js'
+import adminRoutes      from './routes/admin.Routes.js'
+import studentRoutes    from './routes/student.Routes.js'
+import rewardsRoutes    from './routes/rewards.Routes.js'
+import broadcastRoutes  from './routes/broadcast.Routes.js'
+import automationRoutes from './routes/automation.Routes.js'
 import { logger }       from './middleware/logger.js'
 import { errorHandler } from './middleware/error.Handler.js'
+import { startAutomationCron } from './services/automationCron.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -31,9 +34,11 @@ app.use('/api/users',     userRoutes)
 app.use('/api/languages', languageRoutes)
 app.use('/api/lessons',   lessonRoutes)
 app.use('/api/progress',  progressRoutes)
-app.use('/api/admin',     adminRoutes)
-app.use('/api/student',   studentRoutes)
-app.use('/api/rewards',   rewardsRoutes)
+app.use('/api/admin',      adminRoutes)
+app.use('/api/student',    studentRoutes)
+app.use('/api/rewards',    rewardsRoutes)
+app.use('/api/broadcasts', broadcastRoutes)
+app.use('/api/automations', automationRoutes)
 
 if (process.env.NODE_ENV === 'production') {
   const clientBuild = path.join(__dirname, '../client/dist')
@@ -44,6 +49,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.use(errorHandler)
+
+startAutomationCron()
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))

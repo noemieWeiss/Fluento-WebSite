@@ -123,6 +123,68 @@ export const adminApi = {
     fetch(`${API_BASE}/admin/lessons/${lessonId}/words/${wordId}`, {
       method: 'DELETE', headers: authHeader()
     }).then(handleResponse).then(r => r.json()),
+
+  getAuditLogs: (params = {}) => {
+    const qs = new URLSearchParams(params).toString()
+    return fetch(`${API_BASE}/admin/audit-logs${qs ? '?' + qs : ''}`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json())
+  },
+}
+
+export const broadcastApi = {
+  getActive: () =>
+    fetch(`${API_BASE}/broadcasts/active`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json()),
+
+  getAll: () =>
+    fetch(`${API_BASE}/broadcasts`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json()),
+
+  create: (data) =>
+    fetch(`${API_BASE}/broadcasts`, {
+      method: 'POST', headers: jsonHeaders(), body: JSON.stringify(data)
+    }).then(handleResponse).then(r => r.json()),
+
+  update: (id, data) =>
+    fetch(`${API_BASE}/broadcasts/${id}`, {
+      method: 'PUT', headers: jsonHeaders(), body: JSON.stringify(data)
+    }).then(handleResponse).then(r => r.json()),
+
+  deactivate: (id) =>
+    fetch(`${API_BASE}/broadcasts/${id}/deactivate`, {
+      method: 'PATCH', headers: authHeader()
+    }).then(handleResponse).then(r => r.json()),
+
+  delete: (id) =>
+    fetch(`${API_BASE}/broadcasts/${id}`, {
+      method: 'DELETE', headers: authHeader()
+    }).then(handleResponse).then(r => r.json()),
+}
+
+export const automationApi = {
+  getAll: () =>
+    fetch(`${API_BASE}/automations`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json()),
+
+  create: (data) =>
+    fetch(`${API_BASE}/automations`, {
+      method: 'POST', headers: jsonHeaders(), body: JSON.stringify(data)
+    }).then(handleResponse).then(r => r.json()),
+
+  update: (id, data) =>
+    fetch(`${API_BASE}/automations/${id}`, {
+      method: 'PUT', headers: jsonHeaders(), body: JSON.stringify(data)
+    }).then(handleResponse).then(r => r.json()),
+
+  toggle: (id) =>
+    fetch(`${API_BASE}/automations/${id}/toggle`, {
+      method: 'PATCH', headers: authHeader()
+    }).then(handleResponse).then(r => r.json()),
+
+  delete: (id) =>
+    fetch(`${API_BASE}/automations/${id}`, {
+      method: 'DELETE', headers: authHeader()
+    }).then(handleResponse).then(r => r.json()),
 }
 
 export const studentApi = {
