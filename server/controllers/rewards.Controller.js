@@ -4,7 +4,6 @@ import { getAllBadges, createBadge, getBadgesByUser, findUserBadge, awardBadge, 
 import { createWarning, getAllWarnings, getWarningsByUser } from '../models/warning.Model.js'
 import { getAllQuizzes, createQuiz, findQuizById, setQuizActive, getActiveQuizzes, submitQuizAnswer } from '../models/quiz.Model.js'
 import { getStudentById, getProgressByUser, getLeaderboard } from '../models/studentProfile.Model.js'
-import { getLeaderboard } from '../models/studentProfile.Model.js'
 
 export const giveXP = asyncHandler(async (req, res) => {
   const { user_id, amount, reason } = req.body
@@ -18,7 +17,6 @@ export const getXPHistory  = asyncHandler(async (req, res) => res.json(await get
 export const resetStreak   = asyncHandler(async (req, res) => { await resetUserStreak(req.params.userId); res.json({ message: 'Streak reset' }) })
 
 export const getBadges     = asyncHandler(async (req, res) => res.json(await getAllBadges()))
-export const getUserBadges = asyncHandler(async (req, res) => res.json(await getBadgesByUser(req.params.userId)))
 
 export const createBadgeHandler = asyncHandler(async (req, res) =>
   res.status(201).json(await createBadge({ ...req.body, createdBy: req.user.id }))
