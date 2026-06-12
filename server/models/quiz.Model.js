@@ -28,3 +28,29 @@ export const findQuizById = async (id) => {
 export const setQuizActive = async (id, active) => {
   await pool.query('UPDATE surprise_quizzes SET active=? WHERE id=?', [active, id])
 }
+
+export const getActiveQuizzes = async () => {
+  const [rows] = await pool.query(`
+    SELECT q.id, q.title, q.question, q.option_a, q.option_b, q.option_c, q.option_d, q.xp_reward, q.created_by, u.name as created_by_name
+    FROM surprise_quizzes q
+    JOIN users u ON u.id = q.created_by
+    WHERE q.active = TRUE
+    ORDER BY q.created_at DESC
+  `)
+  return rows
+}
+
+export const submitQuizAnswer = async (quizId, userId, answer) => {
+  const [[quiz]] = await pool.query('SELECT correct, xp_reward, created_by FROM surprise_quizzes WHERE id = ?', [quizId])
+  if (!quiz) throw new Error('Quiz not found')
+  
+  const isCorrect = quiz.correct.toLowerCase() === answer.toLowerCase()
+  
+  await pool.query(
+    'INSERT INTO quiz_answers (quiz_id, user_id, answer, correct) VALUES (?, ?, ?, ?)',
+    [quizId, userId, answer, isCorrect]
+  )
+  
+  return { correct: isCorrect, xp: isCorrect ? quiz.xp_reward : 0, given_by: quiz.created_by }
+}
+

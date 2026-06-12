@@ -19,9 +19,27 @@ export const getAllWarnings = async () => {
 }
 
 export const getWarningsByUser = async (userId) => {
+  const [rows] = await pool.query(`
+    SELECT w.*, a.name AS admin_name
+    FROM warnings w
+    JOIN users a ON a.id = w.given_by
+    WHERE w.user_id = ?
+    ORDER BY w.created_at DESC
+  `, [userId])
+  return rows
+}
+
+export const markWarningAsSeen = async (warningId, userId) => {
+  await pool.query(
+    'UPDATE warnings SET seen = TRUE WHERE id = ? AND user_id = ?',
+    [warningId, userId]
+  )
+}
+
+export const getUnseenWarningsCount = async (userId) => {
   const [rows] = await pool.query(
-    'SELECT * FROM warnings WHERE user_id = ? ORDER BY created_at DESC',
+    'SELECT COUNT(*) as count FROM warnings WHERE user_id = ? AND seen = FALSE',
     [userId]
   )
-  return rows
+  return rows[0].count
 }

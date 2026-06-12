@@ -23,6 +23,8 @@ import SystemBroadcast from './pages/admin/SystemBroadcast'
 import AutomationRules from './pages/admin/AutomationRules'
 import StudentDashboard from './pages/student/StudentDashboard'
 import StudentLessons from './pages/student/StudentLessons'
+import StudentWarnings from './pages/student/StudentWarnings'
+import SurpriseQuizzes from './pages/student/SurpriseQuizzes'
 
 function AppRoutes() {
   const { pathname } = useLocation()
@@ -38,6 +40,8 @@ function AppRoutes() {
           <Route path="/choose-language" element={<ProtectedRoute><ChooseLanguage /></ProtectedRoute>} />
           <Route path="/student" element={<ProtectedRoute><StudentDashboard /></ProtectedRoute>} />
           <Route path="/student/lessons" element={<ProtectedRoute><StudentLessons /></ProtectedRoute>} />
+          <Route path="/student/quizzes" element={<ProtectedRoute><SurpriseQuizzes /></ProtectedRoute>} />
+          <Route path="/student/warnings" element={<ProtectedRoute><StudentWarnings /></ProtectedRoute>} /> 
           <Route path="/lesson/:lessonId" element={<ProtectedRoute><LessonPage /></ProtectedRoute>} />
           <Route path="/level-summary/:levelId" element={<ProtectedRoute><LevelSummary /></ProtectedRoute>} />
           <Route path="/dashboard" element={<Navigate to="/student" replace />} />

@@ -78,6 +78,7 @@ CREATE TABLE IF NOT EXISTS lessons (
 CREATE TABLE IF NOT EXISTS words (
   id               INT AUTO_INCREMENT PRIMARY KEY,
   lesson_id        INT NOT NULL,
+  language_id      INT DEFAULT NULL,
   class_order      INT DEFAULT 1,
   word             VARCHAR(100) NOT NULL,
   translation      VARCHAR(100) NOT NULL,
@@ -85,7 +86,8 @@ CREATE TABLE IF NOT EXISTS words (
   image_url        VARCHAR(255),
   audio_url        VARCHAR(255),
   example_sentence TEXT,
-  FOREIGN KEY (lesson_id) REFERENCES lessons(id) ON DELETE CASCADE
+  FOREIGN KEY (lesson_id) REFERENCES lessons(id) ON DELETE CASCADE,
+  FOREIGN KEY (language_id) REFERENCES languages(id) ON DELETE SET NULL
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- User Languages
