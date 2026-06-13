@@ -712,6 +712,9 @@ INSERT INTO automation_rules (name, trigger_type, condition_value, action_type, 
   ('Inactivity 14-day warning',  'inactivity', 14, 'send_email', 'Don''t lose your progress!',   'Hi {{name}}, 2 weeks without practice. Let''s get back on track together.',        FALSE, 1);
 
 
+
+
+-- check if need delete
 -- ─────────────────────────────────────────────────────────────────────────────
 -- AUDIT LOGS  (admin_id = 1 = Noemie Weiss)
 -- ─────────────────────────────────────────────────────────────────────────────
