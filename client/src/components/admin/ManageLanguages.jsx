@@ -90,7 +90,6 @@ export default function ManageLanguages() {
             <h1>Languages &amp; Levels</h1>
             <p>Manage supported languages and their levels</p>
           </div>
-          <button className="btn-primary btn-header-action" onClick={openCreateLang}>+ New Language</button>
         </div>
 
         {toast && <Toast msg={toast.msg} type={toast.type} onClose={clear} />}

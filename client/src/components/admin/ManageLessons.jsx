@@ -71,7 +71,6 @@ export default function ManageLessons() {
             <h1>Lesson Management</h1>
             <p>Create and manage the learning curriculum</p>
           </div>
-          <button className="btn-primary btn-header-action" onClick={() => setShowCreate(true)}>+ New Lesson</button>
         </div>
 
         {toast && <Toast msg={toast.msg} type={toast.type} onClose={clear} />}
