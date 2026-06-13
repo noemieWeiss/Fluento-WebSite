@@ -4,10 +4,9 @@ export const getPasswordByUserId = async (userId) => {
   const [rows] = await pool.query('SELECT password_hash FROM passwords WHERE user_id = ?', [userId]);
   return rows[0]?.password_hash;
 };
-export const createUserPassword = async (userId, password) => {
+export const createUserPassword = async (userId, password, conn = pool) => {
   const passwordHash = await bcrypt.hash(password, 10);
-  await pool.query('INSERT INTO passwords (user_id, password_hash) VALUES (?, ?)', [userId, passwordHash]);
-
+  await conn.query('INSERT INTO passwords (user_id, password_hash) VALUES (?, ?)', [userId, passwordHash]);
 };
 export const updatePassword = async (userId, newPassword) => {
   const passwordHash = await bcrypt.hash(newPassword, 10);

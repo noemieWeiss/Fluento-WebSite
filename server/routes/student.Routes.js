@@ -2,12 +2,11 @@ import { Router } from 'express'
 import { getStats, getProgress, getLessons, getWarnings, markWarningSeen } from '../controllers/student.Controller.js'
 import { getActiveQuizzesHandler, submitQuizAnswerHandler } from '../controllers/quiz.Controller.js'
 import { authMiddleware } from '../middleware/auth.Middleware.js'
-import { studentMiddleware } from '../middleware/student.Middleware.js'
 import { getUserLanguages } from '../models/userLanguages.Model.js'
 
 const router = Router()
 
-router.use(authMiddleware, studentMiddleware)
+router.use(authMiddleware)
 
 router.get('/stats',     getStats)
 router.get('/progress',  getProgress)
