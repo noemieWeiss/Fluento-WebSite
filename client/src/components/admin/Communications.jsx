@@ -5,6 +5,7 @@ import QuizzesTab from '../../components/admin/communications/QuizzesTab'
 import Toast from '../../components/common/Toast'
 import { useToast } from '../../hooks/useToast'
 import { rewardsApi } from '../../services/rewardsApi'
+import { adminApi } from '../../services/api'
 import '../../styles/admin.css'
 import '../../styles/admin-users.css'
 import '../../styles/admin-rewards.css'
@@ -19,7 +20,7 @@ export default function Communications() {
   const { toast, notify, clear } = useToast()
 
   useEffect(() => {
-    rewardsApi.getStudents().then(setStudents)
+    adminApi.getUsers().then(setStudents)
     rewardsApi.getWarnings().then(setWarnings)
     rewardsApi.getQuizzes().then(setQuizzes)
   }, [])
