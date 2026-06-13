@@ -6,9 +6,7 @@ import SystemBanner from './components/common/SystemBanner'
 import Login from './components/common/Login'
 import Register from './components/common/Register'
 import ChooseLanguage from './components/ChooseLanguage'
-import Dashboard from './components/Dashboard'
 import LessonPage from './components/LessonPage'
-import LevelSummary from './components/LevelSummary'
 import AdminDashboard from './components/admin/AdminDashboard'
 import ManageUsers from './components/admin/ManageUsers'
 import ManageLessons from './components/admin/ManageLessons'
@@ -43,7 +41,6 @@ function AppRoutes() {
           <Route path="/student/quizzes" element={<ProtectedRoute><SurpriseQuizzes /></ProtectedRoute>} />
           <Route path="/student/warnings" element={<ProtectedRoute><StudentWarnings /></ProtectedRoute>} /> 
           <Route path="/lesson/:lessonId" element={<ProtectedRoute><LessonPage /></ProtectedRoute>} />
-          <Route path="/level-summary/:levelId" element={<ProtectedRoute><LevelSummary /></ProtectedRoute>} />
           <Route path="/dashboard" element={<Navigate to="/student" replace />} />
           <Route path="/admin" element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>} />
           <Route path="/admin/users" element={<ProtectedRoute adminOnly><ManageUsers /></ProtectedRoute>} />
