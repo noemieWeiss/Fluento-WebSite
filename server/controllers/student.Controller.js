@@ -1,13 +1,16 @@
-import { 
-  getStudentStats, 
-  getWeeklyActivity, 
-  getUpcomingLessons, 
+import {
+  getStudentStats,
+  getWeeklyActivity,
+  getUpcomingLessons,
   getStudentLessons,
   getStudentProgress,
   countUserLanguages,
   getUserLanguagesDebug
 } from '../models/student.Model.js'
 import { getWarningsByUser, markWarningAsSeen, getUnseenWarningsCount } from '../models/warning.Model.js'
+import { getStudentById, getProgressByUser } from '../models/studentProfile.Model.js'
+import { getBadgesByUser } from '../models/badge.Model.js'
+import { getXPHistoryByUser } from '../models/xp.Model.js'
 
 export const getStats = async (req, res) => {
   try {
@@ -95,6 +98,24 @@ export const markWarningSeen = async (req, res) => {
     res.json({ message: 'Warning marked as seen' })
   } catch (err) {
     console.error('Error marking warning as seen:', err)
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
+export const getStudentProfile = async (req, res) => {
+  try {
+    const { userId } = req.params
+    const user = await getStudentById(userId)
+    if (!user) return res.status(404).json({ message: 'User not found' })
+    const [progress, badges, xpHistory, warnings] = await Promise.all([
+      getProgressByUser(userId),
+      getBadgesByUser(userId),
+      getXPHistoryByUser(userId),
+      getWarningsByUser(userId),
+    ])
+    res.json({ user, progress, badges, xpHistory, warnings })
+  } catch (err) {
+    console.error('Error in getStudentProfile:', err)
     res.status(500).json({ message: 'Server error' })
   }
 }

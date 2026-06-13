@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { getStats, getProgress, getLessons, getWarnings, markWarningSeen } from '../controllers/student.Controller.js'
-import { getActiveQuizzesHandler, submitQuizAnswerHandler } from '../controllers/rewards.Controller.js'
+import { getActiveQuizzesHandler, submitQuizAnswerHandler } from '../controllers/quiz.Controller.js'
 import { authMiddleware } from '../middleware/auth.Middleware.js'
 import { studentMiddleware } from '../middleware/student.Middleware.js'
 import { getUserLanguages } from '../models/userLanguages.Model.js'

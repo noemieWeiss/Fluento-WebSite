@@ -1,16 +1,15 @@
-import { Router } from 'express';
-import { getUsers, getUser, createUser, blockUser, changePassword } from '../controllers/users.Controller.js';
-import { authMiddleware } from '../middleware/auth.Middleware.js';
+import { Router } from 'express'
+import { getUsers, getUser, createUser, changePassword } from '../controllers/users.Controller.js'
+import { blockUser } from '../controllers/block.Controller.js'
+import { authMiddleware } from '../middleware/auth.Middleware.js'
 
-const router = Router();
+const router = Router()
 
-// Public
-router.post('/', createUser);
+router.post('/', createUser)
 
-// Protected
-router.get('/', authMiddleware, getUsers);
-router.post('/block', authMiddleware, blockUser);
-router.get('/:id', authMiddleware, getUser);
-router.put('/:id/password', authMiddleware, changePassword);
+router.get('/',              authMiddleware, getUsers)
+router.get('/:id',           authMiddleware, getUser)
+router.put('/:id/password',  authMiddleware, changePassword)
+router.post('/block',        authMiddleware, blockUser)
 
-export default router;
+export default router

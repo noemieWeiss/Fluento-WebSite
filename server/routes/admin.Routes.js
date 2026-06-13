@@ -5,9 +5,9 @@ import { getStats }                                                  from '../co
 import { getUsers, updateUserHandler, deleteUserHandler }            from '../controllers/user.Controller.js'
 import { getLanguages, createLanguageHandler, updateLanguageHandler, deleteLanguageHandler } from '../controllers/language.Controller.js'
 import { getLevels, createLevelHandler, updateLevelHandler, deleteLevelHandler }             from '../controllers/level.Controller.js'
-import { getLessons, createLessonHandler, updateLessonHandler, deleteLessonHandler,
-         getWordsHandler, createWordHandler, updateWordHandler, deleteWordHandler }           from '../controllers/adminLesson.Controller.js'
-import { getAuditLogs }                                              from '../controllers/auditLog.Controller.js'
+import { getLessons, createLessonHandler, updateLessonHandler, deleteLessonHandler } from '../controllers/adminLesson.Controller.js'
+import { getWordsHandler, createWordHandler, updateWordHandler, deleteWordHandler }  from '../controllers/word.Controller.js'
+import { getAuditLogsHandler }                                        from '../controllers/auditLog.Controller.js'
 
 const router = Router()
 router.use(authMiddleware)
@@ -39,6 +39,6 @@ router.post('/lessons/:lessonId/words',           createWordHandler)
 router.put('/lessons/:lessonId/words/:wordId',    updateWordHandler)
 router.delete('/lessons/:lessonId/words/:wordId', deleteWordHandler)
 
-router.get('/audit-logs', getAuditLogs)
+router.get('/audit-logs', getAuditLogsHandler)
 
 export default router

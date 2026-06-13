@@ -28,10 +28,11 @@ import SurpriseQuizzes from './pages/student/SurpriseQuizzes'
 
 function AppRoutes() {
   const { pathname } = useLocation()
-  const isStudent = pathname.startsWith('/student')
+  const isAdmin = pathname.startsWith('/admin')
+  const isAuth = pathname === '/login' || pathname === '/register'
   return (
     <>
-      {isStudent && <SystemBanner />}
+      {!isAdmin && !isAuth && <SystemBanner />}
       <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />

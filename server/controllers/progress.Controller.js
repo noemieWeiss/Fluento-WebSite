@@ -1,4 +1,5 @@
-import { getLessonProgress, getClassProgress, saveClassProgress, createLessonProgress, updateLessonProgress, updateStudentXP } from '../models/progress.Model.js'
+import { getLessonProgress, getClassProgress, saveClassProgress, createLessonProgress, updateLessonProgress } from '../models/progress.Model.js'
+import { updateStudentXP } from '../models/xp.Model.js'
 
 export const getProgress = async (req, res) => {
   try {
