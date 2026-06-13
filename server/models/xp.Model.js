@@ -35,3 +35,10 @@ export const getXPHistoryByUser = async (userId) => {
 export const resetUserStreak = async (userId) => {
   await pool.query('UPDATE student_profiles SET streak = 0 WHERE user_id = ?', [userId])
 }
+
+export const updateStudentXP = async (userId, xpToAdd) => {
+  await pool.query(
+    'UPDATE student_profiles SET xp = xp + ?, last_active = NOW() WHERE user_id = ?',
+    [xpToAdd, userId]
+  )
+}

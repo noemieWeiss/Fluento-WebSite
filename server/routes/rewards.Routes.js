@@ -1,12 +1,11 @@
 import { Router } from 'express'
 import { authMiddleware } from '../middleware/auth.Middleware.js'
 import { auditLog } from '../middleware/auditLog.Middleware.js'
-import { giveXP, getXPHistory, resetStreak,
-         getBadges, getUserBadges, createBadgeHandler, giveBadge, revokeBadge,
-         getLeaderboardHandler }                                         from '../controllers/rewards.Controller.js'
-import { sendWarning, getWarningsHandler,
-         getQuizzes, createQuizHandler, toggleQuiz,
-         getStudentProfile }                                             from '../controllers/communications.Controller.js'
+import { giveXP, getXPHistory, resetStreak, getLeaderboardHandler } from '../controllers/xp.Controller.js'
+import { getBadges, getUserBadges, createBadgeHandler, giveBadge, revokeBadge } from '../controllers/badge.Controller.js'
+import { sendWarning, getWarningsHandler } from '../controllers/warning.Controller.js'
+import { getQuizzes, createQuizHandler, toggleQuiz } from '../controllers/quiz.Controller.js'
+import { getStudentProfile } from '../controllers/student.Controller.js'
 
 const router = Router()
 router.use(authMiddleware)
