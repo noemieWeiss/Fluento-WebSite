@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { authMiddleware } from '../middleware/auth.Middleware.js'
 import { auditLog } from '../middleware/auditLog.Middleware.js'
 import { getStats }                                                  from '../controllers/stats.Controller.js'
-import { getUsers, updateUserHandler, deleteUserHandler }            from '../controllers/user.Controller.js'
+import { getUsers, updateUserHandler, deleteUserHandler, createAdminHandler } from '../controllers/user.Controller.js'
 import { getLanguages, createLanguageHandler, updateLanguageHandler, deleteLanguageHandler } from '../controllers/language.Controller.js'
 import { getLevels, createLevelHandler, updateLevelHandler, deleteLevelHandler }             from '../controllers/level.Controller.js'
 import { getLessons, createLessonHandler, updateLessonHandler, deleteLessonHandler } from '../controllers/adminLesson.Controller.js'
@@ -16,6 +16,7 @@ router.use(auditLog)
 router.get('/stats', getStats)
 
 router.get('/users',        getUsers)
+router.post('/users/admin', createAdminHandler)
 router.put('/users/:id',    updateUserHandler)
 router.delete('/users/:id', deleteUserHandler)
 

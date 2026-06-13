@@ -48,6 +48,16 @@ export const adminApi = {
       method: 'DELETE', headers: authHeader()
     }).then(handleResponse).then(r => r.json()),
 
+  createAdmin: async (data) => {
+    const res = await fetch(`${API_BASE}/admin/users/admin`, {
+      method: 'POST', headers: jsonHeaders(), body: JSON.stringify(data)
+    })
+    await handleResponse(res)
+    const json = await res.json()
+    if (!res.ok) throw new Error(json.message || 'Failed to create admin')
+    return json
+  },
+
   getLevels: () =>
     fetch(`${API_BASE}/admin/levels`, { headers: authHeader() })
       .then(handleResponse).then(r => r.json()),

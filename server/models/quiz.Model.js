@@ -42,22 +42,33 @@ export const getActiveQuizzes = async (userId) => {
 }
 
 export const submitQuizAnswer = async (quizId, userId, answer) => {
-  const [[quiz]] = await pool.query('SELECT correct, xp_reward, created_by FROM surprise_quizzes WHERE id = ?', [quizId])
-  if (!quiz) throw new Error('Quiz not found')
+  const conn = await pool.getConnection()
+  try {
+    await conn.beginTransaction()
 
-  const [[existing]] = await pool.query(
-    'SELECT id FROM quiz_answers WHERE quiz_id = ? AND user_id = ?',
-    [quizId, userId]
-  )
-  if (existing) throw new Error('Already answered')
+    const [[quiz]] = await conn.query('SELECT correct, xp_reward, created_by FROM surprise_quizzes WHERE id = ? FOR UPDATE', [quizId])
+    if (!quiz) throw new Error('Quiz not found')
 
-  const isCorrect = quiz.correct.toLowerCase() === answer.toLowerCase()
+    const [[existing]] = await conn.query(
+      'SELECT id FROM quiz_answers WHERE quiz_id = ? AND user_id = ?',
+      [quizId, userId]
+    )
+    if (existing) throw new Error('Already answered')
 
-  await pool.query(
-    'INSERT INTO quiz_answers (quiz_id, user_id, answer, correct) VALUES (?, ?, ?, ?)',
-    [quizId, userId, answer, isCorrect]
-  )
+    const isCorrect = quiz.correct.toLowerCase() === answer.toLowerCase()
 
-  return { correct: isCorrect, xp: isCorrect ? quiz.xp_reward : 0, given_by: quiz.created_by }
+    await conn.query(
+      'INSERT INTO quiz_answers (quiz_id, user_id, answer, correct) VALUES (?, ?, ?, ?)',
+      [quizId, userId, answer, isCorrect]
+    )
+
+    await conn.commit()
+    return { correct: isCorrect, xp: isCorrect ? quiz.xp_reward : 0, given_by: quiz.created_by }
+  } catch (err) {
+    await conn.rollback()
+    throw err
+  } finally {
+    conn.release()
+  }
 }
 

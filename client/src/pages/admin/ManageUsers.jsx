@@ -15,6 +15,8 @@ export default function ManageUsers() {
   const [filterStatus, setFilterStatus] = useState('all')
   const [editUser, setEditUser]         = useState(null)
   const [confirmDelete, setConfirmDelete] = useState(null)
+  const [showAddAdmin, setShowAddAdmin]   = useState(false)
+  const [adminForm, setAdminForm]         = useState({ name: '', email: '', password: '' })
   const { toast, notify, clear }        = useToast()
   const navigate = useNavigate()
 
@@ -42,6 +44,19 @@ export default function ManageUsers() {
     notify(`${user.name} deleted`, 'error')
   }
 
+  const handleAddAdmin = async () => {
+    if (!adminForm.name || !adminForm.email || !adminForm.password)
+      return notify('Fill all fields', 'error')
+    try {
+      await adminApi.createAdmin(adminForm)
+      notify(`Admin ${adminForm.name} created successfully`)
+      setAdminForm({ name: '', email: '', password: '' })
+      setShowAddAdmin(false)
+    } catch (err) {
+      notify(err.message || 'Failed to create admin', 'error')
+    }
+  }
+
   const filtered = users.filter(u => {
     const matchSearch = u.name.toLowerCase().includes(search.toLowerCase()) || u.email.toLowerCase().includes(search.toLowerCase())
     const matchStatus = filterStatus === 'all' || (u.status ?? 'active') === filterStatus
@@ -55,6 +70,7 @@ export default function ManageUsers() {
         <div className="admin-page-header">
           <h1>User Management</h1>
           <p>Manage all registered students</p>
+          <button className="btn-primary" onClick={() => setShowAddAdmin(true)}>+ Add Admin</button>
         </div>
 
         {toast && <Toast msg={toast.msg} type={toast.type} onClose={clear} />}
@@ -121,6 +137,30 @@ export default function ManageUsers() {
             </table>
           )}
         </div>
+
+        {showAddAdmin && (
+          <div className="modal-overlay" onClick={() => setShowAddAdmin(false)}>
+            <div className="modal-box" onClick={e => e.stopPropagation()}>
+              <h3>Add New Admin</h3>
+              <div className="field-group">
+                <label>Name</label>
+                <input className="admin-input" placeholder="Full name" value={adminForm.name} onChange={e => setAdminForm(f => ({ ...f, name: e.target.value }))} />
+              </div>
+              <div className="field-group">
+                <label>Email</label>
+                <input className="admin-input" type="email" placeholder="Email" value={adminForm.email} onChange={e => setAdminForm(f => ({ ...f, email: e.target.value }))} />
+              </div>
+              <div className="field-group">
+                <label>Password</label>
+                <input className="admin-input" type="password" placeholder="Password" value={adminForm.password} onChange={e => setAdminForm(f => ({ ...f, password: e.target.value }))} />
+              </div>
+              <div className="modal-footer">
+                <button className="btn-ghost" onClick={() => setShowAddAdmin(false)}>Cancel</button>
+                <button className="btn-primary" onClick={handleAddAdmin}>Create Admin</button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {editUser && <EditUserModal user={editUser} onClose={() => setEditUser(null)} onSave={handleSaveEdit} />}
 

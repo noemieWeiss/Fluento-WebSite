@@ -50,22 +50,60 @@ export const updateUser = async (id, { name, email, status }) => {
 }
 
 export const deleteUserById = async (id) => {
-  await pool.query('DELETE FROM user_progress WHERE user_id = ?', [id])
-  await pool.query('DELETE FROM user_languages WHERE user_id = ?', [id])
-  await pool.query('DELETE FROM passwords WHERE user_id = ?', [id])
-  await pool.query('DELETE FROM users WHERE id = ?', [id])
+  const conn = await pool.getConnection()
+  try {
+    await conn.beginTransaction()
+    await conn.query('DELETE FROM user_progress WHERE user_id = ?', [id])
+    await conn.query('DELETE FROM user_languages WHERE user_id = ?', [id])
+    await conn.query('DELETE FROM passwords WHERE user_id = ?', [id])
+    await conn.query('DELETE FROM users WHERE id = ?', [id])
+    await conn.commit()
+  } catch (err) {
+    await conn.rollback()
+    throw err
+  } finally {
+    conn.release()
+  }
+}
+
+export const createAdminUser = async ({ name, email, password }) => {
+  const conn = await pool.getConnection()
+  try {
+    await conn.beginTransaction()
+    const [result] = await conn.query('INSERT INTO users (name, email) VALUES (?, ?)', [name, email])
+    const userId = result.insertId
+    await createUserPassword(userId, password, conn)
+    const [[adminRole]] = await conn.query('SELECT id FROM roles WHERE name = ?', ['admin'])
+    if (adminRole) {
+      await conn.query('INSERT INTO roles_to_users (user_id, role_id) VALUES (?, ?)', [userId, adminRole.id])
+    }
+    await conn.commit()
+    return { id: userId, name, email, role: 'admin' }
+  } catch (err) {
+    await conn.rollback()
+    throw err
+  } finally {
+    conn.release()
+  }
 }
 
 export const createUserWithPassword = async ({ name, email, password }) => {
-  const [result] = await pool.query(
-    'INSERT INTO users (name, email) VALUES (?, ?)',
-    [name, email]
-  );
-  const userId = result.insertId;
-  await createUserPassword(userId, password);
-  const [[studentRole]] = await pool.query('SELECT id FROM roles WHERE name = ?', ['student']);
-  if (studentRole) {
-    await pool.query('INSERT INTO roles_to_users (user_id, role_id) VALUES (?, ?)', [userId, studentRole.id]);
+  const conn = await pool.getConnection()
+  try {
+    await conn.beginTransaction()
+    const [result] = await conn.query('INSERT INTO users (name, email) VALUES (?, ?)', [name, email])
+    const userId = result.insertId
+    await createUserPassword(userId, password, conn)
+    const [[studentRole]] = await conn.query('SELECT id FROM roles WHERE name = ?', ['student'])
+    if (studentRole) {
+      await conn.query('INSERT INTO roles_to_users (user_id, role_id) VALUES (?, ?)', [userId, studentRole.id])
+    }
+    await conn.commit()
+    return { id: userId, name, email, role: 'student' }
+  } catch (err) {
+    await conn.rollback()
+    throw err
+  } finally {
+    conn.release()
   }
-  return { id: userId, name, email, role: 'student' };
-};
+}
