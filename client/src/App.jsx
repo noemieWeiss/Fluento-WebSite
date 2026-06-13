@@ -5,26 +5,24 @@ import SystemBanner from './components/common/SystemBanner'
 
 import Login from './components/common/Login'
 import Register from './components/common/Register'
-import ChooseLanguage from './pages/ChooseLanguage'
-import Dashboard from './pages/Dashboard'
-import LessonPage from './pages/LessonPage'
-import LevelSummary from './pages/LevelSummary'
-import AdminDashboard from './pages/admin/AdminDashboard'
-import ManageUsers from './pages/admin/ManageUsers'
-import ManageLessons from './pages/admin/ManageLessons'
-import ManageLanguages from './pages/admin/ManageLanguages'
-import ManageWords from './pages/admin/ManageWords'
-import CreateLesson from './pages/admin/CreateLesson'
-import Rewards from './pages/admin/Rewards'
-import Communications from './pages/admin/Communications'
-import StudentProfile from './pages/admin/StudentProfile'
-import AuditLogs from './pages/admin/AuditLogs'
-import SystemBroadcast from './pages/admin/SystemBroadcast'
-import AutomationRules from './pages/admin/AutomationRules'
-import StudentDashboard from './pages/student/StudentDashboard'
-import StudentLessons from './pages/student/StudentLessons'
-import StudentWarnings from './pages/student/StudentWarnings'
-import SurpriseQuizzes from './pages/student/SurpriseQuizzes'
+import ChooseLanguage from './components/ChooseLanguage'
+import LessonPage from './components/LessonPage'
+import AdminDashboard from './components/admin/AdminDashboard'
+import ManageUsers from './components/admin/ManageUsers'
+import ManageLessons from './components/admin/ManageLessons'
+import ManageLanguages from './components/admin/ManageLanguages'
+import ManageWords from './components/admin/ManageWords'
+import CreateLesson from './components/admin/CreateLesson'
+import Rewards from './components/admin/Rewards'
+import Communications from './components/admin/Communications'
+import StudentProfile from './components/admin/StudentProfile'
+import AuditLogs from './components/admin/AuditLogs'
+import SystemBroadcast from './components/admin/SystemBroadcast'
+import AutomationRules from './components/admin/AutomationRules'
+import StudentDashboard from './components/student/StudentDashboard'
+import StudentLessons from './components/student/StudentLessons'
+import StudentWarnings from './components/student/StudentWarnings'
+import SurpriseQuizzes from './components/student/SurpriseQuizzes'
 
 function AppRoutes() {
   const { pathname } = useLocation()
@@ -43,7 +41,6 @@ function AppRoutes() {
           <Route path="/student/quizzes" element={<ProtectedRoute><SurpriseQuizzes /></ProtectedRoute>} />
           <Route path="/student/warnings" element={<ProtectedRoute><StudentWarnings /></ProtectedRoute>} /> 
           <Route path="/lesson/:lessonId" element={<ProtectedRoute><LessonPage /></ProtectedRoute>} />
-          <Route path="/level-summary/:levelId" element={<ProtectedRoute><LevelSummary /></ProtectedRoute>} />
           <Route path="/dashboard" element={<Navigate to="/student" replace />} />
           <Route path="/admin" element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>} />
           <Route path="/admin/users" element={<ProtectedRoute adminOnly><ManageUsers /></ProtectedRoute>} />

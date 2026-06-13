@@ -11,7 +11,7 @@ const LessonPage = () => {
   const [classes, setClasses] = useState([])
   const [currentClassIndex, setCurrentClassIndex] = useState(0)
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
-  const [phase, setPhase] = useState('learn') // learn, quiz, classComplete, complete
+  const [phase, setPhase] = useState('learn') 
   const [quizAnswers, setQuizAnswers] = useState({})
   const [completedClasses, setCompletedClasses] = useState([])
   const [loading, setLoading] = useState(true)
@@ -27,7 +27,6 @@ const LessonPage = () => {
       
       console.log('Loading lesson:', lessonId)
       
-      // Load classes
       const classesRes = await fetch(`${API_BASE}/lessons/${lessonId}/classes`, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
@@ -39,14 +38,11 @@ const LessonPage = () => {
         console.log('First class words:', classesData[0].words.length)
       }
       
-      // Load progress
       const progressRes = await fetch(`${API_BASE}/progress/lessons/${lessonId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
       const progressData = await progressRes.json()
-      
-      // Normalize classes: ensure each class contains exactly 2 words.
-      // Flatten all words and chunk into groups of 2. If odd, duplicate last word.
+
       const allWords = classesData.flatMap(c => c.words || [])
       const normalized = []
       for (let i = 0; i < allWords.length; i += 2) {
@@ -64,7 +60,6 @@ const LessonPage = () => {
       setClasses(normalized)
       setCompletedClasses(progressData.completedClasses || [])
 
-      // Resume from last incomplete class using normalized classes
       const nextClassIndex = normalized.findIndex(c => 
         !progressData.completedClasses?.includes(c.classNumber)
       )
@@ -72,7 +67,6 @@ const LessonPage = () => {
       if (nextClassIndex !== -1) {
         setCurrentClassIndex(nextClassIndex)
       } else if (progressData.lessonCompleted) {
-        // All done, show completion
         setPhase('complete')
       }
       
