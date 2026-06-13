@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import ProgressBar from '../components/quiz/ProgressBar';
-import QuestionCard from '../components/quiz/QuestionCard';
-import AnswerOptions from '../components/quiz/AnswerOptions';
-import FeedbackSection from '../components/quiz/FeedbackSection';
-import LessonSummary from '../components/quiz/LessonSummary';
-import LoadingSpinner from '../components/common/LoadingSpinner';
+import ProgressBar from './quiz/ProgressBar';
+import QuestionCard from './quiz/QuestionCard';
+import AnswerOptions from './quiz/AnswerOptions';
+import FeedbackSection from './quiz/FeedbackSection';
+import LessonSummary from './quiz/LessonSummary';
+import LoadingSpinner from './common/LoadingSpinner';
 
 const Lesson = () => {
   const { lessonId } = useParams();
