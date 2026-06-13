@@ -6,6 +6,7 @@ import Leaderboard from '../../components/admin/rewards/Leaderboard'
 import Toast from '../../components/common/Toast'
 import { useToast } from '../../hooks/useToast'
 import { rewardsApi } from '../../services/rewardsApi'
+import { adminApi } from '../../services/api'
 import '../../styles/admin.css'
 import '../../styles/admin-users.css'
 import '../../styles/admin-rewards.css'
@@ -21,7 +22,7 @@ export default function Rewards() {
   const { toast, notify, clear }    = useToast()
 
   useEffect(() => {
-    rewardsApi.getStudents().then(setStudents)
+    adminApi.getUsers().then(setStudents)
     rewardsApi.getBadges().then(setBadges)
     rewardsApi.getLeaderboard().then(setLeaderboard)
   }, [])

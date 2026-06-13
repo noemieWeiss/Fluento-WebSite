@@ -1,44 +1,84 @@
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
-const BASE = `${API}/rewards`
-const STUDENT = `${API}/student`
-const ADMIN = `${API}/admin`
+import { API_BASE, authHeader, jsonHeaders, handleResponse } from './api'
 
-const tok  = () => { try { return JSON.parse(localStorage.getItem('authUser'))?.token } catch { return null } }
-const auth = () => ({ Authorization: `Bearer ${tok()}` })
-const json = () => ({ 'Content-Type': 'application/json', ...auth() })
-
-const get  = (url)       => fetch(url, { headers: auth() }).then(r => r.json())
-const post = (url, body) => fetch(url, { method: 'POST',   headers: json(), body: JSON.stringify(body) }).then(r => r.json())
-const put  = (url)       => fetch(url, { method: 'PUT',    headers: auth() }).then(r => r.json())
-const del  = (url)       => fetch(url, { method: 'DELETE', headers: auth() }).then(r => r.json())
+const BASE = `${API_BASE}/rewards`
+const STUDENT = `${API_BASE}/student`
 
 export const rewardsApi = {
   // XP
-  giveXP:      (body)           => post(`${BASE}/xp`, body),
-  resetStreak: (userId)         => put(`${BASE}/streak/${userId}/reset`),
+  giveXP: (body) =>
+    fetch(`${BASE}/xp`, {
+      method: 'POST', headers: jsonHeaders(), body: JSON.stringify(body)
+    }).then(handleResponse).then(r => r.json()),
+
+  resetStreak: (userId) =>
+    fetch(`${BASE}/streak/${userId}/reset`, {
+      method: 'PUT', headers: authHeader()
+    }).then(handleResponse).then(r => r.json()),
 
   // Badges
-  getBadges:   ()               => get(`${BASE}/badges`),
-  createBadge: (body)           => post(`${BASE}/badges`, body),
-  giveBadge:   (body)           => post(`${BASE}/badges/give`, body),
-  getUserBadges: (userId)       => get(`${BASE}/badges/${userId}`),
-  revokeBadge: (userId, badgeId) => del(`${BASE}/badges/${userId}/${badgeId}`),
+  getBadges: () =>
+    fetch(`${BASE}/badges`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json()),
+
+  createBadge: (body) =>
+    fetch(`${BASE}/badges`, {
+      method: 'POST', headers: jsonHeaders(), body: JSON.stringify(body)
+    }).then(handleResponse).then(r => r.json()),
+
+  giveBadge: (body) =>
+    fetch(`${BASE}/badges/give`, {
+      method: 'POST', headers: jsonHeaders(), body: JSON.stringify(body)
+    }).then(handleResponse).then(r => r.json()),
+
+  getUserBadges: (userId) =>
+    fetch(`${BASE}/badges/${userId}`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json()),
+
+  revokeBadge: (userId, badgeId) =>
+    fetch(`${BASE}/badges/${userId}/${badgeId}`, {
+      method: 'DELETE', headers: authHeader()
+    }).then(handleResponse).then(r => r.json()),
 
   // Warnings
-  getWarnings: ()               => get(`${BASE}/warnings`),
-  sendWarning: (body)           => post(`${BASE}/warnings`, body),
+  getWarnings: () =>
+    fetch(`${BASE}/warnings`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json()),
+
+  sendWarning: (body) =>
+    fetch(`${BASE}/warnings`, {
+      method: 'POST', headers: jsonHeaders(), body: JSON.stringify(body)
+    }).then(handleResponse).then(r => r.json()),
 
   // Quizzes
-  getQuizzes:  ()               => get(`${BASE}/quizzes`),
-  createQuiz:  (body)           => post(`${BASE}/quizzes`, body),
-  toggleQuiz:  (id)             => put(`${BASE}/quizzes/${id}/toggle`),
-  getActiveQuizzes: ()          => get(`${STUDENT}/quizzes`),
-  submitQuizAnswer: (body)      => post(`${STUDENT}/quizzes/answer`, body),
+  getQuizzes: () =>
+    fetch(`${BASE}/quizzes`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json()),
+
+  createQuiz: (body) =>
+    fetch(`${BASE}/quizzes`, {
+      method: 'POST', headers: jsonHeaders(), body: JSON.stringify(body)
+    }).then(handleResponse).then(r => r.json()),
+
+  toggleQuiz: (id) =>
+    fetch(`${BASE}/quizzes/${id}/toggle`, {
+      method: 'PUT', headers: authHeader()
+    }).then(handleResponse).then(r => r.json()),
+
+  getActiveQuizzes: () =>
+    fetch(`${STUDENT}/quizzes`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json()),
+
+  submitQuizAnswer: (body) =>
+    fetch(`${STUDENT}/quizzes/answer`, {
+      method: 'POST', headers: jsonHeaders(), body: JSON.stringify(body)
+    }).then(handleResponse).then(r => r.json()),
 
   // Leaderboard & profiles
-  getLeaderboard:    ()         => get(`${BASE}/leaderboard`),
-  getStudentProfile: (userId)   => get(`${BASE}/students/${userId}`),
+  getLeaderboard: () =>
+    fetch(`${BASE}/leaderboard`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json()),
 
-  // Students list (from admin routes)
-  getStudents: ()               => get(`${ADMIN}/users`),
+  getStudentProfile: (userId) =>
+    fetch(`${BASE}/students/${userId}`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json()),
 }
