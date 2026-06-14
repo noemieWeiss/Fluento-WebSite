@@ -37,8 +37,22 @@ export const resetUserStreak = async (userId) => {
 }
 
 export const updateStudentXP = async (userId, xpToAdd) => {
-  await pool.query(
-    'UPDATE student_profiles SET xp = xp + ?, last_active = NOW() WHERE user_id = ?',
-    [xpToAdd, userId]
-  )
+  const conn = await pool.getConnection()
+  try {
+    await conn.beginTransaction()
+    await conn.query(
+      'UPDATE student_profiles SET xp = xp + ?, last_active = NOW() WHERE user_id = ?',
+      [xpToAdd, userId]
+    )
+    await conn.query(
+      'INSERT INTO xp_transactions (user_id, amount, reason, given_by) VALUES (?, ?, ?, ?)',
+      [userId, xpToAdd, 'Lesson completed', userId]
+    )
+    await conn.commit()
+  } catch (err) {
+    await conn.rollback()
+    throw err
+  } finally {
+    conn.release()
+  }
 }

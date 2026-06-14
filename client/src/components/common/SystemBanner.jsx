@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { broadcastApi } from '../../services/api'
+import { useUser } from '../../context/UserContext'
 
 export default function SystemBanner() {
+  const { user } = useUser()
   const [broadcasts, setBroadcasts] = useState([])
   const [dismissed, setDismissed]   = useState(() => {
     try { return JSON.parse(sessionStorage.getItem('dismissedBanners') || '[]') }
@@ -9,10 +11,19 @@ export default function SystemBanner() {
   })
 
   useEffect(() => {
+    if (!user) return
     broadcastApi.getActive()
       .then(data => setBroadcasts(Array.isArray(data) ? data : []))
       .catch(() => {})
-  }, [])
+
+    const interval = setInterval(() => {
+      broadcastApi.getActive()
+        .then(data => setBroadcasts(Array.isArray(data) ? data : []))
+        .catch(() => {})
+    }, 30000)
+
+    return () => clearInterval(interval)
+  }, [user])
 
   const dismiss = (id) => {
     const next = [...dismissed, id]

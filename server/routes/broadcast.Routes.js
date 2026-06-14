@@ -8,10 +8,10 @@ import {
 } from '../controllers/broadcast.Controller.js'
 
 const router = Router()
-router.use(authMiddleware)
 
 router.get('/active', getActiveBroadcasts)
 
+router.use(authMiddleware)
 router.use(auditLog)
 router.get('/',                 getAllBroadcasts)
 router.post('/',                createBroadcastHandler)

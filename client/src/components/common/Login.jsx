@@ -20,11 +20,11 @@ function Login() {
       if (user) {
         login(user)
         if (user.role === 'admin') {
-          navigate('/admin')
+          navigate('/admin', { replace: true })
         } else if (user.isNewStudent) {
-          navigate('/choose-language')
+          navigate('/choose-language', { replace: true })
         } else {
-          navigate('/student')
+          navigate('/student', { replace: true })
         }
       } else {
         alert('email or password incorrect')

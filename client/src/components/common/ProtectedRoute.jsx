@@ -1,15 +1,22 @@
 import { Navigate } from 'react-router-dom'
 import { useUser } from '../../context/UserContext'
 
-function ProtectedRoute({ children, adminOnly = false }) {
-  const { user } = useUser()
+function ProtectedRoute({ children, adminOnly = false, studentOnly = false }) {
+  const { user, logout } = useUser()
 
-  if (!user) {
+  const tokenExists = !!localStorage.getItem('authUser')
+
+  if (!user || !tokenExists) {
+    if (user && !tokenExists) logout()
     return <Navigate to="/login" replace />
   }
 
   if (adminOnly && user.role !== 'admin') {
-    return <Navigate to="/dashboard" replace />
+    return <Navigate to="/student" replace />
+  }
+
+  if (studentOnly && user.role !== 'student') {
+    return <Navigate to="/admin" replace />
   }
 
   return children

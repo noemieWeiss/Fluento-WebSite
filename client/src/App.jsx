@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { UserProvider } from './context/UserContext'
+import CacheProvider from './context/CacheContext'
 import ProtectedRoute from './components/common/ProtectedRoute'
 import SystemBanner from './components/common/SystemBanner'
 
@@ -35,12 +36,12 @@ function AppRoutes() {
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/choose-language" element={<ProtectedRoute><ChooseLanguage /></ProtectedRoute>} />
-          <Route path="/student" element={<ProtectedRoute><StudentDashboard /></ProtectedRoute>} />
-          <Route path="/student/lessons" element={<ProtectedRoute><StudentLessons /></ProtectedRoute>} />
-          <Route path="/student/quizzes" element={<ProtectedRoute><SurpriseQuizzes /></ProtectedRoute>} />
-          <Route path="/student/warnings" element={<ProtectedRoute><StudentWarnings /></ProtectedRoute>} /> 
-          <Route path="/lesson/:lessonId" element={<ProtectedRoute><LessonPage /></ProtectedRoute>} />
+          <Route path="/choose-language" element={<ProtectedRoute studentOnly><ChooseLanguage /></ProtectedRoute>} />
+          <Route path="/student" element={<ProtectedRoute studentOnly><StudentDashboard /></ProtectedRoute>} />
+          <Route path="/student/lessons" element={<ProtectedRoute studentOnly><StudentLessons /></ProtectedRoute>} />
+          <Route path="/student/quizzes" element={<ProtectedRoute studentOnly><SurpriseQuizzes /></ProtectedRoute>} />
+          <Route path="/student/warnings" element={<ProtectedRoute studentOnly><StudentWarnings /></ProtectedRoute>} />
+          <Route path="/lesson/:lessonId" element={<ProtectedRoute studentOnly><LessonPage /></ProtectedRoute>} />
           <Route path="/dashboard" element={<Navigate to="/student" replace />} />
           <Route path="/admin" element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>} />
           <Route path="/admin/users" element={<ProtectedRoute adminOnly><ManageUsers /></ProtectedRoute>} />
@@ -54,6 +55,7 @@ function AppRoutes() {
           <Route path="/admin/audit-logs" element={<ProtectedRoute adminOnly><AuditLogs /></ProtectedRoute>} />
           <Route path="/admin/broadcasts" element={<ProtectedRoute adminOnly><SystemBroadcast /></ProtectedRoute>} />
           <Route path="/admin/automations" element={<ProtectedRoute adminOnly><AutomationRules /></ProtectedRoute>} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
     </>
   )
@@ -61,11 +63,13 @@ function AppRoutes() {
 
 function App() {
   return (
-    <UserProvider>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
-    </UserProvider>
+    <CacheProvider>
+      <UserProvider>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </UserProvider>
+    </CacheProvider>
   )
 }
 

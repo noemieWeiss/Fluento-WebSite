@@ -14,7 +14,7 @@ export default function ProfileMenu({ onClose }) {
   const [pwError, setPwError] = useState('')
   const [saving,  setSaving]  = useState(false)
 
-  const handleLogout = () => { logout(); navigate('/login') }
+  const handleLogout = () => { logout(); navigate('/login', { replace: true }) }
 
   const handleSaveName = async () => {
     if (!newName.trim()) return
