@@ -101,8 +101,11 @@ function ChooseLanguage() {
 
   if (isNewStudent) {
     return (
+      <div className="student-layout">
+        <StudentSidebar />
       <div className="choose-language-page">
         <div className="choose-language-container">{content}</div>
+      </div>
       </div>
     )
   }

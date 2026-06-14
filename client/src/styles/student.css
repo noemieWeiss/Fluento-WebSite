@@ -107,7 +107,9 @@
   text-align: left;
 }
 
-.sidebar-profile:hover { background: #1e2535; }
+.sidebar-profile:hover {
+  background: #1e2535;
+}
 
 .sidebar-avatar {
   width: 36px;
@@ -123,7 +125,10 @@
   flex-shrink: 0;
 }
 
-.sidebar-profile-info { flex: 1; min-width: 0; }
+.sidebar-profile-info {
+  flex: 1;
+  min-width: 0;
+}
 
 .sidebar-profile-name {
   font-size: 13px;
@@ -157,14 +162,21 @@
   border: 1px solid #1e2535;
   border-radius: 12px;
   padding: 6px;
-  box-shadow: 0 -8px 32px rgba(0,0,0,0.4);
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.4);
   animation: menuUp 0.15s ease;
   z-index: 200;
 }
 
 @keyframes menuUp {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .sidebar-menu-label {
@@ -193,10 +205,24 @@
   text-align: left;
 }
 
-.sidebar-menu-item:hover { background: #1e2535; color: #e2e8f0; }
-.sidebar-menu-item.accent { color: #60a5fa; }
-.sidebar-menu-item.accent:hover { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
-.sidebar-menu-item.danger:hover { background: rgba(239, 68, 68, 0.12); color: #f87171; }
+.sidebar-menu-item:hover {
+  background: #1e2535;
+  color: #e2e8f0;
+}
+
+.sidebar-menu-item.accent {
+  color: #60a5fa;
+}
+
+.sidebar-menu-item.accent:hover {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+}
+
+.sidebar-menu-item.danger:hover {
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+}
 
 .sidebar-menu-divider {
   height: 1px;
@@ -205,7 +231,9 @@
 }
 
 /* ─── Sidebar inline edit ─── */
-.sidebar-edit-form { padding: 4px 2px; }
+.sidebar-edit-form {
+  padding: 4px 2px;
+}
 
 .sidebar-edit-input {
   width: 100%;
@@ -280,9 +308,17 @@
   height: 2px;
 }
 
-.kpi-card.blue::before   { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
-.kpi-card.green::before  { background: linear-gradient(90deg, #10b981, #34d399); }
-.kpi-card.orange::before { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.kpi-card.blue::before {
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+}
+
+.kpi-card.green::before {
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+.kpi-card.orange::before {
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
 
 .kpi-card:hover {
   transform: translateY(-2px);
@@ -300,9 +336,17 @@
   flex-shrink: 0;
 }
 
-.kpi-card.blue .kpi-icon  { background: rgba(59, 130, 246, 0.15); }
-.kpi-card.green .kpi-icon { background: rgba(16, 185, 129, 0.15); }
-.kpi-card.orange .kpi-icon { background: rgba(245, 158, 11, 0.15); }
+.kpi-card.blue .kpi-icon {
+  background: rgba(59, 130, 246, 0.15);
+}
+
+.kpi-card.green .kpi-icon {
+  background: rgba(16, 185, 129, 0.15);
+}
+
+.kpi-card.orange .kpi-icon {
+  background: rgba(245, 158, 11, 0.15);
+}
 
 .kpi-info {
   flex: 1;
@@ -324,9 +368,17 @@
   color: #f1f5f9;
 }
 
-.kpi-card.blue .kpi-value   { color: #60a5fa; }
-.kpi-card.green .kpi-value  { color: #34d399; }
-.kpi-card.orange .kpi-value { color: #fbbf24; }
+.kpi-card.blue .kpi-value {
+  color: #60a5fa;
+}
+
+.kpi-card.green .kpi-value {
+  color: #34d399;
+}
+
+.kpi-card.orange .kpi-value {
+  color: #fbbf24;
+}
 
 .kpi-sub {
   font-size: 12px;
@@ -467,7 +519,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .student-error {
@@ -508,7 +562,9 @@
 }
 
 /* ─── Loading text ─── */
-.loading-text { color: #475569; }
+.loading-text {
+  color: #475569;
+}
 
 /* ─── Choose Language Page ─── */
 .choose-language-page {
@@ -518,6 +574,7 @@
   align-items: center;
   justify-content: center;
   padding: 24px;
+  width: 100%;
 }
 
 .choose-language-container {
@@ -745,14 +802,28 @@
 
 /* ─── Responsive ─── */
 @media (max-width: 1024px) {
-  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-  .charts-row { grid-template-columns: 1fr; }
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .charts-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 768px) {
-  .student-sidebar { display: none; }
-  .student-main { margin-left: 0; padding: 16px; }
-  .kpi-grid { grid-template-columns: 1fr; }
+  .student-sidebar {
+    display: none;
+  }
+
+  .student-main {
+    margin-left: 0;
+    padding: 16px;
+  }
+
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ─── Badges ─── */
@@ -772,9 +843,14 @@
   transition: transform 0.2s;
 }
 
-.badge-item:hover { transform: translateY(-2px); }
+.badge-item:hover {
+  transform: translateY(-2px);
+}
 
-.badge-emoji { font-size: 2rem; margin-bottom: 6px; }
+.badge-emoji {
+  font-size: 2rem;
+  margin-bottom: 6px;
+}
 
 .badge-name {
   font-size: 0.8rem;
