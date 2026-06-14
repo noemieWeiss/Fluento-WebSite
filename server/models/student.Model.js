@@ -7,7 +7,7 @@ export const getStudentStats = async (userId) => {
   )
 
   const [[{ totalXP }]] = await pool.query(
-    'SELECT COALESCE(SUM(score), 0) AS totalXP FROM user_progress WHERE user_id = ? AND completed = TRUE',
+    'SELECT COALESCE(xp, 0) AS totalXP FROM student_profiles WHERE user_id = ?',
     [userId]
   )
 
