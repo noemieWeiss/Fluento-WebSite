@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import StudentSidebar from '../components/student/StudentSidebar'
+import StudentSidebar from './student/sidebar/StudentSidebar'
 import { useUser } from '../context/UserContext'
 import '../styles/student.css'
 
