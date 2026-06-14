@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 import { UserProvider } from './context/UserContext'
 import CacheProvider from './context/CacheContext'
 import ProtectedRoute from './components/common/ProtectedRoute'
+import PublicOnlyRoute from './components/common/PublicOnlyRoute'
 import SystemBanner from './components/common/SystemBanner'
 
 import Login from './components/common/Login'
@@ -34,14 +35,14 @@ function AppRoutes() {
       {!isAdmin && !isAuth && <SystemBanner />}
       <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/choose-language" element={<ProtectedRoute studentOnly><ChooseLanguage /></ProtectedRoute>} />
-          <Route path="/student" element={<ProtectedRoute studentOnly><StudentDashboard /></ProtectedRoute>} />
-          <Route path="/student/lessons" element={<ProtectedRoute studentOnly><StudentLessons /></ProtectedRoute>} />
-          <Route path="/student/quizzes" element={<ProtectedRoute studentOnly><SurpriseQuizzes /></ProtectedRoute>} />
-          <Route path="/student/warnings" element={<ProtectedRoute studentOnly><StudentWarnings /></ProtectedRoute>} />
-          <Route path="/lesson/:lessonId" element={<ProtectedRoute studentOnly><LessonPage /></ProtectedRoute>} />
+          <Route path="/login" element={<PublicOnlyRoute><Login /></PublicOnlyRoute>} />
+          <Route path="/register" element={<PublicOnlyRoute><Register /></PublicOnlyRoute>} />
+          <Route path="/choose-language" element={<ProtectedRoute><ChooseLanguage /></ProtectedRoute>} />
+          <Route path="/student" element={<ProtectedRoute><StudentDashboard /></ProtectedRoute>} />
+          <Route path="/student/lessons" element={<ProtectedRoute><StudentLessons /></ProtectedRoute>} />
+          <Route path="/student/quizzes" element={<ProtectedRoute><SurpriseQuizzes /></ProtectedRoute>} />
+          <Route path="/student/warnings" element={<ProtectedRoute><StudentWarnings /></ProtectedRoute>} /> 
+          <Route path="/lesson/:lessonId" element={<ProtectedRoute><LessonPage /></ProtectedRoute>} />
           <Route path="/dashboard" element={<Navigate to="/student" replace />} />
           <Route path="/admin" element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>} />
           <Route path="/admin/users" element={<ProtectedRoute adminOnly><ManageUsers /></ProtectedRoute>} />
