@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-import StudentSidebar from '../../components/student/StudentSidebar'
+import StudentSidebar from './sidebar/StudentSidebar'
 import { studentApi } from '../../services/api'
 import '../../styles/student.css'
 
