@@ -1,13 +1,31 @@
+import { useEffect, useState } from 'react'
 import StudentSidebar from '../sidebar/StudentSidebar'
 import '../../../styles/warnings.css'
 
-import useStudentWarnings from '../../../hooks/useStudentWarnings'
+import { studentApi } from '../../../services/studentApi'
 
 import WarningsHeader from './WarningsHeader'
 import WarningsList from './WarningsList'
 
 export default function StudentWarnings() {
-  const { warnings, loading, markAsSeen } = useStudentWarnings()
+  const [warnings, setWarnings] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    studentApi.getWarnings()
+      .then(data => setWarnings(data.warnings || []))
+      .catch(err => console.error('Failed to load warnings:', err))
+      .finally(() => setLoading(false))
+  }, [])
+
+  const markAsSeen = async (warningId) => {
+    try {
+      await studentApi.markWarningSeen(warningId)
+      setWarnings(prev => prev.map(w => w.id === warningId ? { ...w, seen: true } : w))
+    } catch (err) {
+      console.error('Failed to mark warning as seen:', err)
+    }
+  }
 
   return (
     <div className="student-layout">

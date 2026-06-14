@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { adminApi } from '../../services/api'
 import AdminSidebar from './AdminSidebar'
 import EditUserModal from './modals/EditUserModal'
+import ConfirmModal from './modals/ConfirmModal'
 import Toast from '../common/Toast'
 import { useToast } from '../../hooks/useToast'
 import '../../styles/admin.css'
@@ -165,17 +166,13 @@ export default function ManageUsers() {
         {editUser && <EditUserModal user={editUser} onClose={() => setEditUser(null)} onSave={handleSaveEdit} />}
 
         {confirmDelete && (
-          <div className="modal-overlay" onClick={() => setConfirmDelete(null)}>
-            <div className="modal-box confirm-box" onClick={e => e.stopPropagation()}>
-              <div className="confirm-icon">⚠️</div>
-              <h3>Delete {confirmDelete.name}?</h3>
-              <p>This will permanently delete the user and all their progress. This cannot be undone.</p>
-              <div className="modal-footer">
-                <button className="btn-ghost" onClick={() => setConfirmDelete(null)}>Cancel</button>
-                <button className="btn-danger" onClick={() => handleDelete(confirmDelete)}>Delete Permanently</button>
-              </div>
-            </div>
-          </div>
+          <ConfirmModal
+            title={`Delete ${confirmDelete.name}?`}
+            message="This will permanently delete the user and all their progress. This cannot be undone."
+            confirmLabel="Delete Permanently"
+            onConfirm={() => handleDelete(confirmDelete)}
+            onClose={() => setConfirmDelete(null)}
+          />
         )}
       </main>
     </div>

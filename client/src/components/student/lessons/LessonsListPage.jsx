@@ -1,14 +1,31 @@
+import { useEffect, useState } from 'react'
 import StudentSidebar from '../sidebar/StudentSidebar'
 import '../../../styles/student.css'
 
-import useStudentLessons from '../../../hooks/useStudentLessons'
+import { studentApi } from '../../../services/studentApi'
 import { groupLessonsByLanguageLevel } from '../../../utils/groupLessonsByLanguageLevel'
 
 import LessonsPageHeader from './LessonsPageHeader'
 import LessonGroup from './LessonGroup'
 
 export default function StudentLessons() {
-  const { lessons, loading, error } = useStudentLessons()
+  const [lessons, setLessons] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    studentApi.getLessons()
+      .then(data => {
+        setLessons(Array.isArray(data) ? data : [])
+        setLoading(false)
+      })
+      .catch(err => {
+        console.error('Error loading lessons:', err)
+        setError('Failed to load lessons')
+        setLessons([])
+        setLoading(false)
+      })
+  }, [])
 
   const groupedLessons = groupLessonsByLanguageLevel(lessons)
 

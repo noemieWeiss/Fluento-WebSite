@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useUser } from '../../context/UserContext'
 import { usersApi } from '../../services/api'
+import { validatePassword } from '../../utils/validatePassword'
 import '../../styles/forms.css'
 
 function Register() {
@@ -17,22 +18,8 @@ function Register() {
     const password = formData.get('password')
     const confirmPassword = formData.get('confirmPassword')
 
-    if (password.length <= 8) {
-      alert('Password must be more than 8 characters')
-      return
-    }
-    if (!/[0-9]/.test(password)) {
-      alert('Password must contain at least one number')
-      return
-    }
-    if (!/[A-Z]/.test(password)) {
-      alert('Password must contain at least one uppercase letter')
-      return
-    }
-    if (password !== confirmPassword) {
-      alert('Passwords do not match')
-      return
-    }
+    const pwError = validatePassword(password, confirmPassword)
+    if (pwError) { alert(pwError); return }
 
     try {
       const result = await usersApi.create({ name, email, password })

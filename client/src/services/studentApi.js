@@ -42,4 +42,14 @@ export const studentApi = {
     fetch(`${API_BASE}/student/xp-history`, { headers: authHeader() })
       .then(handleResponse).then(r => r.json())
       .catch(() => []),
+
+  getWarnings: () =>
+    fetch(`${API_BASE}/student/warnings`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json()),
+
+  markWarningSeen: (warningId) =>
+    fetch(`${API_BASE}/student/warnings/${warningId}/seen`, {
+      method: 'PUT',
+      headers: authHeader()
+    }).then(handleResponse),
 }

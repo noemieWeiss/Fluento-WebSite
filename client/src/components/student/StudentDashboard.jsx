@@ -3,30 +3,9 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import StudentSidebar from './sidebar/StudentSidebar'
 import { studentApi } from '../../services/api'
+import ChartTooltip from '../common/ChartTooltip'
+import { fillWeekly } from '../../utils/chartUtils'
 import '../../styles/student.css'
-
-const CustomTooltip = ({ active, payload, label }) => {
-  if (!active || !payload?.length) return null
-  return (
-    <div className="custom-tooltip">
-      <div className="label">{label}</div>
-      <div><strong>{payload[0].value}</strong> {payload[0].name}</div>
-    </div>
-  )
-}
-
-const fillWeekly = (raw) => {
-  const days = []
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date()
-    d.setDate(d.getDate() - i)
-    const key   = d.toISOString().slice(0, 10)
-    const label = d.toLocaleDateString('en', { weekday: 'short' })
-    const found = raw?.find(r => r.day?.slice(0, 10) === key)
-    days.push({ day: label, completions: found ? found.completions : 0 })
-  }
-  return days
-}
 
 export default function StudentDashboard() {
   const [stats, setStats]     = useState(null)
@@ -105,7 +84,7 @@ export default function StudentDashboard() {
                     <CartesianGrid strokeDasharray="3 3" stroke="#1e2535" />
                     <XAxis dataKey="day" tick={{ fill: '#64748b', fontSize: 12 }} axisLine={false} tickLine={false} />
                     <YAxis tick={{ fill: '#64748b', fontSize: 12 }} axisLine={false} tickLine={false} allowDecimals={false} />
-                    <Tooltip content={<CustomTooltip />} />
+                    <Tooltip content={<ChartTooltip />} />
                     <Area type="monotone" dataKey="completions" name="completions" stroke="#3b82f6" strokeWidth={2} fill="url(#colorComp)" dot={{ fill: '#3b82f6', r: 4 }} activeDot={{ r: 6 }} />
                   </AreaChart>
                 </ResponsiveContainer>

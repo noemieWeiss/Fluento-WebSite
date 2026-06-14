@@ -2,9 +2,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import StudentSidebar from './student/sidebar/StudentSidebar'
 import { useUser } from '../context/UserContext'
+import { languagesApi } from '../services/languagesApi'
 import '../styles/student.css'
-
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
 
 function ChooseLanguage() {
   const [languages, setLanguages] = useState([])
@@ -16,17 +15,9 @@ function ChooseLanguage() {
   const isNewStudent = user?.isNewStudent
 
   useEffect(() => {
-    const token = JSON.parse(localStorage.getItem('authUser'))?.token
-    if (!token) {
-      setLoading(false)
-      return
-    }
-    
     Promise.all([
-      fetch(`${API_BASE}/languages`).then(r => r.json()),
-      fetch(`${API_BASE}/student/languages`, {
-        headers: { Authorization: `Bearer ${token}` }
-      }).then(r => r.json()).catch(() => [])
+      languagesApi.getAll(),
+      languagesApi.getStudentLanguages().catch(() => [])
     ]).then(([allLangs, myLangs]) => {
       setLanguages(allLangs || [])
       setMyLanguages(myLangs || [])
@@ -40,21 +31,11 @@ function ChooseLanguage() {
   const handleChoose = async () => {
     if (!selectedId) return
     try {
-      const token = JSON.parse(localStorage.getItem('authUser')).token
-      const res = await fetch(`${API_BASE}/languages/choose`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ languageId: selectedId })
-      })
-      if (res.ok) {
-        if (isNewStudent) {
-          navigate('/student')
-        } else {
-          window.location.reload()
-        }
+      await languagesApi.choose(selectedId)
+      if (isNewStudent) {
+        navigate('/student')
+      } else {
+        window.location.reload()
       }
     } catch (err) {
       console.error(err)

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { usersApi } from '../../services/api'
+import { validatePassword } from '../../utils/validatePassword'
 
 const ChangePasswordModal = ({ userId, onClose }) => {
   const [form, setForm] = useState({ current: '', next: '', confirm: '' })
@@ -9,26 +10,9 @@ const ChangePasswordModal = ({ userId, onClose }) => {
 
   const handleSubmit = async () => {
     setError('')
-    if (!form.current || !form.next || !form.confirm) {
-      setError('All fields are required')
-      return
-    }
-    if (form.next !== form.confirm) {
-      setError('New passwords do not match')
-      return
-    }
-    if (form.next.length <= 8) {
-      setError('New password must be more than 8 characters')
-      return
-    }
-    if (!/[0-9]/.test(form.next)) {
-      setError('New password must contain at least one number')
-      return
-    }
-    if (!/[A-Z]/.test(form.next)) {
-      setError('New password must contain at least one uppercase letter')
-      return
-    }
+    if (!form.current || !form.next || !form.confirm) { setError('All fields are required'); return }
+    const pwError = validatePassword(form.next, form.confirm)
+    if (pwError) { setError(pwError); return }
     setLoading(true)
     try {
       await usersApi.changePassword(userId, form.current, form.next)

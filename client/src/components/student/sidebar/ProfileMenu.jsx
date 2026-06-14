@@ -1,17 +1,23 @@
-import EditNameForm from './EditNameForm'
+import EditNameForm from '../../common/EditNameForm'
+import { usersApi } from '../../../services/usersApi'
+import { useUser } from '../../../context/UserContext'
 
 export default function ProfileMenu({
-  user,
   editOpen,
   setEditOpen,
   setPasswordOpen,
   close,
   onLogout
 }) {
+  const { user } = useUser()
+
   return (
     <div className="sidebar-menu">
       {editOpen ? (
-        <EditNameForm user={user} close={close} />
+        <EditNameForm
+          onSave={(name) => usersApi.update(user.id, { name, email: user.email })}
+          close={close}
+        />
       ) : (
         <>
           <div className="sidebar-menu-label">Settings</div>

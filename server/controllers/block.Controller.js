@@ -1,4 +1,4 @@
-import { getPasswordByUserId, verifyPassword } from '../models/password.Model.js'
+import { verifyUserPassword } from '../models/password.Model.js'
 import { blockUser as blockUserModel, isAlreadyBlocked } from '../models/block.Model.js'
 
 export const blockUser = async (req, res, next) => {
@@ -9,10 +9,7 @@ export const blockUser = async (req, res, next) => {
     if (Number(blockerId) === Number(blockedId))
       return res.status(400).json({ message: 'Cannot block yourself' })
 
-    const storedPassword = await getPasswordByUserId(blockerId)
-    if (!storedPassword)
-      return res.status(400).json({ message: 'Wrong password' })
-    const matches = await verifyPassword(password, storedPassword)
+    const matches = await verifyUserPassword(blockerId, password)
     if (!matches)
       return res.status(400).json({ message: 'Wrong password' })
 

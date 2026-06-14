@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { adminApi } from '../../services/api'
 import AdminSidebar from './AdminSidebar'
 import LessonModal from './modals/LessonModal'
+import ConfirmModal from './modals/ConfirmModal'
 import Toast from '../common/Toast'
 import { useToast } from '../../hooks/useToast'
 import '../../styles/admin.css'
@@ -125,17 +126,12 @@ export default function ManageLessons() {
         {editLesson  && <LessonModal lesson={editLesson} levels={levels} onClose={() => setEditLesson(null)} onSave={handleEdit} />}
 
         {confirmDelete && (
-          <div className="modal-overlay" onClick={() => setConfirmDelete(null)}>
-            <div className="modal-box confirm-box" onClick={e => e.stopPropagation()}>
-              <div className="confirm-icon">⚠️</div>
-              <h3>Delete "{confirmDelete.title}"?</h3>
-              <p>This will delete the lesson and all student progress for it. Cannot be undone.</p>
-              <div className="modal-footer">
-                <button className="btn-ghost" onClick={() => setConfirmDelete(null)}>Cancel</button>
-                <button className="btn-danger" onClick={() => handleDelete(confirmDelete)}>Delete</button>
-              </div>
-            </div>
-          </div>
+          <ConfirmModal
+            title={`Delete "${confirmDelete.title}"?`}
+            message="This will delete the lesson and all student progress for it. Cannot be undone."
+            onConfirm={() => handleDelete(confirmDelete)}
+            onClose={() => setConfirmDelete(null)}
+          />
         )}
       </main>
     </div>

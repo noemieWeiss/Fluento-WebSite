@@ -2,25 +2,12 @@ import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { adminApi } from '../../services/api'
 import AdminSidebar from './AdminSidebar'
+import ConfirmModal from './modals/ConfirmModal'
 import Toast from '../common/Toast'
 import { useToast } from '../../hooks/useToast'
+import { UI_LANGS, EMPTY_WORD } from '../../utils/constants'
 import '../../styles/admin.css'
 import '../../styles/admin-lessons.css'
-
-const EMPTY_WORD = { word: '', translation: '', ui_language: 'en', example_sentence: '', image_url: '', audio_url: '' }
-
-const UI_LANGS = [
-  { code: 'en', label: 'English' },
-  { code: 'he', label: 'עברית' },
-  { code: 'ar', label: 'العربية' },
-  { code: 'fr', label: 'Français' },
-  { code: 'de', label: 'Deutsch' },
-  { code: 'es', label: 'Español' },
-  { code: 'ru', label: 'Русский' },
-  { code: 'zh', label: '中文' },
-  { code: 'ja', label: '日本語' },
-  { code: 'ko', label: '한국어' },
-]
 
 export default function ManageWords() {
   const { lessonId } = useParams()
@@ -167,19 +154,13 @@ export default function ManageWords() {
           </div>
         )}
 
-        {/* Confirm delete */}
         {confirmDel && (
-          <div className="modal-overlay" onClick={() => setConfirmDel(null)}>
-            <div className="modal-box confirm-box" onClick={e => e.stopPropagation()}>
-              <div className="confirm-icon">⚠️</div>
-              <h3>Delete "{confirmDel.word}"?</h3>
-              <p>This word will be permanently removed from the lesson.</p>
-              <div className="modal-footer">
-                <button className="btn-ghost" onClick={() => setConfirmDel(null)}>Cancel</button>
-                <button className="btn-danger" onClick={deleteWord}>Delete</button>
-              </div>
-            </div>
-          </div>
+          <ConfirmModal
+            title={`Delete "${confirmDel.word}"?`}
+            message="This word will be permanently removed from the lesson."
+            onConfirm={deleteWord}
+            onClose={() => setConfirmDel(null)}
+          />
         )}
       </main>
     </div>
