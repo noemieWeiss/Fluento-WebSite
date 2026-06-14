@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { UserProvider } from './context/UserContext'
 import ProtectedRoute from './components/common/ProtectedRoute'
+import PublicOnlyRoute from './components/common/PublicOnlyRoute'
 import SystemBanner from './components/common/SystemBanner'
 
 import Login from './components/common/Login'
@@ -33,8 +34,8 @@ function AppRoutes() {
       {!isAdmin && !isAuth && <SystemBanner />}
       <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<PublicOnlyRoute><Login /></PublicOnlyRoute>} />
+          <Route path="/register" element={<PublicOnlyRoute><Register /></PublicOnlyRoute>} />
           <Route path="/choose-language" element={<ProtectedRoute><ChooseLanguage /></ProtectedRoute>} />
           <Route path="/student" element={<ProtectedRoute><StudentDashboard /></ProtectedRoute>} />
           <Route path="/student/lessons" element={<ProtectedRoute><StudentLessons /></ProtectedRoute>} />
