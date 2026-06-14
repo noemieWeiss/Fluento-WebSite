@@ -15,7 +15,7 @@ export const getAllBroadcasts = asyncHandler(async (req, res) =>
 export const createBroadcastHandler = asyncHandler(async (req, res) => {
   const { message, expires_at } = req.body
   if (!message?.trim()) return res.status(400).json({ message: 'Message is required' })
-  const id = await createBroadcast({ message: message.trim(), createdBy: req.user.id, expiresAt: expires_at })
+  const id = await createBroadcast({ message: message.trim(), createdBy: req.user.id, expiresAt: expires_at || null })
   res.status(201).json({ id, message: 'Broadcast created' })
 })
 
