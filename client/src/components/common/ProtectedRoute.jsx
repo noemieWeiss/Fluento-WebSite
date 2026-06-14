@@ -12,10 +12,12 @@ function ProtectedRoute({ children, adminOnly = false, studentOnly = false }) {
   }
 
   if (adminOnly && user.role !== 'admin') {
+    logout()
     return <Navigate to="/login" replace />
   }
 
   if (studentOnly && user.role !== 'student') {
+    logout()
     return <Navigate to="/login" replace />
   }
 

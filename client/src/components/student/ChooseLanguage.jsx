@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import StudentSidebar from './student/sidebar/StudentSidebar'
-import { useUser } from '../context/UserContext'
-import { languagesApi } from '../services/languagesApi'
-import '../styles/student.css'
+import StudentSidebar from './sidebar/StudentSidebar'
+import { useUser } from '../../context/UserContext'
+import { languagesApi } from '../../services/languagesApi'
+import '../../styles/student.css'
 
 function ChooseLanguage() {
   const [languages, setLanguages] = useState([])
