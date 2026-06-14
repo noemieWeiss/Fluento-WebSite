@@ -10,6 +10,10 @@ export const rewardsApi = {
       method: 'POST', headers: jsonHeaders(), body: JSON.stringify(body)
     }).then(handleResponse).then(r => r.json()),
 
+  getXPHistory: (userId) =>
+    fetch(`${BASE}/xp/${userId}`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json()),
+
   resetStreak: (userId) =>
     fetch(`${BASE}/streak/${userId}/reset`, {
       method: 'PUT', headers: authHeader()

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import StudentSidebar from './sidebar/StudentSidebar'
 import { studentApi } from '../../services/api'
@@ -29,16 +29,22 @@ const fillWeekly = (raw) => {
 }
 
 export default function StudentDashboard() {
-  const [stats, setStats]   = useState(null)
+  const [stats, setStats]     = useState(null)
   const [loading, setLoading] = useState(true)
-  const [error, setError]   = useState(null)
+  const [error, setError]     = useState(null)
+  const [badges, setBadges]   = useState([])
+  const [xpHistory, setXpHistory] = useState([])
   const navigate = useNavigate()
+  const location = useLocation()
 
   useEffect(() => {
     studentApi.getStats()
       .then(data => { setStats(data); setLoading(false) })
       .catch(() => { setError('Failed to load stats'); setLoading(false) })
-  }, [])
+
+    studentApi.getBadges().then(data => setBadges(Array.isArray(data) ? data : [])).catch(() => {})
+    studentApi.getXPHistory().then(data => setXpHistory(Array.isArray(data) ? data : [])).catch(() => {})
+  }, [location.key])
 
   return (
     <div className="student-layout">
@@ -126,6 +132,51 @@ export default function StudentDashboard() {
                         <div className="lesson-status">
                           {lesson.isCompleted ? <span className="status-badge completed">✓ Done</span> : <span className="status-badge pending">→ Start</span>}
                         </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="charts-row">
+              <div className="student-card">
+                <div className="student-card-header">
+                  <h2>My Badges</h2>
+                  <span className="card-badge">{badges.length} earned</span>
+                </div>
+                {badges.length === 0 ? (
+                  <div className="empty-state"><div className="empty-icon">🏅</div><div>No badges yet — keep learning!</div></div>
+                ) : (
+                  <div className="badges-grid">
+                    {badges.map(b => (
+                      <div key={b.id} className="badge-item" title={b.description}>
+                        <div className="badge-emoji">{b.emoji}</div>
+                        <div className="badge-name">{b.name}</div>
+                        <div className="badge-reason">{b.description}</div>
+                        <div className="badge-date">{new Date(b.given_at).toLocaleDateString('en', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="student-card">
+                <div className="student-card-header">
+                  <h2>XP History</h2>
+                  <span className="card-badge">Last transactions</span>
+                </div>
+                {xpHistory.length === 0 ? (
+                  <div className="empty-state"><div className="empty-icon">⭐</div><div>No XP transactions yet</div></div>
+                ) : (
+                  <div className="xp-history-list">
+                    {xpHistory.slice(0, 10).map((x, i) => (
+                      <div key={i} className="xp-history-item">
+                        <div className="xp-history-left">
+                          <div className="xp-history-reason">{x.reason}</div>
+                          <div className="xp-history-by">by {x.given_by_name}</div>
+                        </div>
+                        <div className="xp-history-amount">+{x.amount} XP</div>
                       </div>
                     ))}
                   </div>

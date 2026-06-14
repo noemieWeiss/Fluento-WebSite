@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { UserProvider } from './context/UserContext'
+import CacheProvider from './context/CacheContext'
 import ProtectedRoute from './components/common/ProtectedRoute'
 import PublicOnlyRoute from './components/common/PublicOnlyRoute'
 import SystemBanner from './components/common/SystemBanner'
@@ -55,6 +56,7 @@ function AppRoutes() {
           <Route path="/admin/audit-logs" element={<ProtectedRoute adminOnly><AuditLogs /></ProtectedRoute>} />
           <Route path="/admin/broadcasts" element={<ProtectedRoute adminOnly><SystemBroadcast /></ProtectedRoute>} />
           <Route path="/admin/automations" element={<ProtectedRoute adminOnly><AutomationRules /></ProtectedRoute>} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
     </>
   )
@@ -62,11 +64,13 @@ function AppRoutes() {
 
 function App() {
   return (
-    <UserProvider>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
-    </UserProvider>
+    <CacheProvider>
+      <UserProvider>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </UserProvider>
+    </CacheProvider>
   )
 }
 

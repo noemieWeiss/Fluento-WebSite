@@ -50,7 +50,7 @@ function Register() {
         return
       }
       login(fullUser)
-      navigate(`/dashboard`)
+      navigate(fullUser.isNewStudent ? '/choose-language' : '/student', { replace: true })
     } catch (error) {
       alert('Server error - please try again')
     }

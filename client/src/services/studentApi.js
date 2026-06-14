@@ -32,4 +32,14 @@ export const studentApi = {
         console.error('getLanguages error:', err)
         return []
       }),
+
+  getBadges: () =>
+    fetch(`${API_BASE}/student/badges`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json())
+      .catch(() => []),
+
+  getXPHistory: () =>
+    fetch(`${API_BASE}/student/xp-history`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json())
+      .catch(() => []),
 }
