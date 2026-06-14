@@ -11,12 +11,12 @@ export const loginUser = async (email, password) => {
   const matches = await verifyPassword(password, stored);
   if (!matches) return null;
   const { id, name, role } = user;
-  
+
   let isNewStudent = false;
   if (role === 'student') {
     await ensureStudentProfile(id);
     isNewStudent = !(await hasChosenLanguages(id));
   }
-  
+
   return { id, name, email, role, isNewStudent };
 };

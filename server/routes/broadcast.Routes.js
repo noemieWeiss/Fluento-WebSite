@@ -13,10 +13,10 @@ router.get('/active', getActiveBroadcasts)
 
 router.use(authMiddleware)
 router.use(auditLog)
-router.get('/',                 getAllBroadcasts)
-router.post('/',                createBroadcastHandler)
-router.put('/:id',              updateBroadcastHandler)
+router.get('/', getAllBroadcasts)
+router.post('/', createBroadcastHandler)
+router.put('/:id', updateBroadcastHandler)
 router.patch('/:id/deactivate', deactivateBroadcastHandler)
-router.delete('/:id',           deleteBroadcastHandler)
+router.delete('/:id', deleteBroadcastHandler)
 
 export default router

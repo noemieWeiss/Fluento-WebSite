@@ -4,11 +4,11 @@ export const getAuditLogs = async ({ admin_id, action_type, target_type, from, t
   const conditions = []
   const params = []
 
-  if (admin_id)    { conditions.push('al.admin_id = ?');    params.push(admin_id) }
+  if (admin_id) { conditions.push('al.admin_id = ?'); params.push(admin_id) }
   if (action_type) { conditions.push('al.action_type = ?'); params.push(action_type) }
   if (target_type) { conditions.push('al.target_type = ?'); params.push(target_type) }
-  if (from)        { conditions.push('al.created_at >= ?'); params.push(from) }
-  if (to)          { conditions.push('al.created_at <= ?'); params.push(to) }
+  if (from) { conditions.push('al.created_at >= ?'); params.push(from) }
+  if (to) { conditions.push('al.created_at <= ?'); params.push(to) }
 
   const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : ''
 

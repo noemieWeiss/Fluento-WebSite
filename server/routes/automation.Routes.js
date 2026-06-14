@@ -10,10 +10,10 @@ const router = Router()
 router.use(authMiddleware)
 router.use(auditLog)
 
-router.get('/',            getRules)
-router.post('/',           createRuleHandler)
-router.put('/:id',         updateRuleHandler)
+router.get('/', getRules)
+router.post('/', createRuleHandler)
+router.put('/:id', updateRuleHandler)
 router.patch('/:id/toggle', toggleRuleHandler)
-router.delete('/:id',      deleteRuleHandler)
+router.delete('/:id', deleteRuleHandler)
 
 export default router

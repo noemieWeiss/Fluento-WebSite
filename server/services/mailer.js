@@ -16,7 +16,6 @@ async function getTransporter() {
       },
     })
   } else {
-    // Dev mode: use Ethereal test account
     const testAccount = await nodemailer.createTestAccount()
     transporter = nodemailer.createTransport({
       host: 'smtp.ethereal.email',

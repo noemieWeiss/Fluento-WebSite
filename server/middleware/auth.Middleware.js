@@ -20,12 +20,10 @@ export const authMiddleware = async (req, res, next) => {
 
   const fullPath = req.baseUrl + req.path
   const allowed = await isRouteAllowed(fullPath, user.role).catch(() => {
-    // If route permissions check fails or table is empty, allow the request
-    // This prevents the app from breaking if route_permissions table is not populated
     console.warn(`Route permission check failed for ${fullPath}, allowing access`)
     return true
   })
-  
+
   if (!allowed) {
     return res.status(403).json({ message: 'Forbidden' })
   }

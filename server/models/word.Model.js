@@ -9,7 +9,6 @@ export const getWordsByLesson = async (lessonId) => {
 }
 
 export const getClassesByLesson = async (lessonId, userId) => {
-  // Get the lesson's language to ensure we only return words from that language
   const [[lessonInfo]] = await pool.query(`
     SELECT lang.id as language_id, lang.name as language_name, l.title as lesson_title
     FROM lessons l
@@ -17,25 +16,23 @@ export const getClassesByLesson = async (lessonId, userId) => {
     JOIN languages lang ON lang.id = lv.language_id
     WHERE l.id = ?
   `, [lessonId])
-  
+
   if (!lessonInfo) {
     console.error(`No lesson found with id ${lessonId}`)
     return []
   }
-  
+
   console.log(`Loading lesson: ${lessonInfo.lesson_title}, Language: ${lessonInfo.language_name} (ID: ${lessonInfo.language_id})`)
-  
+
   const [rows] = await pool.query(`
     SELECT w.id, w.word, w.translation, w.ui_language, w.example_sentence, w.image_url, w.audio_url, w.class_order
     FROM words w
     WHERE w.lesson_id = ?
     ORDER BY w.class_order, w.id
   `, [lessonId])
-  
+
   console.log(`Found ${rows.length} words for lesson ${lessonId}`)
-  
-  // Normalize classes by chunking sequential words into groups of 2.
-  // This matches the client behavior which shows 2 words per class.
+
   const classes = []
   for (let i = 0; i < rows.length; i += 2) {
     const first = rows[i]

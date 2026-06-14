@@ -5,7 +5,7 @@ import {
 } from '../models/automation.Model.js'
 import { sendEmail } from '../services/mailer.js'
 
-export const getRules  = asyncHandler(async (req, res) => res.json(await findAllRules()))
+export const getRules = asyncHandler(async (req, res) => res.json(await findAllRules()))
 
 export const createRuleHandler = asyncHandler(async (req, res) => {
   const { name, trigger_type, condition_value, action_type } = req.body
