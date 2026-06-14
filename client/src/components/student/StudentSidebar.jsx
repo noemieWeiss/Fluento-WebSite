@@ -23,7 +23,7 @@ export default function StudentSidebar() {
     return () => document.removeEventListener('mousedown', handler)
   }, [])
 
-  const handleLogout = () => { logout(); navigate('/login') }
+  const handleLogout = () => { logout(); navigate('/login', { replace: true }) }
 
   const handleSaveName = async () => {
     if (!newName.trim()) return
