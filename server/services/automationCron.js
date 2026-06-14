@@ -1,7 +1,6 @@
 import cron from 'node-cron'
 import { runAutomationRules } from '../controllers/automation.Controller.js'
 
-// Runs every day at 08:00
 export function startAutomationCron() {
   cron.schedule('0 8 * * *', async () => {
     console.log('[Cron] Running automation rules...')

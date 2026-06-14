@@ -7,9 +7,9 @@ const router = Router()
 
 router.post('/', createUser)
 
-router.get('/',              authMiddleware, getUsers)
-router.get('/:id',           authMiddleware, getUser)
-router.put('/:id/password',  authMiddleware, changePassword)
-router.post('/block',        authMiddleware, blockUser)
+router.get('/', authMiddleware, getUsers)
+router.get('/:id', authMiddleware, getUser)
+router.put('/:id/password', authMiddleware, changePassword)
+router.post('/block', authMiddleware, blockUser)
 
 export default router

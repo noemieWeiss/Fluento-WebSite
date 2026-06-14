@@ -1,35 +1,20 @@
 import { getWordsByLesson, getClassesByLesson } from '../models/word.Model.js'
 import { getLevelsByLanguage, getLessonsByLevel } from '../models/lessons.Model.js'
+import { asyncHandler } from '../utils/helpers.js'
+export const getLevels = asyncHandler(async (req, res) => {
+  res.json(await getLevelsByLanguage(req.params.languageId))
+})
 
-export const getLevels = async (req, res) => {
-  try {
-    res.json(await getLevelsByLanguage(req.params.languageId))
-  } catch (err) {
-    res.status(500).json({ message: err.message })
-  }
-}
+export const getLessonWords = asyncHandler(async (req, res) => {
+  res.json(await getWordsByLesson(req.params.lessonId))
+})
 
-export const getLessonWords = async (req, res) => {
-  try {
-    res.json(await getWordsByLesson(req.params.lessonId))
-  } catch (err) {
-    res.status(500).json({ message: err.message })
-  }
-}
+export const getLessonClasses = asyncHandler(async (req, res) => {
+  res.json(await getClassesByLesson(req.params.lessonId, req.user.id))
+})
 
-export const getLessonClasses = async (req, res) => {
-  try {
-    res.json(await getClassesByLesson(req.params.lessonId, req.user.id))
-  } catch (err) {
-    res.status(500).json({ message: err.message })
-  }
-}
 
-export const getLevelSummary = async (req, res) => {
-  try {
-    const lessons = await getLessonsByLevel(req.params.levelId, req.user.id)
-    res.json({ lessons, total: lessons.length, completed: lessons.filter(l => l.completed).length })
-  } catch (err) {
-    res.status(500).json({ message: err.message })
-  }
-}
+export const getLevelSummary = asyncHandler(async (req, res) => {
+  const lessons = await getLessonsByLevel(req.params.levelId, req.user.id)
+  res.json({ lessons, total: lessons.length, completed: lessons.filter(l => l.completed).length })
+})

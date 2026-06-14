@@ -7,15 +7,15 @@ const router = Router()
 
 router.use(authMiddleware)
 
-router.get('/stats',          getStats)
-router.get('/progress',       getProgress)
-router.get('/lessons',        getLessons)
-router.get('/warnings',       getWarnings)
+router.get('/stats', getStats)
+router.get('/progress', getProgress)
+router.get('/lessons', getLessons)
+router.get('/warnings', getWarnings)
 router.put('/warnings/:id/seen', markWarningSeen)
-router.get('/quizzes',        getActiveQuizzesHandler)
+router.get('/quizzes', getActiveQuizzesHandler)
 router.post('/quizzes/answer', submitQuizAnswerHandler)
-router.get('/languages',      getLanguages)
-router.get('/badges',         getBadges)
-router.get('/xp-history',     getXPHistory)
+router.get('/languages', getLanguages)
+router.get('/badges', getBadges)
+router.get('/xp-history', getXPHistory)
 
 export default router
