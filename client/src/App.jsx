@@ -6,7 +6,7 @@ import SystemBanner from './components/common/SystemBanner'
 
 import Login from './components/common/Login'
 import Register from './components/common/Register'
-import ChooseLanguage from './components/ChooseLanguage'
+import ChooseLanguage from './components/student/ChooseLanguage'
 import LessonPage from './components/student/lessons/LessonPage'
 import AdminDashboard from './components/admin/AdminDashboard'
 import ManageUsers from './components/admin/ManageUsers'
