@@ -11,6 +11,7 @@ import { getWarningsByUser, markWarningAsSeen, getUnseenWarningsCount } from '..
 import { getStudentById, getProgressByUser } from '../models/studentProfile.Model.js'
 import { getBadgesByUser } from '../models/badge.Model.js'
 import { getXPHistoryByUser } from '../models/xp.Model.js'
+import { getUserLanguages } from '../models/userLanguages.Model.js'
 
 export const getStats = async (req, res) => {
   try {
@@ -100,6 +101,24 @@ export const markWarningSeen = async (req, res) => {
     console.error('Error marking warning as seen:', err)
     res.status(500).json({ message: 'Server error' })
   }
+}
+
+export const getLanguages = async (req, res, next) => {
+  try {
+    res.json(await getUserLanguages(req.user.id))
+  } catch (err) { next(err) }
+}
+
+export const getBadges = async (req, res, next) => {
+  try {
+    res.json(await getBadgesByUser(req.user.id))
+  } catch (err) { next(err) }
+}
+
+export const getXPHistory = async (req, res, next) => {
+  try {
+    res.json(await getXPHistoryByUser(req.user.id))
+  } catch (err) { next(err) }
 }
 
 export const getStudentProfile = async (req, res) => {

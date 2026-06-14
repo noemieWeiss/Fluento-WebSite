@@ -22,6 +22,13 @@ export const usersApi = {
       body: JSON.stringify({ name: user.name, email: user.email, password: user.password })
     }).then(r => r.json()),
 
+  update: (id, data) =>
+    fetch(`${API_BASE}/users/${id}`, {
+      method: 'PUT',
+      headers: jsonHeaders(),
+      body: JSON.stringify(data)
+    }).then(handleResponse).then(r => r.json()),
+
   changePassword: async (userId, currentPassword, newPassword) => {
     const res = await fetch(`${API_BASE}/users/${userId}/password`, {
       method: 'PUT',

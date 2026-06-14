@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useUser } from '../../context/UserContext'
 import ProfileMenu from './ProfileMenu'
+import SidebarProfileButton from '../common/SidebarProfileButton'
 import logo from '../../assets/logo.svg'
 
 const NAV_LINKS = [
@@ -21,8 +22,6 @@ export default function AdminSidebar() {
   const { user } = useUser()
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef()
-
-  const initials = user?.name?.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2) ?? 'A'
 
   useEffect(() => {
     const handler = (e) => {
@@ -53,14 +52,7 @@ export default function AdminSidebar() {
             <ProfileMenu onClose={() => setMenuOpen(false)} />
           </div>
         )}
-        <button className="sidebar-profile" onClick={() => setMenuOpen(o => !o)}>
-          <div className="sidebar-avatar">{initials}</div>
-          <div className="sidebar-profile-info">
-            <div className="sidebar-profile-name">{user?.name ?? 'Admin'}</div>
-            <div className="sidebar-profile-role">Administrator</div>
-          </div>
-          <span className="sidebar-chevron">▲</span>
-        </button>
+        <SidebarProfileButton name={user?.name} role="Administrator" onClick={() => setMenuOpen(o => !o)} />
       </div>
     </aside>
   )

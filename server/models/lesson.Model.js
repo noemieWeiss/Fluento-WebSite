@@ -1,4 +1,5 @@
 import pool from '../config/db.js'
+import { withTransaction } from '../utils/db.js'
 
 export const getAllLessons = async () => {
   const [rows] = await pool.query(`
@@ -29,18 +30,10 @@ export const updateLesson = async (id, { title, lesson_number }) => {
 }
 
 export const deleteLesson = async (id) => {
-  const conn = await pool.getConnection()
-  try {
-    await conn.beginTransaction()
+  await withTransaction(async (conn) => {
     await conn.query('DELETE FROM user_progress WHERE lesson_id = ?', [id])
     await conn.query('DELETE FROM user_class_progress WHERE lesson_id = ?', [id])
     await conn.query('DELETE FROM words WHERE lesson_id = ?', [id])
     await conn.query('DELETE FROM lessons WHERE id = ?', [id])
-    await conn.commit()
-  } catch (err) {
-    await conn.rollback()
-    throw err
-  } finally {
-    conn.release()
-  }
+  })
 }

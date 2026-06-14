@@ -1,5 +1,6 @@
-import pool from '../config/db.js';
-import { createUserPassword } from './password.Model.js';
+import pool from '../config/db.js'
+import { createUserPassword } from './password.Model.js'
+import { withTransaction } from '../utils/db.js'
 export const findUserByEmail = async (email) => {
   const [rows] = await pool.query(
     `SELECT u.id, u.name, u.email, u.status, r.name AS role
@@ -50,26 +51,16 @@ export const updateUser = async (id, { name, email, status }) => {
 }
 
 export const deleteUserById = async (id) => {
-  const conn = await pool.getConnection()
-  try {
-    await conn.beginTransaction()
+  await withTransaction(async (conn) => {
     await conn.query('DELETE FROM user_progress WHERE user_id = ?', [id])
     await conn.query('DELETE FROM user_languages WHERE user_id = ?', [id])
     await conn.query('DELETE FROM passwords WHERE user_id = ?', [id])
     await conn.query('DELETE FROM users WHERE id = ?', [id])
-    await conn.commit()
-  } catch (err) {
-    await conn.rollback()
-    throw err
-  } finally {
-    conn.release()
-  }
+  })
 }
 
 export const createAdminUser = async ({ name, email, password }) => {
-  const conn = await pool.getConnection()
-  try {
-    await conn.beginTransaction()
+  return withTransaction(async (conn) => {
     const [result] = await conn.query('INSERT INTO users (name, email) VALUES (?, ?)', [name, email])
     const userId = result.insertId
     await createUserPassword(userId, password, conn)
@@ -77,20 +68,12 @@ export const createAdminUser = async ({ name, email, password }) => {
     if (adminRole) {
       await conn.query('INSERT INTO roles_to_users (user_id, role_id) VALUES (?, ?)', [userId, adminRole.id])
     }
-    await conn.commit()
     return { id: userId, name, email, role: 'admin' }
-  } catch (err) {
-    await conn.rollback()
-    throw err
-  } finally {
-    conn.release()
-  }
+  })
 }
 
 export const createUserWithPassword = async ({ name, email, password }) => {
-  const conn = await pool.getConnection()
-  try {
-    await conn.beginTransaction()
+  return withTransaction(async (conn) => {
     const [result] = await conn.query('INSERT INTO users (name, email) VALUES (?, ?)', [name, email])
     const userId = result.insertId
     await createUserPassword(userId, password, conn)
@@ -98,12 +81,6 @@ export const createUserWithPassword = async ({ name, email, password }) => {
     if (studentRole) {
       await conn.query('INSERT INTO roles_to_users (user_id, role_id) VALUES (?, ?)', [userId, studentRole.id])
     }
-    await conn.commit()
     return { id: userId, name, email, role: 'student' }
-  } catch (err) {
-    await conn.rollback()
-    throw err
-  } finally {
-    conn.release()
-  }
+  })
 }

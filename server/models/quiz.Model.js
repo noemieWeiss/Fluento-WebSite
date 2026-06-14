@@ -1,4 +1,5 @@
 import pool from '../config/db.js'
+import { withTransaction } from '../utils/db.js'
 
 export const getAllQuizzes = async () => {
   const [rows] = await pool.query(`
@@ -42,10 +43,7 @@ export const getActiveQuizzes = async (userId) => {
 }
 
 export const submitQuizAnswer = async (quizId, userId, answer) => {
-  const conn = await pool.getConnection()
-  try {
-    await conn.beginTransaction()
-
+  return withTransaction(async (conn) => {
     const [[quiz]] = await conn.query('SELECT correct, xp_reward, created_by FROM surprise_quizzes WHERE id = ? FOR UPDATE', [quizId])
     if (!quiz) throw new Error('Quiz not found')
 
@@ -56,19 +54,11 @@ export const submitQuizAnswer = async (quizId, userId, answer) => {
     if (existing) throw new Error('Already answered')
 
     const isCorrect = quiz.correct.toLowerCase() === answer.toLowerCase()
-
     await conn.query(
       'INSERT INTO quiz_answers (quiz_id, user_id, answer, correct) VALUES (?, ?, ?, ?)',
       [quizId, userId, answer, isCorrect]
     )
-
-    await conn.commit()
     return { correct: isCorrect, xp: isCorrect ? quiz.xp_reward : 0, given_by: quiz.created_by }
-  } catch (err) {
-    await conn.rollback()
-    throw err
-  } finally {
-    conn.release()
-  }
+  })
 }
 

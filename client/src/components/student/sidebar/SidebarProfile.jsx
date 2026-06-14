@@ -2,9 +2,9 @@ import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useUser } from '../../../context/UserContext'
 import useClickOutside from '../../../hooks/useClickOutside'
-import { getInitials } from '../../../utils/getInitials'
 import ProfileMenu from './ProfileMenu'
 import ChangePasswordModal from '../../common/ChangePassword'
+import SidebarProfileButton from '../../common/SidebarProfileButton'
 
 export default function SidebarProfile() {
   const { user, logout } = useUser()
@@ -37,7 +37,6 @@ export default function SidebarProfile() {
     <div className="sidebar-profile-wrap" ref={ref}>
       {menuOpen && (
         <ProfileMenu
-          user={user}
           editOpen={editOpen}
           setEditOpen={setEditOpen}
           setPasswordOpen={setPasswordOpen}
@@ -46,20 +45,7 @@ export default function SidebarProfile() {
         />
       )}
 
-      <button className="sidebar-profile" onClick={handleOpenMenu}>
-        <div className="sidebar-avatar">
-          {getInitials(user?.name)}
-        </div>
-
-        <div className="sidebar-profile-info">
-          <div className="sidebar-profile-name">
-            {user?.name ?? 'Student'}
-          </div>
-          <div className="sidebar-profile-role">Learner</div>
-        </div>
-
-        <span className="sidebar-chevron">▲</span>
-      </button>
+      <SidebarProfileButton name={user?.name} role="Learner" onClick={handleOpenMenu} />
 
       {passwordOpen && (
         <ChangePasswordModal 

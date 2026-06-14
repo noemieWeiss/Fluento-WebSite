@@ -2,30 +2,9 @@ import { useEffect, useState } from 'react'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import AdminSidebar from '../../components/admin/AdminSidebar'
 import { adminApi } from '../../services/api'
+import ChartTooltip from '../common/ChartTooltip'
+import { fillWeekly } from '../../utils/chartUtils'
 import '../../styles/admin.css'
-
-const CustomTooltip = ({ active, payload, label }) => {
-  if (!active || !payload?.length) return null
-  return (
-    <div className="custom-tooltip">
-      <div className="label">{label}</div>
-      <div><strong>{payload[0].value}</strong> {payload[0].name}</div>
-    </div>
-  )
-}
-
-const fillWeekly = (raw) => {
-  const days = []
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date()
-    d.setDate(d.getDate() - i)
-    const key   = d.toISOString().slice(0, 10)
-    const label = d.toLocaleDateString('en', { weekday: 'short' })
-    const found = raw?.find(r => r.day?.slice(0, 10) === key)
-    days.push({ day: label, completions: found ? found.completions : 0 })
-  }
-  return days
-}
 
 export default function AdminDashboard() {
   const [stats, setStats]   = useState(null)
@@ -97,7 +76,7 @@ export default function AdminDashboard() {
                     <CartesianGrid strokeDasharray="3 3" stroke="#1e2535" />
                     <XAxis dataKey="day" tick={{ fill: '#64748b', fontSize: 12 }} axisLine={false} tickLine={false} />
                     <YAxis tick={{ fill: '#64748b', fontSize: 12 }} axisLine={false} tickLine={false} allowDecimals={false} />
-                    <Tooltip content={<CustomTooltip />} />
+                    <Tooltip content={<ChartTooltip />} />
                     <Area type="monotone" dataKey="completions" name="completions" stroke="#6366f1" strokeWidth={2} fill="url(#colorComp)" dot={{ fill: '#6366f1', r: 4 }} activeDot={{ r: 6 }} />
                   </AreaChart>
                 </ResponsiveContainer>

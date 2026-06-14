@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
-
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+import { lessonsApi } from '../services/lessonsApi'
+import { progressApi } from '../services/progressApi'
 
 export default function useLessonPlayer(lessonId, navigate) {
     const [classes, setClasses] = useState([])
@@ -20,19 +20,10 @@ export default function useLessonPlayer(lessonId, navigate) {
 
     const loadLesson = async () => {
         try {
-            const token = JSON.parse(localStorage.getItem('authUser'))?.token
-
-            const classesRes = await fetch(
-                `${API_BASE}/lessons/${lessonId}/classes`,
-                { headers: { Authorization: `Bearer ${token}` } }
-            )
-            const classesData = await classesRes.json()
-
-            const progressRes = await fetch(
-                `${API_BASE}/progress/lessons/${lessonId}`,
-                { headers: { Authorization: `Bearer ${token}` } }
-            )
-            const progressData = await progressRes.json()
+            const [classesData, progressData] = await Promise.all([
+                lessonsApi.getClasses(lessonId),
+                progressApi.getLessonProgress(lessonId),
+            ])
 
             const allWords = classesData.flatMap(c => c.words || [])
 
@@ -93,18 +84,7 @@ export default function useLessonPlayer(lessonId, navigate) {
         const currentClass = classes[currentClassIndex]
 
         try {
-            const token = JSON.parse(localStorage.getItem('authUser'))?.token
-
-            await fetch(
-                `${API_BASE}/progress/lessons/${lessonId}/classes/${currentClass.classNumber}`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`
-                    }
-                }
-            )
+            await progressApi.saveClassProgress(lessonId, currentClass.classNumber)
 
             setCompletedClasses(prev => [...prev, currentClass.classNumber])
             setPhase('classComplete')
@@ -143,19 +123,7 @@ export default function useLessonPlayer(lessonId, navigate) {
         const score = Math.round((correct / (total || 1)) * 100)
 
         try {
-            const token = JSON.parse(localStorage.getItem('authUser'))?.token
-
-            await fetch(
-                `${API_BASE}/progress/lessons/${lessonId}/complete`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ score })
-                }
-            )
+            await progressApi.completeLesson(lessonId, score)
 
             setPhase('complete')
         } catch (err) {

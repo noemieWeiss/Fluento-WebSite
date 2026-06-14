@@ -13,5 +13,11 @@ export const updatePassword = async (userId, newPassword) => {
   await pool.query('UPDATE passwords SET password_hash = ? WHERE user_id = ?', [passwordHash, userId]);
 };
 export const verifyPassword = async (plainPassword, hash) => {
-  return bcrypt.compare(plainPassword, hash);
-};
+  return bcrypt.compare(plainPassword, hash)
+}
+
+export const verifyUserPassword = async (userId, password) => {
+  const stored = await getPasswordByUserId(userId)
+  if (!stored) return false
+  return verifyPassword(password, stored)
+}
