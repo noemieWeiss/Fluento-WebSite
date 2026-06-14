@@ -2,8 +2,8 @@ import { API_BASE, authHeader, jsonHeaders, handleResponse } from './api'
 
 export const broadcastApi = {
   getActive: () =>
-    fetch(`${API_BASE}/broadcasts/active`, { headers: authHeader() })
-      .then(handleResponse).then(r => r.json()),
+    fetch(`${API_BASE}/broadcasts/active`)
+      .then(r => r.json()),
 
   getAll: () =>
     fetch(`${API_BASE}/broadcasts`, { headers: authHeader() })

@@ -4,7 +4,7 @@ export const findActiveBroadcasts = async () => {
   const [rows] = await pool.execute(
     `SELECT sb.*, u.name AS created_by_name
      FROM system_broadcasts sb
-     JOIN users u ON u.id = sb.created_by
+     LEFT JOIN users u ON u.id = sb.created_by
      WHERE sb.is_active = TRUE AND (sb.expires_at IS NULL OR sb.expires_at > NOW())
      ORDER BY sb.created_at DESC`
   )
